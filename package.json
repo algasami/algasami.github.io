@@ -6,7 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"deploy-production": "pm2 deploy ecosystem.config.js production --force",
+		"reload-production": "pm2 deploy ecosystem.config.js production exec 'pm2 reload app'"
 	},
 	"dependencies": {
 		"next": "12.3.1",
