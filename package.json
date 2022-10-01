@@ -22,7 +22,8 @@
 		"react-dom": "18.2.0",
 		"react-tsparticles": "^2.3.3",
 		"sass": "^1.55.0",
-		"tsparticles": "^2.3.4"
+		"tsparticles": "^2.3.4",
+		"typeface-roboto": "^1.1.13"
 	},
 	"devDependencies": {
 		"autoprefixer": "^10.4.12",
