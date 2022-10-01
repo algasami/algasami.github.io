@@ -18,7 +18,7 @@ module.exports = {
 			user: "algasami",
 			ref: "origin/master", // (use 'origin/master' for your master branch,
 			repo: "git@github.com:algasami/portfolio_v1.git", // your repo url
-			path: "/home/algasami/dev-test/",
+			path: "/var/www/",
 			"post-deploy":
 				"npm install && pm2 reload ecosystem.config.js --env production && pm2 save",
 		},
