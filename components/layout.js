@@ -7,7 +7,7 @@ export default function Layout({ children, slug }) {
 			<Head>
 				<title>{title}</title>
 			</Head>
-			<div className="w-screen h-screen flex flex-row justify-center">
+			<div className="w-screen h-screen flex flex-row justify-center z-10">
 				{children}
 			</div>
 		</>
