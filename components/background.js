@@ -3,18 +3,20 @@ import { useSpring, animated } from "@react-spring/web";
 function BackgroundBlock({ id }) {
 	const style = useSpring({
 		from: {
-			width: "0vw",
-			height: "0vh",
+			width: "100vw",
+			height: "10vh",
 			backgroundColor: `rgb(${id * 40},0,255)`,
 			opacity: 0,
 		},
 		to: {
 			width: `${(id + 1) * 20}vw`,
 			height: `${(id + 1) * 20}vh`,
-			opacity: id / 50,
+			opacity: (5 - id) / 5,
 		},
 		config: {
-			friction: 20,
+			mass: 6,
+			friction: 45,
+			tension: 300,
 		},
 		delay: id * 100,
 	});
