@@ -4,8 +4,8 @@ import { IconButton, Link, Modal } from "@mui/material";
 import React from "react";
 
 const LinkList = [
-	{ name: "home", link: "/" },
-	{ name: "dev", link: "/dev" },
+	{ name: "Home", link: "/" },
+	{ name: "Development", link: "/dev" },
 ];
 
 function DynamicLink({ href, name }) {

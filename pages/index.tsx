@@ -8,10 +8,11 @@ import {
 	Tooltip,
 } from "@mui/material";
 import React from "react";
+import updates from "../data/updates.json";
 
-export default function Hallway() {
+export default function Hallway({ updateList }: { updateList: Array<{ feature: string, dev: string, date: string }> }) {
 	return (
-		<div className="max-w-min px-8 lg:px-2 h-full flex flex-col justify-center">
+		<div className="max-w-max h-full flex flex-col justify-center" style={{ maxWidth: "80vw" }}>
 			<h1 className="font-light text-center m-2 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-400 to-violet-200 via-fuchsia-500 bg-gradient-to-tr">
 				ALGASAMI
 			</h1>
@@ -34,22 +35,13 @@ export default function Hallway() {
 						<TableCell>Dev in charge</TableCell>
 						<TableCell>Date</TableCell>
 					</TableRow>
-					<TableRow>
-						<TableCell>Background Update</TableCell>
-						<TableCell>Algasami</TableCell>
-						<TableCell>10/3, 2022</TableCell>
-					</TableRow>
-					<TableRow>
-						<TableCell>
-							<Tooltip title="This update is unfinished.">
-								<Badge badgeContent="!" color="warning">
-									<div className="rounded-xl bg-pink-600 p-2">Aesthetics</div>
-								</Badge>
-							</Tooltip>
-						</TableCell>
-						<TableCell>Algasami</TableCell>
-						<TableCell>10/4, 2022</TableCell>
-					</TableRow>
+					{updateList.map((v) => {
+						return <TableRow key={v.feature}>
+							<TableCell>{v.feature}</TableCell>
+							<TableCell>{v.dev}</TableCell>
+							<TableCell>{v.date}</TableCell>
+						</TableRow>
+					})}
 				</Table>
 			</NoSsr>
 
@@ -60,4 +52,12 @@ export default function Hallway() {
 			/> */}
 		</div>
 	);
+}
+
+export async function getStaticProps() {
+	return {
+		props: {
+			updateList: updates
+		}
+	}
 }
