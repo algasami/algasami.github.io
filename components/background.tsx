@@ -1,5 +1,5 @@
 import { useSpring, animated } from "@react-spring/web";
-
+import React from "react";
 function BackgroundBlock({ id }) {
 	const style = useSpring({
 		from: {
@@ -11,7 +11,7 @@ function BackgroundBlock({ id }) {
 		to: {
 			width: `${(id + 1) * 20}vw`,
 			height: `${(id + 1) * 20}vh`,
-			opacity: (5 - id) / 5,
+			opacity: (5 - id) / 10 - 0.1,
 		},
 		config: {
 			mass: 6,

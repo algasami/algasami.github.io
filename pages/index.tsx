@@ -1,4 +1,3 @@
-import { useSpring, animated } from "@react-spring/web";
 import {
 	Badge,
 	NoSsr,
@@ -8,23 +7,11 @@ import {
 	TableRow,
 	Tooltip,
 } from "@mui/material";
+import React from "react";
 
 export default function Hallway() {
-	const springs = useSpring({
-		from: { opacity: 0 },
-		to: { opacity: 1 },
-		config: {
-			mass: 10,
-			friction: 30,
-			tension: 120,
-		},
-		delay: 200,
-	});
 	return (
-		<animated.div
-			className="px-8 lg:px-2 h-full flex flex-col justify-center"
-			style={{ ...springs }}
-		>
+		<div className="max-w-min px-8 lg:px-2 h-full flex flex-col justify-center">
 			<h1 className="font-light text-center m-2 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-400 to-violet-200 via-fuchsia-500 bg-gradient-to-tr">
 				ALGASAMI
 			</h1>
@@ -71,6 +58,6 @@ export default function Hallway() {
 				init={particlesInit}
 				loaded={particlesLoaded}
 			/> */}
-		</animated.div>
+		</div>
 	);
 }

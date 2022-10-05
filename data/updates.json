@@ -1,0 +1,22 @@
+[
+	{
+		"feature": "Background Update",
+		"dev": "Algasami",
+		"date": "10/3, 2022"
+	},
+	{
+		"feature": "Aesthetics",
+		"dev": "Algasami",
+		"date": "10/4, 2022"
+	},
+	{
+		"feature": "Modal Navbar",
+		"dev": "Algasami",
+		"date": "10/5, 2022"
+	},
+	{
+		"feature": "TS Migration",
+		"dev": "Algasami",
+		"date": "10/5, 2022"
+	}
+]
