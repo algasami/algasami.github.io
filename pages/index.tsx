@@ -10,7 +10,7 @@ import updates from "../data/updates.json";
 export default function Hallway({ updateList }: { updateList: Array<{ feature: string, dev: string, date: string }> }) {
 	return (
 		<div className="max-w-max h-full flex flex-col justify-center" style={{ maxWidth: "80vw" }}>
-			<h1 className="font-light text-center m-2 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-400 to-violet-200 via-fuchsia-500 bg-gradient-to-tr">
+			<h1 className="font-light text-center m-4 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-400 to-violet-200 via-fuchsia-500 bg-gradient-to-tr">
 				ALGASAMI
 			</h1>
 

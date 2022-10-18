@@ -20,7 +20,7 @@ export default function Layout({ children, slug }: { children: React.ReactNode, 
 			<div className="w-screen h-screen overflow-x-hidden flex flex-col justify-start z-10">
 				<Navbar />
 
-				<animated.div className="relative flex flex-row justify-center h-screen z-10" style={{ ...springs }}>
+				<animated.div className="relative mt-16 sm:m-8 mb-auto flex flex-row justify-center z-10" style={{ ...springs }}>
 					{children}
 				</animated.div>
 			</div>
