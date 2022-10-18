@@ -11,12 +11,12 @@ function BackgroundBlock({ id }) {
 		to: {
 			width: `${(id + 1) * 20}vw`,
 			height: `${(id + 1) * 20}vh`,
-			opacity: (5 - id) / 10 - 0.1,
+			opacity: (5 - id) / 20 - 0.1,
 		},
 		config: {
 			mass: 6,
 			friction: 45,
-			tension: 300,
+			tension: 200,
 		},
 		delay: id * 100,
 	});

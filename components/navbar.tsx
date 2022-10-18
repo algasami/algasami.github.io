@@ -76,7 +76,7 @@ function SmallNav() {
 }
 export default function Navbar({ }) {
 	return (
-		<div className="navbar sticky bg-zinc-800 w-full shadow-xl p-2">
+		<div className="navbar absolute z-50 bg-zinc-800 w-full shadow-xl p-2">
 			<Box sx={{ display: { xs: "none", sm: "block" } }}>
 				<BigNav />
 			</Box>

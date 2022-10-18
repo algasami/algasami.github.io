@@ -1,11 +1,8 @@
 import {
-	Badge,
 	NoSsr,
 	Table,
 	TableCell,
-	TableContainer,
 	TableRow,
-	Tooltip,
 } from "@mui/material";
 import React from "react";
 import updates from "../data/updates.json";
