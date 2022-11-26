@@ -10,13 +10,17 @@ const LinkList = [
 
 function DynamicLink({ href, name }) {
 	return (
-		<Link className="font-bold no-underline" href={href}>
+		<Link
+			className="font-bold no-underline"
+			style={{ textDecoration: "none" }}
+			href={href}
+		>
 			<span className="dynamic-link ">{name}</span>
 		</Link>
 	);
 }
 
-function genList(className) {
+function genList(className: string) {
 	return LinkList.map((s) => {
 		return (
 			<div key={s.link} className={className}>
@@ -59,13 +63,23 @@ function SmallNav() {
 			<IconButton aria-label="navigate" color="primary" onClick={onClick}>
 				<NearMeRoundedIcon fontSize="large" />
 			</IconButton>
-			<Modal open={open} onClose={onClose}
+			<Modal
+				open={open}
+				onClose={onClose}
 				className="flex content-center justify-center"
-				style={{ top: '25%' }}
+				style={{ top: "25%" }}
 			>
-				<Box className="bg-slate-600 p-4 shadow-xl" style={{ maxHeight: "40vh", minHeight: "20vh", minWidth: "40vw", maxWidth: "70vw" }}
+				<Box
+					className="bg-slate-700 rounded-lg p-4 shadow-xl"
+					style={{
+						maxHeight: "40vh",
+						minHeight: "20vh",
+						minWidth: "40vw",
+						maxWidth: "70vw",
+						zIndex: 2,
+					}}
 				>
-					<div className="flex flex-col text-center">
+					<div className="p-2 w-auto h-auto flex flex-col text-center">
 						<h2>Menu</h2>
 						{genList("text-xl font-bold")}
 					</div>
@@ -74,7 +88,7 @@ function SmallNav() {
 		</div>
 	);
 }
-export default function Navbar({ }) {
+export default function Navbar({}) {
 	return (
 		<div className="navbar absolute z-50 bg-zinc-800 w-full shadow-xl p-2">
 			<Box sx={{ display: { xs: "none", sm: "block" } }}>

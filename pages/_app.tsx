@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Background from "../components/background";
 import { animated, useSpring } from "@react-spring/web";
 import React from "react";
+import { NoSsr } from "@mui/material";
 
 const darkTheme = createTheme({
 	palette: {
@@ -12,16 +13,17 @@ const darkTheme = createTheme({
 	},
 });
 function MyApp({ Component, pageProps }) {
-	const getLayout = Component.getLayout || ((page: React.ReactNode) => <Layout>{page}</Layout>);
+	const getLayout =
+		Component.getLayout || ((page: React.ReactNode) => <Layout>{page}</Layout>);
 	return (
 		<div>
-			<ThemeProvider theme={darkTheme}>
-				<div>
-					{getLayout(<Component {...pageProps} />)}
-				</div>
-			</ThemeProvider>
+			<NoSsr>
+				<ThemeProvider theme={darkTheme}>
+					<div>{getLayout(<Component {...pageProps} />)}</div>
+				</ThemeProvider>
 
-			<Background />
+				<Background />
+			</NoSsr>
 		</div>
 	);
 }
