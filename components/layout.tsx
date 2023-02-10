@@ -17,15 +17,17 @@ export default function Layout({
 		config: {},
 		delay: 0,
 	});
+	const desc =
+		"Hello there. I'm Algasami, a programmer, game developer and web developer";
 	return (
 		<>
 			<Head>
 				<title>{title}</title>
-				<meta
-					name="description"
-					content="Hello there. I'm Algasami, a programmer, game developer and web developer"
-					key="desc"
-				/>
+				<meta property="og:title" content={title} />
+				<meta property="og:type" content="website" />
+				<meta property="og:url" content="https://www.algasami.com" />
+				<meta property="og:description" content={desc} />
+				<meta name="description" content={desc} key="desc" />
 			</Head>
 			<div className="w-screen h-screen overflow-x-hidden flex flex-col justify-start z-10">
 				<Navbar />
