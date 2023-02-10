@@ -21,6 +21,11 @@ export default function Layout({
 		<>
 			<Head>
 				<title>{title}</title>
+				<meta
+					name="description"
+					content="Hello there. I'm Algasami, a programmer, game developer and web developer"
+					key="desc"
+				/>
 			</Head>
 			<div className="w-screen h-screen overflow-x-hidden flex flex-col justify-start z-10">
 				<Navbar />
