@@ -8,7 +8,7 @@ const LinkList = [
 	{ name: "Development", link: "/dev" },
 ];
 
-function DynamicLink({ href, name }) {
+export function DynamicLink({ href, name }) {
 	return (
 		<Link
 			className="font-bold no-underline"
@@ -70,7 +70,7 @@ function SmallNav() {
 				style={{ top: "25%" }}
 			>
 				<Box
-					className="bg-slate-700 rounded-lg p-4 shadow-xl"
+					className="bg-slate-700 rounded-lg p-4 shadow-lg shadow-zinc-700 border border-zinc-400"
 					style={{
 						maxHeight: "40vh",
 						minHeight: "20vh",
