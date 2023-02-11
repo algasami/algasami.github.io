@@ -57,7 +57,7 @@ export default function Hallway({
 			<div className="my-4"></div>
 			<div className="flex lg:flex-row flex-col justify-between">
 				<Region title={"About"} color="bg-slate-900">
-					<div className="flex flex-col h-max lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
+					<div className="flex flex-col lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
 						<div className="flex flex-col justify-between">
 							<Region title={"Education"} color="bg-slate-800">
 								I{"'"}m an aspired high school student in Taiwan currently
@@ -100,10 +100,7 @@ export default function Hallway({
 				</Region>
 
 				<Region title={"Timeline"} color="">
-					<div
-						className="flex flex-col justify-between lg:overflow-scroll masked-overflow lg:max-h-[50vh]"
-						style={{ maxHeight: "50vh" }}
-					>
+					<div className="flex flex-col justify-between lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
 						{Object.values(updateList).map((timelineitem) => (
 							<TimelineComponent
 								key={timelineitem.title}
