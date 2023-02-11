@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
 	const portlink = "https://www.algasami.com/";
-	const pfplink = portlink + "mr_alga.jpeg";
+	const pfplink = portlink + "alga.jpeg";
 	return (
 		<Html lang="en">
 			<Head>
