@@ -6,6 +6,7 @@ import React from "react";
 const LinkList = [
 	{ name: "Home", link: "/" },
 	{ name: "Development", link: "/dev" },
+	{ name: "Blog", link: "/blog" },
 ];
 
 export function DynamicLink({ href, name }) {

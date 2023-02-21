@@ -16,15 +16,11 @@ function MyApp({ Component, pageProps }) {
 	const getLayout =
 		Component.getLayout || ((page: React.ReactNode) => <Layout>{page}</Layout>);
 	return (
-		<div>
-			<NoSsr>
-				<ThemeProvider theme={darkTheme}>
-					<div>{getLayout(<Component {...pageProps} />)}</div>
-				</ThemeProvider>
-
-				<Background />
-			</NoSsr>
-		</div>
+		<NoSsr>
+			<ThemeProvider theme={darkTheme}>
+				{getLayout(<Component {...pageProps} />)}
+			</ThemeProvider>
+		</NoSsr>
 	);
 }
 
