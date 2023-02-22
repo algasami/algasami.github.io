@@ -117,7 +117,7 @@ export const timeline: { [k: number]: TimelineItem } = [
 		date: "2022",
 		category: {
 			tag: "GSAT",
-			color: "bg-blue-500",
+			color: "bg-violate-500",
 		},
 	},
 ];

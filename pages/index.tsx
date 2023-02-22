@@ -42,10 +42,10 @@ export default function Hallway({
 }) {
 	return (
 		<div
-			className="max-w-max h-full flex flex-col justify-center"
+			className="max-w-max h-full flex flex-col justify-center pt-16"
 			style={{ maxWidth: "80vw" }}
 		>
-			<h1 className="font-light text-center m-4 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-400 to-violet-200 via-fuchsia-500 bg-gradient-to-tr">
+			<h1 className="font-light text-center m-4 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-700 to-violet-900 via-fuchsia-800 dark:from-amber-400 dark:to-violet-200 dark:via-fuchsia-500 bg-gradient-to-tr">
 				ALGASAMI
 			</h1>
 
@@ -99,7 +99,7 @@ export default function Hallway({
 					</div>
 				</Region>
 
-				<Region title={"Timeline"} color="">
+				<Region title={"Timeline"} color="bg-slate-900">
 					<div className="flex flex-col justify-between lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
 						{Object.values(updateList).map((timelineitem) => (
 							<TimelineComponent

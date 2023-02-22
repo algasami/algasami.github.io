@@ -8,7 +8,7 @@ export default function DevPage({
 	updateList: Array<{ feature: string; dev: string; date: string }>;
 }) {
 	return (
-		<div className="dev-page my-9">
+		<div className="dev-page pt-16">
 			<h1>Dev Page</h1>
 
 			<b className="w-full text-center">Temporary Logs</b>
