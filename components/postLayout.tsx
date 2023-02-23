@@ -62,36 +62,39 @@ export default function PostLayout({
 					<footer>
 						<div className="flex flex-col gap-4 pt-4 text-base font-medium sm:flex-row sm:justify-between xl:gap-8 xl:pt-8">
 							{prevPost ? (
-								<div className="basis-6/12 flex flex-col">
-									<h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
-										上一篇
-									</h2>
-									<div className="flex flex-row justify-start">
-										<Link
-											href={prevPost.path}
-											className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
-										>
-											<span>← {prevPost.title}</span>
-										</Link>
+								<Link href={prevPost.path} className="">
+									<div className="transition-colors dark:hover:text-yellow-100">
+										<button className="basis-6/12 flex flex-col">
+											<h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
+												上一篇
+											</h2>
+											<div className="flex flex-row justify-start">
+												<Link
+													href={prevPost.path}
+													className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+												>
+													<span>← {prevPost.title}</span>
+												</Link>
+											</div>
+										</button>
 									</div>
-								</div>
+								</Link>
 							) : (
 								<div />
 							)}
 							{nextPost && (
-								<div className="basis-6/12 flex flex-col">
-									<h2 className="mb-1 text-right text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
-										下一篇
-									</h2>
-									<div className="flex flex-row justify-end">
-										<Link
-											href={nextPost.path}
-											className="block text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400 sm:text-right"
-										>
-											<span>{nextPost.title} →</span>
-										</Link>
+								<Link href={nextPost.path} className="">
+									<div className="transition-colors dark:hover:text-yellow-100">
+										<button className="basis-6/12 flex flex-col">
+											<h2 className="mb-1 text-right text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
+												下一篇
+											</h2>
+											<div className="flex flex-row justify-end">
+												<span>{nextPost.title} →</span>
+											</div>
+										</button>
 									</div>
-								</div>
+								</Link>
 							)}
 						</div>
 					</footer>

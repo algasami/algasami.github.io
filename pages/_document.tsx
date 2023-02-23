@@ -38,7 +38,7 @@ export default function Document() {
 				/>
 				<meta property="twitter:image" content={pfplink} />
 			</Head>
-			<body>
+			<body className="overflow-hidden">
 				<Main />
 				<NextScript />
 			</body>

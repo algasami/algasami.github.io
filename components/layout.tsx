@@ -25,9 +25,11 @@ export default function Layout({
 			<Head>
 				<title>{title}</title>
 			</Head>
-			<div className="w-screen h-screen overflow-x-hidden flex flex-col justify-start z-10">
-				<Navbar />
-
+			<Navbar />
+			<div
+				className="w-screen h-screen overflow-x-hidden flex flex-col justify-start z-10"
+				id="main-content"
+			>
 				<animated.main
 					className="relative flex flex-row justify-center z-10"
 					style={{ ...springs }}
