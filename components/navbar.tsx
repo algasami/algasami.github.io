@@ -1,8 +1,9 @@
 import { Box } from "@mui/system";
 import NearMeRoundedIcon from "@mui/icons-material/NearMeRounded";
-import { IconButton, Link, Modal } from "@mui/material";
+import { IconButton, Modal } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ThemeSwitch from "./themeSwitch";
+import Link from "next/link";
 
 const LinkList = [
 	{ name: "Home", link: "/" },
