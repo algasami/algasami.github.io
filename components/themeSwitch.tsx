@@ -1,14 +1,14 @@
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useThemeHook } from "../hooks/themeHook";
 
 const ThemeSwitch = () => {
 	const [mounted, setMounted] = useState(false);
-	const { theme, setTheme, resolvedTheme } = useTheme();
 
 	// When mounted on client, now we can show the UI
 	useEffect(() => setMounted(true), []);
+	const { theme, setTheme } = useThemeHook();
 
-	const isDark = theme === "dark" || resolvedTheme === "dark";
+	const isDark = theme === "dark";
 
 	return (
 		<button

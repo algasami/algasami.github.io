@@ -1,6 +1,5 @@
 import { Table, TableCell, TableRow } from "@mui/material";
-import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { Region } from "../components/region";
 import { timeline, TimelineItem } from "../data/timeline";
 import { age } from "../scripts/time-utils";

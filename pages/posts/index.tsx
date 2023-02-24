@@ -21,7 +21,7 @@ function postNav({
 	key: string;
 }) {
 	return (
-		<div className="timelinecomponent">
+		<div className="timelinecomponent" key={title}>
 			<Region title={title} color={color} subtitle={subtitle}>
 				{content}
 				{/* link icon followed by timelineitem's link */}

@@ -1,6 +1,5 @@
 import { allPosts } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import { format, parseISO } from "date-fns";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import PostLayout, {
@@ -49,7 +48,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 	const paths = allPosts.map((post) => post.path);
 	return {
 		paths,
-		fallback: false,
+		fallback: true,
 	};
 };
 

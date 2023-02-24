@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export default function Document() {
 	const portlink = "https://www.algasami.com/";
@@ -6,6 +7,7 @@ export default function Document() {
 	return (
 		<Html lang="en">
 			<Head>
+				<Script src="/initTheme.js" strategy="beforeInteractive" />
 				<link
 					rel="stylesheet"
 					href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"

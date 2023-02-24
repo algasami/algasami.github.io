@@ -22,7 +22,8 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		".contentlayer/generated"
+		".contentlayer/generated",
+		"public/initTheme.js"
 	],
 	"exclude": ["node_modules"]
 }
