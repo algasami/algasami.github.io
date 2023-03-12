@@ -25,6 +25,7 @@
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
 		"react-tsparticles": "^2.3.3",
+		"rehype-code-titles": "^1.2.0",
 		"rehype-prism-plus": "^1.5.1",
 		"sass": "^1.55.0",
 		"three": "^0.150.0",

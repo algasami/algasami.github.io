@@ -1,6 +1,6 @@
 @use "sass:meta";
 
-html.light {
+html {
     @include meta.load-css("./prism-gruvbox-light.css");
 }
 
