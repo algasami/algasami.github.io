@@ -27,6 +27,7 @@
 		"@emotion/styled": "^11.11.0",
 		"@mui/icons-material": "^5.14.0",
 		"@mui/material": "^5.14.0",
+		"@mui/system": "^5.14.0",
 		"@react-spring/web": "^9.7.3",
 		"clsx": "^1.2.1",
 		"contentlayer": "^0.3.4",
@@ -47,6 +48,8 @@
 	"devDependencies": {
 		"@svgr/webpack": "^6.5.1",
 		"@types/node": "18.8.2",
+		"@types/react": "^18.2.15",
+		"@types/react-dom": "^18.2.7",
 		"@types/three": "^0.149.0",
 		"autoprefixer": "^10.4.14",
 		"esbuild": "^0.17.19",
