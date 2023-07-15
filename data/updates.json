@@ -48,5 +48,10 @@
 		"feature": "Acrylic Effect",
 		"dev": "Algasami",
 		"date": "2/23, 2023"
+	},
+	{
+		"feature": "Fix Acrylic Effect lags",
+		"dev": "Algasami",
+		"date": "7/15, 2023"
 	}
 ]

@@ -45,7 +45,7 @@ function BigNav() {
 	return (
 		<nav className="flex flex-row justify-between">
 			<div className="flex flex-row">
-				<span className="flex flex-col justify-center mr-1 text-black dark:text-zinc-50">
+				<span className="flex flex-col justify-center mx-1 text-2xl text-black dark:text-zinc-50">
 					ALGASAMI
 				</span>
 				{genList("mx-2")}
@@ -119,7 +119,8 @@ export default function Navbar({}) {
 	}, []);
 
 	const getval = () => {
-		if (scrollY > 0) return Math.min(scrollY, 200) / 200;
+		if (scrollY > 0)
+			return Math.floor((Math.min(scrollY, 200) / 200) * 10) / 10;
 		else return 0;
 	};
 

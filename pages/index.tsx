@@ -49,7 +49,7 @@ export default function Hallway({
 				ALGASAMI
 			</h1>
 
-			<footer className="font-light text-center italic lg:tracking-widest select-none">
+			<footer className="text-center italic lg:tracking-widest select-none">
 				{age} years old, Competitive Programmer, Game Developer and Web
 				Developer
 			</footer>
