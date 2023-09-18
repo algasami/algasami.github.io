@@ -1,6 +1,5 @@
 import { Table, TableCell, TableRow } from "@mui/material";
 import React, { useEffect } from "react";
-import { Preloader } from "../components/preloader";
 import { Region } from "../components/region";
 import { timeline, TimelineItem } from "../data/timeline";
 import { age } from "../scripts/time-utils";
@@ -21,13 +20,14 @@ function TimelineComponent({
 				{/* link icon followed by timelineitem's link */}
 				{timelineitem.link && (
 					<a
-						className="py-2 px-4 my-2 bg-slate-200 transition-all hover:shadow-lg hover:bg-violet-200 text-zinc-900 rounded-full w-max font-semibold"
 						style={{ textDecoration: "none" }}
 						href={timelineitem.link.url}
 						target="_blank"
 						rel="noreferrer"
 					>
-						<span className="">{timelineitem.link.text}</span>
+						<button className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-400 text-zinc-900 rounded-lg w-max font-semibold">
+							{timelineitem.link.text}
+						</button>
 					</a>
 				)}
 			</Region>
@@ -42,8 +42,7 @@ export default function Hallway({
 }) {
 	return (
 		<div
-			className="max-w-max h-full flex flex-col justify-center pt-16"
-			style={{ maxWidth: "80vw" }}
+			className="max-w-max h-full flex flex-col justify-center pt-16 max-w-[95vw] lg:max-w-[80vw]"
 		>
 			<h1 className="font-light text-center m-4 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-700 to-violet-900 via-fuchsia-800 dark:from-amber-400 dark:to-violet-200 dark:via-fuchsia-500 bg-gradient-to-tr">
 				ALGASAMI

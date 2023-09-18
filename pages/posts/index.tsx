@@ -27,7 +27,7 @@ function postNav({
 				{/* link icon followed by timelineitem's link */}
 				{link && (
 					<Link style={{ textDecoration: "none" }} href={link} key={key}>
-						<button className="py-2 px-4 my-2 bg-slate-200 transition-all hover:shadow-lg hover:bg-violet-200 text-zinc-900 rounded-full w-max font-semibold">
+						<button className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-200 text-zinc-900 rounded-lg w-max font-semibold">
 							{buttonName}
 						</button>
 					</Link>

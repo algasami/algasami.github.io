@@ -1,4 +1,9 @@
 .postBody {
+    font-family: 'Inconsolata', Courier, monospace;
+    @apply text-xl;
+}
+
+.postBody {
     :global(.rehype-code-title) {
         @apply mt-3 -mb-3 rounded-tl rounded-tr bg-slate-500 px-4 pt-1 pb-2 font-mono text-sm text-gray-200 dark:bg-violet-200 shadow-md;
     }
