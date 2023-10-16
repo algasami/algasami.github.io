@@ -120,4 +120,19 @@ export const timeline: { [k: number]: TimelineItem } = [
 			color: "bg-violate-500",
 		},
 	},
+	{
+		title: "Kernel in Assembly",
+		content: `With all the low-level knowledge and deep understanding of CPU architecture, I managed to create a
+		standalone kernel and bootloader in x86_64 assembly. It could handle simple I/O tasks and FAT data reading. The
+		final result opened vast possibilities for me to create a complete OS from scratch.`,
+		date: "2023",
+		category: {
+			tag: "Kernel",
+			color: "bg-violate-500",
+		},
+		link: {
+			url: "https://github.com/algasami/temporal",
+			text: "View on Github"
+		}
+	}
 ];

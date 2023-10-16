@@ -53,5 +53,15 @@
 		"feature": "Fix Acrylic Effect lags",
 		"dev": "Algasami",
 		"date": "7/15, 2023"
+	},
+	{
+		"feature": "Fixed Three.js preloading scheme",
+		"dev": "Algasami",
+		"date": "10/16, 2023"
+	},
+	{
+		"feature": "Added Kernel Development Milestone",
+		"dev": "Algasami",
+		"date": "10/16, 2023"
 	}
 ]
