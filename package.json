@@ -10,17 +10,7 @@
 		"deploy-production": "pm2 deploy ecosystem.config.js production --force",
 		"reload-production": "pm2 deploy ecosystem.config.js production exec 'pm2 reload app'"
 	},
-	"pnpm": {
-		"overrides": {
-			"@opentelemetry/api": "1.4.1",
-			"@opentelemetry/core": "1.13.0",
-			"@opentelemetry/exporter-trace-otlp-grpc": "0.39.1",
-			"@opentelemetry/resources": "1.13.0",
-			"@opentelemetry/sdk-trace-base": "1.13.0",
-			"@opentelemetry/sdk-trace-node": "1.13.0",
-			"@opentelemetry/semantic-conventions": "1.13.0"
-		}
-	},
+
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
 		"@emotion/server": "^11.11.0",
