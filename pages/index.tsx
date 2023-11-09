@@ -83,7 +83,7 @@ export default function Hallway({
 								</TableRow>
 								<TableRow>
 									<TableCell>APCS Programming Section</TableCell>
-									<TableCell>3/5</TableCell>
+									<TableCell>4/5</TableCell>
 								</TableRow>
 							</Table>
 							<span className="italic my-2">
