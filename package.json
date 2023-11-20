@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "contentlayer build && next build && next export && touch ./out/.nojekyll && echo 'www.algasami.com' > ./out/CNAME",
+		"serve": "pnpm run build && serve ./out",
 		"start": "next start",
 		"lint": "next lint",
 		"deploy-production": "pm2 deploy ecosystem.config.js production --force",
@@ -45,6 +46,7 @@
 		"eslint": "8.24.0",
 		"eslint-config-next": "12.3.1",
 		"postcss": "^8.4.31",
+		"serve": "^14.2.1",
 		"tailwindcss": "^3.3.3"
 	}
 }
