@@ -10,7 +10,6 @@
 		"deploy-production": "pm2 deploy ecosystem.config.js production --force",
 		"reload-production": "pm2 deploy ecosystem.config.js production exec 'pm2 reload app'"
 	},
-
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
 		"@emotion/server": "^11.11.0",

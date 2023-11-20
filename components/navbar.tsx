@@ -4,13 +4,7 @@ import { IconButton, Modal } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ThemeSwitch from "./themeSwitch";
 import Link from "next/link";
-
-const LinkList = [
-  { name: "Home", link: "/" },
-  { name: "Development", link: "/dev" },
-  { name: "Posts", link: "/posts" },
-  { name: "Knot", link: "/three" },
-];
+import { LinkList } from "data/linklist";
 
 export function DynamicLink({ href, name }) {
   return (

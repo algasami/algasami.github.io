@@ -39,6 +39,10 @@
 	.dynamic-link {
 		@apply transition-all p-2 text-zinc-800 hover:text-zinc-700 dark:text-violet-200 dark:hover:text-violet-400 hover:shadow-xl shadow-white;
 	}
+	
+	.hallway-size {
+		@apply justify-center pt-16 max-w-[95vw] lg:max-w-[80vw];
+	}
 	body {
 		background-color: black;
 		@apply dark:bg-slate-900 bg-orange-50 dark:text-slate-50 text-slate-900 text-lg
