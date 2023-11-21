@@ -1,30 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Graph from "react-graph-vis";
 
-export default function GraphPage() {
-  const graph = {
-    nodes: [
-      { id: 1, label: "Node 1", title: "node 1 tootip text" },
-      { id: 2, label: "Node 2", title: "node 2 tootip text" },
-      { id: 3, label: "Node 3", title: "node 3 tootip text" },
-      { id: 4, label: "Node 4", title: "node 4 tootip text" },
-      { id: 5, label: "Node 5", title: "node 5 tootip text" },
-    ],
-    edges: [
-      { from: 1, to: 2 },
-      { from: 1, to: 3 },
-      { from: 2, to: 4 },
-      { from: 2, to: 5 },
-    ],
+type TNode = { id: number; label: string; title?: string };
+type TEdge = { from: number; to: number };
+
+type TGraph = {
+  nodes: Array<{ id: number; label: string; title?: string }>;
+  edges: Array<{ from: number; to: number }>;
+};
+
+type TBipartite = {
+  X: TGraph["nodes"];
+  Y: TGraph["nodes"];
+  V: TGraph["edges"];
+};
+
+const createNode = (id: number): TNode => {
+  return {
+    id: id,
+    label: id.toString(),
   };
+};
+
+const bipartToGraph = (bipart: TBipartite): TGraph => {
+  const nodes = bipart.X.concat(bipart.Y);
+  const edges = bipart.V;
+  return {
+    nodes: nodes,
+    edges: edges,
+  };
+};
+
+export default function GraphPage() {
+  const [graph, setGraph] = useState<TBipartite>({
+    X: [createNode(0), createNode(1), createNode(2), createNode(3)],
+    Y: [createNode(4), createNode(5), createNode(6), createNode(7)],
+    V: [
+      { from: 0, to: 4 },
+      { from: 0, to: 5 },
+      { from: 1, to: 5 },
+      { from: 2, to: 5 },
+      { from: 2, to: 6 },
+      { from: 3, to: 6 },
+      { from: 3, to: 7 },
+    ],
+  });
 
   const options = {
-    layout: {
-      hierarchical: true,
-    },
-    edges: {
-      color: "#000000",
-    },
+    edges: {},
     height: "500px",
   };
 
@@ -38,22 +61,8 @@ export default function GraphPage() {
       <h1>Graph</h1>
       <p>All about some interesting graphs</p>
       <hr />
-      <h2>Simple Graph</h2>
-      <cite>
-        A simple graph is a graph that does not have more than one edge between
-        any two vertices and no edge starts and ends at the same vertex. In
-        other words a simple graph is a graph without loops and multiple edges.
-        <br />
-        -- Virginia Commonwealth University
-      </cite>
-      <Graph
-        graph={graph}
-        options={options}
-        events={events}
-        getNetwork={(network) => {
-          //  if you want access to vis.js network api you can set the state in a parent component using this property
-        }}
-      />
+      <h2>Maximum Matching of Bipartitie Graph</h2>
+      <Graph graph={bipartToGraph(graph)} options={options} events={events} />
     </main>
   );
 }

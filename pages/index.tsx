@@ -20,14 +20,13 @@ function TimelineComponent({
         {/* link icon followed by timelineitem's link */}
         {timelineitem.link && (
           <a
-            style={{ textDecoration: "none" }}
             href={timelineitem.link.url}
+            style={{ textDecoration: "none" }}
             target="_blank"
             rel="noreferrer"
+            className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-400 text-zinc-900 rounded-lg w-max font-semibold"
           >
-            <button className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-400 text-zinc-900 rounded-lg w-max font-semibold">
-              {timelineitem.link.text}
-            </button>
+            {timelineitem.link.text}
           </a>
         )}
       </Region>

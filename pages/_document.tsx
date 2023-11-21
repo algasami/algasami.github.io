@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 import Script from "next/script";
 
 export default function Document() {
-  const portlink = "https://www.algasami.com/";
+  const portlink = "https://algasami.github.io/";
   return (
     <Html lang="en">
       <Head>

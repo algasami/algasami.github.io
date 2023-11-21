@@ -13,7 +13,7 @@ export function DynamicLink({ href, name }) {
       style={{ textDecoration: "none" }}
       href={href}
     >
-      <button className="dynamic-link">{name}</button>
+      <a className="dynamic-link">{name}</a>
     </Link>
   );
 }
