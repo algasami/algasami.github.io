@@ -43,7 +43,7 @@ function BigNav() {
         <span className="flex flex-col justify-center mx-1 text-2xl text-black dark:text-zinc-50">
           ALGASAMI
         </span>
-        {genList("mx-2")}
+        {genList("mx-3")}
       </div>
       <div className="flex flex-row">
         <ThemeSwitch />
