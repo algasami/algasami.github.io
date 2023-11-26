@@ -8,7 +8,7 @@ export default function Graph() {
       Testing graph.tsx...
       <div className="graph-container flex flex-row justify-center w-full">
         <BipartiteGraph
-          className="min-w-[500px] my-4"
+          className="min-w-[100px] lg:min-w-[500px] my-4"
           input={{
             nodes: [
               { id: "X1", dsu: "U" },
