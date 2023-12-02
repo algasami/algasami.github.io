@@ -74,7 +74,6 @@ function getBipartiteGraphFromInput(
   graph.nodes = [...input.nodes];
   graph.aggressive_adjs = calculateAdjs(input.adjs);
   input.adjs.forEach((v, i) => {
-    console.log(v);
     graph.edge_info.set(edgeIdFromNodes(v.from, v.to), v);
   });
   return graph;
@@ -96,7 +95,7 @@ export function BipartiteGraph({
         {graph.nodes.map((node) => {
           return (
             <div
-              className={`pseudo flex flex-row ${
+              className={`pseudo flex flex-row my-4 ${
                 node.dsu === "U" ? "justify-start" : "justify-end"
               }`}
               key={node.id}
@@ -106,22 +105,20 @@ export function BipartiteGraph({
                 relations={
                   graph.aggressive_adjs.has(node.id) && node.dsu === "U"
                     ? graph.aggressive_adjs.get(node.id).map((to) => {
-                        if (
-                          graph.edge_info.get(
-                            edgeIdFromNodes(node.id, to, true)
-                          ).highlight
-                        )
-                          console.log("yes");
+                        const highlight = graph.edge_info.get(
+                          edgeIdFromNodes(node.id, to, true)
+                        ).highlight;
                         return {
                           targetId: to,
                           targetAnchor: node.dsu === "U" ? "left" : "right",
                           sourceAnchor: node.dsu === "U" ? "right" : "left",
+                          label: highlight ? (
+                            <div className="p-2 bg-slate-300 dark:bg-slate-600 rounded-lg shadow-xl">
+                              Chosen
+                            </div>
+                          ) : undefined,
                           style: {
-                            strokeColor: graph.edge_info.get(
-                              edgeIdFromNodes(node.id, to, true)
-                            ).highlight
-                              ? "#ff000"
-                              : "#4a4a4f",
+                            strokeColor: highlight ? "blue" : "gray",
                           },
                         };
                       })

@@ -1,3 +1,4 @@
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import {
   BipartiteGraph,
   IBipartiteGraphInput,
@@ -7,180 +8,125 @@ import {
 } from "components/grapher/graph";
 import { useState } from "react";
 
-function bfs(
-  agg_adjs: Map<string, Array<string>>,
-  residual: Map<string, number>,
-  parents: Map<string, string>
-): boolean {
-  // !warning! all are references!
-  const visited = new Map<string, boolean>();
-  const queue: Array<string> = ["S"];
-  visited.set("S", true);
-  while (queue.length > 0) {
-    console.log(queue);
-    const from = queue.shift();
-    if (agg_adjs.has(from) === false) continue;
-    const adjs = agg_adjs.get(from);
-    for (const to of adjs) {
-      if (
-        visited.has(to) === false &&
-        residual.get(edgeIdFromNodes(from, to, true)) > 0
-      ) {
-        if (to === "T") {
-          parents.set(to, from);
-          return true;
-        }
-        queue.push(to);
-        parents.set(to, from);
-        visited.set(to, true);
-      }
-    }
-  }
-  return false;
-}
-
 function getMatching(input: IBipartiteGraphInput) {
+  let current_turn = 0;
   const aggressive_adjs = calculateAdjs(input.adjs);
-  const residual = new Map<string, number>();
-  aggressive_adjs.set("S", []);
-  aggressive_adjs.set("T", []);
-  aggressive_adjs.forEach((adjs, nodeId) => {
-    input.nodes.forEach((node) => {
-      if (node.id !== nodeId) return;
-      if (node.dsu === "U") {
-        const n = [...aggressive_adjs.get("S")];
-        n.push(nodeId);
-        aggressive_adjs.set("S", n);
-      } else {
-        if (aggressive_adjs.has(nodeId)) {
-          const cop = [...aggressive_adjs.get(nodeId)]; // immutable (easier to debug without pointers)
-          cop.push("T"); // push sink
-          aggressive_adjs.set(nodeId, cop);
-        } else {
-          aggressive_adjs.set(nodeId, ["T"]); // add sink
-        }
+  input.nodes.forEach((v) => {
+    if (aggressive_adjs.has(v.id) === false) {
+      aggressive_adjs.set(v.id, []);
+    }
+  });
+  const matching = new Map<string, string>();
+  const visited = new Map<string, number>();
+  function find_augmented_path(x: string, d: number): boolean {
+    let good = false;
+    console.log(`${"\t".repeat(d)} ${x}`);
+    aggressive_adjs.get(x).forEach((y) => {
+      if (good) return;
+      if (visited.has(y) && visited.get(y) === current_turn) return;
+      visited.set(y, current_turn);
+      if (
+        !matching.has(y) ||
+        (matching.get(y) !== x && find_augmented_path(matching.get(y), d + 1))
+      ) {
+        matching.set(y, x);
+        good = true;
       }
     });
-  });
-  aggressive_adjs.forEach((adjs, nodeId) => {
-    input.nodes.forEach((node) => {
-      if (node.id !== nodeId) return;
-      if (node.dsu === "U") {
-        residual.set(edgeIdFromNodes("S", nodeId, true), 1);
-        residual.set(edgeIdFromNodes(nodeId, "S", true), 0);
-        adjs.forEach((toId) => {
-          residual.set(edgeIdFromNodes(nodeId, toId, true), 1);
-          residual.set(edgeIdFromNodes(toId, nodeId, true), 0);
-        });
-      } else {
-        residual.set(edgeIdFromNodes(nodeId, "T", true), 1);
-        residual.set(edgeIdFromNodes("T", nodeId, true), 0);
-      }
-    });
-    // create residual graph
-  });
-
-  const parents: Map<string, string> = new Map();
-
-  let max_flow = 0;
-
-  while (bfs(aggressive_adjs, residual, parents)) {
-    let path_flow = Number.MAX_SAFE_INTEGER;
-    let nodeId: string;
-    for (
-      nodeId = "T";
-      nodeId !== "S" && nodeId !== undefined;
-      nodeId = parents.get(nodeId)
-    ) {
-      const from = parents.get(nodeId);
-      if (from == "S") break;
-      path_flow = Math.min(
-        path_flow,
-        residual.get(edgeIdFromNodes(from, nodeId, true))
-      );
-    }
-    max_flow += path_flow;
-    for (
-      nodeId = "T";
-      nodeId !== "S" && nodeId !== undefined;
-      nodeId = parents.get(nodeId)
-    ) {
-      const from = parents.get(nodeId);
-      const normal = edgeIdFromNodes(from, nodeId, true);
-      const reversed = edgeIdFromNodes(nodeId, from, true);
-      residual.set(normal, residual.get(normal) - path_flow);
-      residual.set(reversed, residual.get(reversed) + path_flow);
-    }
+    return good;
   }
-  return { parents, residual };
+  for (current_turn = 1; current_turn <= input.x_size; current_turn++) {
+    console.log(current_turn);
+    find_augmented_path(`X${current_turn}`, 0);
+  }
+  return matching;
 }
+
+const default_graph: IBipartiteGraphInput = {
+  nodes: [
+    { id: "X1", dsu: "U" },
+    { id: "Y1", dsu: "V" },
+    { id: "X2", dsu: "U" },
+    { id: "Y2", dsu: "V" },
+    { id: "X3", dsu: "U" },
+    { id: "Y3", dsu: "V" },
+  ],
+  x_size: 3,
+  y_size: 3,
+  adjs: [
+    {
+      from: "X1",
+      to: "Y1",
+    },
+    {
+      from: "X2",
+      to: "Y2",
+    },
+    {
+      from: "X2",
+      to: "Y1",
+    },
+    {
+      from: "X3",
+      to: "Y2",
+    },
+    {
+      from: "X3",
+      to: "Y3",
+    },
+  ],
+};
 
 export default function Graph() {
-  const [graphInput, setGraphInput] = useState<IBipartiteGraphInput>({
-    nodes: [
-      { id: "X1", dsu: "U" },
-      { id: "Y1", dsu: "V" },
-      { id: "X2", dsu: "U" },
-      { id: "Y2", dsu: "V" },
-      { id: "X3", dsu: "U" },
-      { id: "Y3", dsu: "V" },
-    ],
-    x_size: 3,
-    y_size: 3,
-    adjs: [
-      {
-        from: "X1",
-        to: "Y1",
-      },
-      {
-        from: "X1",
-        to: "Y2",
-      },
-      {
-        from: "X2",
-        to: "Y1",
-      },
-      {
-        from: "X3",
-        to: "Y2",
-      },
-      {
-        from: "X3",
-        to: "Y3",
-      },
-    ],
-  });
+  const [graphInput, setGraphInput] =
+    useState<IBipartiteGraphInput>(default_graph);
+
+  const [selX, setSelX] = useState<string>("");
+  const [selY, setSelY] = useState<string>("");
   return (
     <main className="graph-page hallway-size min-w-[40vw] max-w-[80vw] lg:max-w-[60vw]">
       <h1>Graph Toolkit</h1>
       <hr />
-      Testing graph.tsx...
+      This algorithm works all the time... ALMOST! SOMETHING AROUND 99% of the
+      time!
       <div className="graph-container flex flex-row justify-center w-full">
         <BipartiteGraph className="w-full my-4" input={graphInput} />
       </div>
       <div className="button-row flex flex-row justify-center w-full">
-        <button className="add-node-button inter-button m-2">Add X</button>
-        <button className="add-node-button inter-button m-2">Add Y</button>
+        <button
+          className="add-node-button inter-button-neutral m-2"
+          onClick={() => {
+            const cop = structuredClone(graphInput);
+            cop.x_size += 1;
+            cop.nodes.push({ id: `X${cop.x_size}`, dsu: "U" });
+            setGraphInput(cop);
+          }}
+        >
+          Add X
+        </button>
+        <button
+          className="add-node-button inter-button-neutral m-2"
+          onClick={() => {
+            const cop = structuredClone(graphInput);
+            cop.y_size += 1;
+            cop.nodes.push({ id: `Y${cop.y_size}`, dsu: "V" });
+            setGraphInput(cop);
+          }}
+        >
+          Add Y
+        </button>
         <button
           className="calculate-node-button inter-button m-2"
           onClick={() => {
-            const cop = { ...graphInput };
+            const cop = structuredClone(graphInput);
             cop.adjs.forEach((v) => {
               v.highlight = undefined;
             });
-            const { parents, residual } = getMatching(cop);
-            parents.forEach((from, to) => {
-              if (from === "T" || from === "S" || to === "T" || to === "S")
-                return;
-              if (getStringWeight(from) > getStringWeight(to)) return;
-              console.log(from, to);
-              const first =
-                getStringWeight(from) > getStringWeight(to) ? to : from;
-              const second =
-                getStringWeight(from) > getStringWeight(to) ? from : to;
+            const matching = getMatching(cop);
+            matching.forEach((from, to) => {
               cop.adjs.forEach((v, i) => {
                 // ! pass by reference!
-                if (v.from === first && v.to === to) {
+                if (v.from === from && v.to === to) {
                   v.highlight = true;
                 }
               });
@@ -189,6 +135,78 @@ export default function Graph() {
           }}
         >
           Calculate
+        </button>
+        <button
+          className="reset-node-button inter-button-warning m-2"
+          onClick={() => {
+            setGraphInput(default_graph);
+            setSelX("");
+            setSelY("");
+          }}
+        >
+          Reset
+        </button>
+      </div>
+      <div className="add-edge-button flex flex-row justify-center rounded-lg p-2 m-2 w-full bg-opacity-70 bg-violet-300">
+        <FormControl sx={{ m: 1, minWidth: 100 }}>
+          <InputLabel id="demo-simple-select-label">X Node</InputLabel>
+          <Select
+            labelId="U_Node_Select_Label"
+            id="U_Node_Select"
+            label="Unode"
+            value={selX}
+            onChange={(event) => {
+              setSelX(event.target.value);
+            }}
+          >
+            {graphInput.nodes.map((n) => {
+              if (n.dsu === "V") return undefined;
+              return (
+                <MenuItem key={n.id} value={n.id}>
+                  {n.id}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 100 }}>
+          <InputLabel id="demo-simple-select-label">Y Node</InputLabel>
+          <Select
+            labelId="V_Node_Select_Label"
+            id="V_Node_Select"
+            label="Unode"
+            value={selY}
+            onChange={(event) => {
+              setSelY(event.target.value);
+            }}
+          >
+            {graphInput.nodes.map((n) => {
+              if (n.dsu === "U") return undefined;
+              return (
+                <MenuItem key={n.id} value={n.id}>
+                  {n.id}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <button
+          className={`add-node-button inter-button-neutral ${
+            selX === "" || selY === ""
+              ? "bg-gray-500 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-500 line-through"
+              : undefined
+          }`}
+          onClick={() => {
+            if (selX === "" || selY === "") return;
+            const cop = structuredClone(graphInput);
+            for (const edge of cop.adjs) {
+              if (edge.from === selX && edge.to === selY) return;
+            }
+            cop.adjs.push({ from: selX, to: selY });
+            setGraphInput(cop);
+          }}
+        >
+          Append Edge
         </button>
       </div>
     </main>
