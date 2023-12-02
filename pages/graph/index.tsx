@@ -44,37 +44,20 @@ function getMatching(input: IBipartiteGraphInput) {
 
 const default_graph: IBipartiteGraphInput = {
   nodes: [
-    { id: "X1", dsu: "U" },
-    { id: "Y1", dsu: "V" },
-    { id: "X2", dsu: "U" },
-    { id: "Y2", dsu: "V" },
-    { id: "X3", dsu: "U" },
-    { id: "Y3", dsu: "V" },
+    { id: "X1", dsu: "U", label: "120V AC 1" },
+    { id: "Y1", dsu: "V", label: "Water Pumps" },
+    { id: "X2", dsu: "U", label: "120V AC 2" },
+    { id: "Y2", dsu: "V", label: "Ventilation System" },
+    { id: "X3", dsu: "U", label: "240V AC 1" },
+    { id: "Y3", dsu: "V", label: "Life-Support System" },
+    { id: "X4", dsu: "U", label: "240V AC 2" },
+    { id: "Y4", dsu: "V", label: "Railgun & Machinary" },
+    { id: "X5", dsu: "U", label: "240V AC 3" },
+    { id: "Y5", dsu: "V", label: "Deep-sea Sonar" },
   ],
-  x_size: 3,
-  y_size: 3,
-  adjs: [
-    {
-      from: "X1",
-      to: "Y1",
-    },
-    {
-      from: "X2",
-      to: "Y2",
-    },
-    {
-      from: "X2",
-      to: "Y1",
-    },
-    {
-      from: "X3",
-      to: "Y2",
-    },
-    {
-      from: "X3",
-      to: "Y3",
-    },
-  ],
+  x_size: 5,
+  y_size: 5,
+  adjs: [],
 };
 
 export default function Graph() {
@@ -163,7 +146,7 @@ export default function Graph() {
               if (n.dsu === "V") return undefined;
               return (
                 <MenuItem key={n.id} value={n.id}>
-                  {n.id}
+                  {n.label ?? n.id}
                 </MenuItem>
               );
             })}
@@ -184,7 +167,7 @@ export default function Graph() {
               if (n.dsu === "U") return undefined;
               return (
                 <MenuItem key={n.id} value={n.id}>
-                  {n.id}
+                  {n.label ?? n.id}
                 </MenuItem>
               );
             })}
