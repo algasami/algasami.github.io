@@ -70,8 +70,6 @@ export default function Graph() {
     <main className="graph-page hallway-size min-w-[40vw] max-w-[80vw] lg:max-w-[60vw]">
       <h1>Graph Toolkit</h1>
       <hr />
-      This algorithm works all the time... ALMOST! SOMETHING AROUND 99% of the
-      time!
       <div className="graph-container flex flex-row justify-center w-full">
         <BipartiteGraph className="w-full my-4" input={graphInput} />
       </div>
@@ -192,6 +190,15 @@ export default function Graph() {
           Append Edge
         </button>
       </div>
+      <br />
+      <h1>How does it work?</h1>
+      <hr />
+      The graph shown above is a standard bipartite graph, which is a graph
+      containing two self-disjoint graphs (which can be thought as primitive
+      DSUs). By applying Hungarian Algorithm on this system, we are enabled to
+      calculate the most optimal approach of connecting nodes (or vertices) with
+      as few edges as possible, each node having only one edge connected to
+      others.
     </main>
   );
 }

@@ -63,5 +63,10 @@
 		"feature": "Added Kernel Development Milestone",
 		"dev": "Algasami",
 		"date": "10/16, 2023"
+	},
+	{
+		"feature": "Added desc for graph",
+		"dev": "Algasami",
+		"date": "1/21, 2024"
 	}
 ]
