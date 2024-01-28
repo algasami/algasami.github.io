@@ -1,0 +1,54 @@
+---
+title: Vulkan
+description: My notes for vulkan
+slug: 20240128-vulkan
+date: 2024-01-28
+type: Post
+---
+
+This post serves as my notes for my journey on Vulkan development.
+Several years ago, I followed the guide on https://vulkan-tutorial.com/ and built
+a rendering engine. While it yielded success, I didn't learn from it about the architecture
+of Vulkan since I had a hard time keeping up with the pace of it. Last Monday, I stumbled
+upon https://vkguide.dev/, which provides me with a warm welcome to Vulkan and a means of
+getting my hands wet. The thing about this tutorial is that it is a revised version of the
+original vulkan-tutorial, as its predecessor was written when developers first learned about
+using it. I hope that I can fully tap into the immense knowledge provided in this guide.
+
+## Resources
+
+- vulkan-tutorial: https://vulkan-tutorial.com/
+- vkguide: https://vkguide.dev/
+- API reference: https://docs.vulkan.org/
+
+## Concepts
+
+### Physical vs Logical Devices
+
+In Vulkan, many objects are handles pointing (yes, pointers) to something that already exists.
+These handles specifically used to point to physical components on your computer are called
+physical devices. Now, when we want to interact with the components, we need a logical device,
+instantiated by feeding `vkCreateDevice` with our physical device (think about it as a description)
+and other information.
+
+### Sync Structures
+
+Modern computer graphics is usually married with parallel computing. For instance, GPUs are the
+physical representation of parallel computing/processing, since they can simultaneously process
+data on different cores (see SIMD on Wikipedia); meanwhile, CPUs can also have multiple threads
+running on multiple physical cores. As beneficial as parallel computing seems, it raises some
+looming problems caused by desynchronization -- our commands (on the GPU after being submitted to `VkQueue`)
+need to wait for the swapchain to yield an image so that it can compute/render it.
+How do we know if it's ready? Enter `VkSemaphore`, which is a way to make sure GPU commands can be
+sync-ed with each other. A semaphore is split into two types: wait semaphores and signal semaphores.
+There can only be one signal semaphores, while there's no uppper limit for the number of wait semaphores.
+Semaphores in Vulkan are used exclusively for GPU-to-GPU operations, so the developers at Khronos Group come
+up with `VkFence` for GPU-to-CPU operations, which works identically[1].
+
+## Notes
+
+1. I may have to research about this later.
+
+## Edit Logs
+
+1.28.2024: First log
