@@ -1,7 +1,7 @@
 .postBody {
-    font-family: 'Inconsolata', Courier, monospace;
-    @apply text-xl;
+    font-family: Charter, Courier, monospace;
 }
+
 
 .postBody {
     :global(.rehype-code-title) {
@@ -13,7 +13,8 @@
     }
 
     code {
-        @apply text-sm;
+        font-family: "Iosevka Web", monospace;
+        @apply p-1 mx-1 rounded-sm bg-neutral-500 bg-opacity-20;
     }
 
     img {
