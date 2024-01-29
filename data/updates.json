@@ -68,5 +68,10 @@
 		"feature": "Added desc for graph",
 		"dev": "Algasami",
 		"date": "1/21, 2024"
+	},
+	{
+		"feature": "Changed <code></code> style",
+		"dev": "Algasami",
+		"date": "1/29, 2024"
 	}
 ]
