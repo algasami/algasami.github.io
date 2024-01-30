@@ -12,13 +12,12 @@
         @apply rounded-tl-none rounded-tr-none;
     }
 
-    code {
-        font-family: "Iosevka Web", monospace;
-        @apply rounded-sm bg-neutral-500 bg-opacity-30;
-    }
-
     img {
         @apply ml-auto mr-auto;
+    }
+
+    ol {
+        list-style: decimal;
     }
 
     blockquote {

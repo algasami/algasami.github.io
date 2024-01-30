@@ -19,6 +19,7 @@
 		"@mui/material": "^5.14.13",
 		"@mui/system": "^5.14.13",
 		"@react-spring/web": "^9.7.3",
+		"@tailwindcss/typography": "^0.5.10",
 		"clsx": "^1.2.1",
 		"contentlayer": "^0.3.4",
 		"date-fns": "^2.30.0",
