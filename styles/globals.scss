@@ -76,6 +76,12 @@ body {
 code {
 	font-family: "Iosevka Web", monospace;
 }
+a.anchor {
+	display:flex;
+	position: relative;
+	top: -250px;
+	visibility: hidden;
+}
 
 .masked-overflow::-webkit-scrollbar {
   width: 0.5em;
