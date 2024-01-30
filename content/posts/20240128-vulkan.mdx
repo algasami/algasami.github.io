@@ -31,27 +31,43 @@ physical devices. Now, when we want to interact with the components, we need a l
 instantiated by feeding `vkCreateDevice` with our physical device (think about it as a description)
 and other information.
 
-### Sync Structures
+### <a className="anchor" name="sync-structures"></a> Sync Structures
 
 Modern computer graphics is usually married with parallel computing. For instance, GPUs are the
 physical representation of parallel computing/processing, since they can simultaneously process
 data on different cores (see [SIMD on Wikipedia](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data));
-meanwhile, CPUs can also have multiple threads running on multiple physical cores. As beneficial
-as parallel computing seems, it raises some looming problems caused by desynchronization --
+meanwhile, CPUs can also have multiple threads running on multiple physical cores.
+
+As beneficial as parallel computing seems, it raises some looming problems caused by desynchronization --
 our commands (on the GPU after being submitted to `VkQueue`) need to wait for the swapchain to
 yield an image so that it can compute/render it. How do we know if it's ready? Enter `VkSemaphore`,
 which is a way to make sure GPU commands can be sync-ed with each other. A semaphore is split into
 two types: wait semaphores and signal semaphores. There can only be one signal semaphores, while there's
 no uppper limit for the number of wait semaphores. Semaphores in Vulkan are used exclusively for
 GPU-to-GPU operations, so the developers at Khronos Group come up with `VkFence` for GPU-to-CPU operations,
-which works identically\[1\].
+which works identically[\[1\]](#ref-1).
+
+### Command Execution Process
+
+The way Vulkan handles commands sent to a GPU is by using `VkQueue` structs. A sequence of command is represented by `VkCommandBuffer`,
+the allocation of which is done by allocators of `VkCommandPool`. A `VkQueue` is a handle pointing to an existing structure of your system,
+similar to `VkPhysicalDevice`. Remember there can be conflicts between different queues (such as graphics queue versus compute queue), so
+[sync structures](#sync-structures) come in handy.
+
+<img
+  src="https://vkguide.dev/diagrams/vkcommands.png"
+  width={400}
+  height={400}
+/>
+
+Image provided by vkguide.dev.
 
 ## Notes
 
-1. I may have to research about this later.
+1. <a name="ref-1"></a> I may have to research about this later.
 
 ## Edit Logs
 
-1.28.2024: First log
-1.29.2024: changed links
-1.30.2024: add link ref;
+- 1.28.2024: First log
+- 1.29.2024: changed links
+- 1.30.2024: add link ref; commandbuf;
