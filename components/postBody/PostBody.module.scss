@@ -14,7 +14,7 @@
 
     code {
         font-family: "Iosevka Web", monospace;
-        @apply p-1 mx-1 rounded-sm bg-neutral-500 bg-opacity-20;
+        @apply rounded-sm bg-neutral-500 bg-opacity-30;
     }
 
     img {
@@ -35,5 +35,8 @@
 
     a {
         @apply text-blue-500 dark:text-blue-400 underline hover:no-underline;
+    }
+    p {
+        text-indent: 4ch;
     }
 }
