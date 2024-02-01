@@ -27,7 +27,7 @@ export default function PostPage({ post, prevPost, nextPost }) {
   return (
     <div
       className="post-page p-6 pt-20 dark:bg-zinc-800 shadow-lg font-serif bg-amber-50 text-zinc-800 dark:text-yellow-50"
-      style={{ minHeight: "100dvh" }}
+      style={{ minHeight: "100dvh", maxWidth: "100vw" }}
     >
       <Head>
         <title>Algasami | {post.title}</title>
