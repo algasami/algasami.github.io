@@ -54,13 +54,13 @@ the allocation of which is done by allocators of `VkCommandPool`. A `VkQueue` is
 similar to `VkPhysicalDevice`. Remember there can be conflicts between different queues (such as graphics queue versus compute queue), so
 [sync structures](#sync-structures) come in handy.
 
-<img
-  src="https://vkguide.dev/diagrams/vkcommands.png"
-  width={400}
-  height={400}
-/>
+<img src="https://vkguide.dev/diagrams/vkcommands.png" width={"70%"} />
+_The above image is sourced from vkguide.dev._ Note that renderpass is not commonly
+used in newer versions of Vulkan. Instead, we use `vkBeginCommandBuffer`.
 
-Image provided by vkguide.dev.
+## Libraries
+
+WIP... (◉ 3 ◉)
 
 ## Notes
 
@@ -71,3 +71,4 @@ Image provided by vkguide.dev.
 - 1.28.2024: First log
 - 1.29.2024: changed links
 - 1.30.2024: add link ref; commandbuf;
+- 2.1.2024: added image source;
