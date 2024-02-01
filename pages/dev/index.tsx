@@ -37,7 +37,7 @@ export default function DevPage({
 export async function getStaticProps() {
   return {
     props: {
-      updateList: updates,
+      updateList: updates.reverse(),
     },
   };
 }

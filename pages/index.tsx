@@ -1,7 +1,7 @@
 import { Table, TableCell, TableRow } from "@mui/material";
 import React, { useEffect } from "react";
 import { Region } from "../components/region";
-import { timeline, TimelineItem } from "../data/timeline";
+import { projects, timeline, TimelineItem, TProjectItem } from "../data/misc";
 import { age } from "../scripts/time-utils";
 
 function TimelineComponent({
@@ -33,6 +33,29 @@ function TimelineComponent({
     </div>
   );
 }
+function ProjectComponent({ project }: { project: TProjectItem }) {
+  return (
+    <div className="projectcomponent">
+      <Region
+        title={project.name}
+        color={"bg-slate-500"}
+        subtitle={project.subtitle}
+      >
+        {project.content}
+        {/* link icon followed by timelineitem's link */}
+        <a
+          href={`https://github.com/algasami/${project.name}`}
+          style={{ textDecoration: "none" }}
+          target="_blank"
+          rel="noreferrer"
+          className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-400 text-zinc-900 rounded-lg w-max font-semibold"
+        >
+          Take me there
+        </a>
+      </Region>
+    </div>
+  );
+}
 
 export default function Hallway({
   updateList,
@@ -46,12 +69,11 @@ export default function Hallway({
       </h1>
 
       <footer className="text-center italic lg:tracking-widest select-none">
-        {age} years old, Competitive Programmer, Game Developer and Web
-        Developer
+        {age} years old, Web/Game/Low-level
       </footer>
 
       <div className="my-4"></div>
-      <div className="flex lg:flex-row flex-col justify-between">
+      <main className="flex lg:flex-row flex-col justify-between">
         <Region title={"About"} color="bg-slate-900">
           <div className="flex flex-col lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
             <div className="flex flex-col justify-between">
@@ -61,7 +83,7 @@ export default function Hallway({
               </Region>
               <Region title={"Interests"} color="bg-slate-800">
                 I&apos;m interested in competitive programming, web development,
-                and hardware design.
+                hardware design and computer science in general.
               </Region>
             </div>
             <Region title={"Certificates"} color="bg-slate-900">
@@ -90,7 +112,12 @@ export default function Hallway({
               </span>
             </Region>
             <Region title={"Projects"} color="bg-slate-900">
-              To be added.
+              {Object.values(projects).map((projectItem) => (
+                <ProjectComponent
+                  key={projectItem.name}
+                  project={projectItem}
+                />
+              ))}
             </Region>
           </div>
         </Region>
@@ -105,7 +132,7 @@ export default function Hallway({
             ))}
           </div>
         </Region>
-      </div>
+      </main>
     </div>
   );
 }
