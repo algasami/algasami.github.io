@@ -43,20 +43,9 @@ function getMatching(input: IBipartiteGraphInput) {
 }
 
 const default_graph: IBipartiteGraphInput = {
-  nodes: [
-    { id: "X1", dsu: "U", label: "120V AC 1" },
-    { id: "Y1", dsu: "V", label: "Water Pumps" },
-    { id: "X2", dsu: "U", label: "120V AC 2" },
-    { id: "Y2", dsu: "V", label: "Ventilation System" },
-    { id: "X3", dsu: "U", label: "240V AC 1" },
-    { id: "Y3", dsu: "V", label: "Life-Support System" },
-    { id: "X4", dsu: "U", label: "240V AC 2" },
-    { id: "Y4", dsu: "V", label: "Railgun & Machinary" },
-    { id: "X5", dsu: "U", label: "240V AC 3" },
-    { id: "Y5", dsu: "V", label: "Deep-sea Sonar" },
-  ],
-  x_size: 5,
-  y_size: 5,
+  nodes: [],
+  x_size: 0,
+  y_size: 0,
   adjs: [],
 };
 
