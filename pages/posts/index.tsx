@@ -39,7 +39,7 @@ function postNav({
 
 export default function Post({ posts }: { posts: any[] }) {
   return (
-    <main className="post-page hallway-size min-w-[40vw] max-w-[80vw] lg:max-w-[60vw]">
+    <main className="post-page hallway-size max-w-[80vw] lg:max-w-[60vw]">
       <h1>Post</h1>
       <footer>Work-in-progress...</footer>
       <ul className="grid grid-flow-row">
