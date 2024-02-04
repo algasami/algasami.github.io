@@ -64,6 +64,21 @@ similar to `VkPhysicalDevice`. Remember there can be conflicts between different
 _The above image is sourced from vkguide.dev._ Note that renderpass is not commonly
 used in newer versions of Vulkan. Instead, we use `vkBeginCommandBuffer`.
 
+### Images
+
+Images in Vulkan are represented as `VkImage`. These opaque handles are best accessed via image views. By default, images sent to/from GPUs
+(swapchain images) aren't readable by us, since they are in the optimal format for GPU access. To write to our images, we need to change
+their format, using our function `vkutil::transition_image`. Nonetheless, it isn't a good idea to write to swapchain images directly since
+we have to create a new image should any properties of them change on the fly; instead, we should write to another independent image, and
+blit (BITBLT) it to our swapchain images, hence the need of `vkutil::copy_image_to_image`.
+
+### Descriptor Sets
+
+A descriptor is a handle/pointer that accesses specific Vulkan structures. Take a buffer descriptor as an example. We can use it to access
+command buffers. To allocate descriptors, we have to initialize them in batch. The cluster of them is called a descriptor set which can be
+instantiated with `VkDescriptorPool` following the instructions of `VkDescriptorSetLayout`. For shaders to read data, we must bind descriptors
+to our rendering pipelines.
+
 ## Libraries
 
 WIP... (◉ 3 ◉)
