@@ -5,11 +5,14 @@ const nextConfig = withContentlayer({
 	reactStrictMode: true,
 	swcMinify: true,
 	// ref: https://dev.to/dolearning/importing-svgs-to-next-js-nna
-	webpack: (config) => {
+	webpack: (config, {isServer}) => {
 		config.module.rules.push({
 			test: /\.svg$/,
 			use: ["@svgr/webpack"],
 		});
+		if (isServer) {
+		//	require('./scripts/generate-sitemap');
+		}
 		return config;
 	},
 });
