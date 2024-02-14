@@ -14,6 +14,12 @@ type PostForPostPage = PostForPostLayout & {
   };
 };
 
+export function generateStaticParams() {
+  return allPostsNewToOld.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export default async function PostSlugPage({
   params,
 }: {
@@ -44,12 +50,6 @@ export default async function PostSlugPage({
       </main>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  return allPostsNewToOld.map((post) => ({
-    slug: post.slug,
-  }));
 }
 
 const buildProps = async (slug: string) => {
