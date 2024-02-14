@@ -4,7 +4,7 @@ import rehypePrism from "rehype-prism-plus";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
-  filePathPattern: `./app/content/posts/**/*.mdx`,
+  filePathPattern: `app/content/posts/**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: {
@@ -33,7 +33,7 @@ export const Post = defineDocumentType(() => ({
 }));
 
 export default makeSource({
-  contentDirPath: "content",
+  contentDirPath: "app/content",
   documentTypes: [Post],
   mdx: {
     rehypePlugins: [rehypeCodeTitles, [rehypePrism, { ignoreMissing: true }]],

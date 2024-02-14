@@ -15,9 +15,10 @@ type PostForPostPage = PostForPostLayout & {
 };
 
 export function generateStaticParams() {
-  return allPostsNewToOld.map((post) => ({
+  const arr = allPostsNewToOld.map((post) => ({
     slug: post.slug,
   }));
+  return arr.length === 0 ? [{ slug: "not-found" }] : arr;
 }
 
 export default async function PostSlugPage({
@@ -25,28 +26,35 @@ export default async function PostSlugPage({
 }: {
   params: { slug: string };
 }) {
-  const { post, prevPost, nextPost } = await buildProps(params.slug);
-  const MDXContent = useMDXComponent(post.body.code);
+  const { post, prevPost, nextPost, notFound } = await buildProps(params.slug);
+  const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
     <div
       className="post-page p-6 pt-20 dark:bg-zinc-800 max-w-[90vw] lg:max-w-[70vw] shadow-lg font-serif bg-amber-50 text-zinc-800 dark:text-yellow-50"
       style={{ minHeight: "100dvh" }}
     >
       <Head>
-        <title>Algasami | {post.title}</title>
-        <meta name="description" content={post.description} />
+        <title>Algasami | {notFound ? "NOT FOUND" : post.title}</title>
+        <meta
+          name="description"
+          content={notFound ? "NOT FOUND" : post.description}
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <PostLayout
-          post={post}
-          prevPost={prevPost}
-          nextPost={nextPost}
-          locale={"en_US"}
-        >
-          <MDXContent />
-        </PostLayout>
+        {notFound ? (
+          <></>
+        ) : (
+          <PostLayout
+            post={post}
+            prevPost={prevPost}
+            nextPost={nextPost}
+            locale={"en_US"}
+          >
+            <MDXContent />
+          </PostLayout>
+        )}
       </main>
     </div>
   );
