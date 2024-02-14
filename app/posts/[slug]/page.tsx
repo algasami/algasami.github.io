@@ -23,7 +23,7 @@ export function generateStaticParams() {
 export default async function PostSlugPage({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: { slug: string };
 }) {
   const { post, prevPost, nextPost } = await buildProps(params.slug);
   const MDXContent = useMDXComponent(post.body.code);
@@ -43,7 +43,7 @@ export default async function PostSlugPage({
           post={post}
           prevPost={prevPost}
           nextPost={nextPost}
-          locale={params.lang}
+          locale={"en_US"}
         >
           <MDXContent />
         </PostLayout>
