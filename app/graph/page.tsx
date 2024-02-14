@@ -1,11 +1,10 @@
+"use client";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import {
   BipartiteGraph,
   IBipartiteGraphInput,
   calculateAdjs,
-  edgeIdFromNodes,
-  getStringWeight,
-} from "components/grapher/graph";
+} from "../components/grapher/graph";
 import { useState } from "react";
 
 function getMatching(input: IBipartiteGraphInput) {

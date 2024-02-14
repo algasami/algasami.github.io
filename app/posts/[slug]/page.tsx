@@ -1,6 +1,4 @@
-import { allPosts } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import PostLayout, {
   PostForPostLayout,
@@ -16,13 +14,12 @@ type PostForPostPage = PostForPostLayout & {
   };
 };
 
-type Props = {
-  post: PostForPostPage;
-  prevPost: RelatedPostForPostLayout;
-  nextPost: RelatedPostForPostLayout;
-};
-
-export default function PostPage({ post, prevPost, nextPost }) {
+export default async function PostSlugPage({
+  params,
+}: {
+  params: { slug: string; lang: string };
+}) {
+  const { post, prevPost, nextPost } = await buildProps(params.slug);
   const MDXContent = useMDXComponent(post.body.code);
   return (
     <div
@@ -36,7 +33,12 @@ export default function PostPage({ post, prevPost, nextPost }) {
       </Head>
 
       <main>
-        <PostLayout post={post} prevPost={prevPost} nextPost={nextPost}>
+        <PostLayout
+          post={post}
+          prevPost={prevPost}
+          nextPost={nextPost}
+          locale={params.lang}
+        >
           <MDXContent />
         </PostLayout>
       </main>
@@ -44,18 +46,14 @@ export default function PostPage({ post, prevPost, nextPost }) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = () => {
-  const paths = allPosts.map((post) => post.path);
-  return {
-    paths,
-    fallback: true,
-  };
-};
+export async function generateStaticParams() {
+  return allPostsNewToOld.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
-export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
-  const postIndex = allPostsNewToOld.findIndex(
-    (post) => post.slug === params?.slug
-  );
+const buildProps = async (slug: string) => {
+  const postIndex = allPostsNewToOld.findIndex((post) => post.slug === slug);
   if (postIndex === -1) {
     return {
       notFound: true,
@@ -85,10 +83,8 @@ export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
     };
   }
   return {
-    props: {
-      post,
-      prevPost,
-      nextPost,
-    },
+    post,
+    prevPost,
+    nextPost,
   };
 };

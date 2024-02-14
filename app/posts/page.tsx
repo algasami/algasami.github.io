@@ -1,7 +1,7 @@
 import { format, parseISO } from "date-fns";
 import Link from "next/link";
-import { allPostsNewToOld } from "../../components/contentLayerAdapter";
-import { Region } from "../../components/region";
+import { allPostsNewToOld } from "../components/contentLayerAdapter";
+import { Region } from "../components/region";
 
 function postNav({
   title,
@@ -37,7 +37,8 @@ function postNav({
   );
 }
 
-export default function Post({ posts }: { posts: any[] }) {
+export default async function PostPage() {
+  const posts = await buildPosts();
   return (
     <main className="post-page hallway-size max-w-[80vw] lg:max-w-[60vw]">
       <h1>Post</h1>
@@ -59,11 +60,7 @@ export default function Post({ posts }: { posts: any[] }) {
   );
 }
 
-export function getStaticProps() {
+async function buildPosts() {
   const posts = allPostsNewToOld;
-  return {
-    props: {
-      posts,
-    },
-  };
+  return posts;
 }

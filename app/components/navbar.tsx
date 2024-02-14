@@ -1,19 +1,20 @@
+"use client";
 import { Box } from "@mui/system";
 import NearMeRoundedIcon from "@mui/icons-material/NearMeRounded";
 import { IconButton, Modal } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ThemeSwitch from "./themeSwitch";
 import Link from "next/link";
-import { LinkList } from "data/linklist";
+import { LinkList } from "app/data/linklist";
 
 export function DynamicLink({ href, name }) {
   return (
     <Link
-      className="font-bold no-underline"
+      className="font-bold no-underline dynamic-link"
       style={{ textDecoration: "none" }}
       href={href}
     >
-      <a className="dynamic-link">{name}</a>
+      {name}
     </Link>
   );
 }

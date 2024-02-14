@@ -1,7 +1,7 @@
-import { Table, TableCell, TableRow } from "@mui/material";
-import React, { useEffect } from "react";
-import { Region } from "../components/region";
-import { projects, timeline, TimelineItem, TProjectItem } from "../data/misc";
+import { NoSsr, Table, TableCell, TableRow } from "@mui/material";
+import React from "react";
+import { Region } from "./components/region";
+import { projects, timeline, TimelineItem, TProjectItem } from "./data/misc";
 import { age } from "../scripts/time-utils";
 
 function TimelineComponent({
@@ -57,11 +57,8 @@ function ProjectComponent({ project }: { project: TProjectItem }) {
   );
 }
 
-export default function Hallway({
-  updateList,
-}: {
-  updateList: { [k: number]: TimelineItem };
-}) {
+export default async function RootPage() {
+  const updateList = await buildUpdateList();
   return (
     <div className="max-w-max h-full flex flex-col hallway-size">
       <h1 className="font-light text-center m-4 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-700 to-violet-900 via-fuchsia-800 dark:from-amber-400 dark:to-violet-200 dark:via-fuchsia-500 bg-gradient-to-tr">
@@ -87,24 +84,26 @@ export default function Hallway({
               </Region>
             </div>
             <Region title={"Certificates"} color="bg-slate-900">
-              <Table>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Proficiency</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>GEPT</TableCell>
-                  <TableCell>Advanced Intermediate</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>APCS Concept Section</TableCell>
-                  <TableCell>4/5</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>APCS Programming Section</TableCell>
-                  <TableCell>4/5</TableCell>
-                </TableRow>
-              </Table>
+              <NoSsr>
+                <Table>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Proficiency</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>GEPT</TableCell>
+                    <TableCell>Advanced Intermediate</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>APCS Concept Section</TableCell>
+                    <TableCell>4/5</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>APCS Programming Section</TableCell>
+                    <TableCell>4/5</TableCell>
+                  </TableRow>
+                </Table>
+              </NoSsr>
               <span className="italic my-2">
                 GEPT stands for General English Proficiency Test(全民英檢). APCS
                 stands for Advanced Placement Computer
@@ -137,10 +136,6 @@ export default function Hallway({
   );
 }
 
-export async function getStaticProps() {
-  return {
-    props: {
-      updateList: timeline,
-    },
-  };
+async function buildUpdateList() {
+  return timeline;
 }
