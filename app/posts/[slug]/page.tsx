@@ -21,12 +21,8 @@ export function generateStaticParams() {
   return arr.length === 0 ? [{ slug: "not-found" }] : arr;
 }
 
-export default async function PostSlugPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const { post, prevPost, nextPost, notFound } = await buildProps(params.slug);
+export default function PostSlugPage({ params }: { params: { slug: string } }) {
+  const { post, prevPost, nextPost, notFound } = buildProps(params.slug);
   const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
     <div
@@ -60,7 +56,7 @@ export default async function PostSlugPage({
   );
 }
 
-const buildProps = async (slug: string) => {
+const buildProps = (slug: string) => {
   const postIndex = allPostsNewToOld.findIndex((post) => post.slug === slug);
   if (postIndex === -1) {
     return {
