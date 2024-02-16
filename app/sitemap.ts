@@ -38,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     allPostsNewToOld.map((p) => {
       return {
         url: `https://algasami.github.io/posts/${p.slug}`,
-        lastModified: new Date(),
+        lastModified: new Date(p.date),
         changeFrequency: "monthly",
         priority: 0.8,
       };
