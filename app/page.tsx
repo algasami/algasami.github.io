@@ -69,10 +69,9 @@ export default async function RootPage() {
         {age} years old, Web/Game/Low-level
       </footer>
 
-      <div className="my-4"></div>
-      <main className="flex lg:flex-row flex-col justify-between">
+      <main className="flex lg:flex-row flex-col justify-between lg:max-h-[70vh]">
         <Region title={"About"} color="bg-slate-900">
-          <div className="flex flex-col lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
+          <div className="flex flex-col lg:overflow-scroll masked-overflow">
             <div className="flex flex-col justify-between">
               <Region title={"Education"} color="bg-slate-800">
                 I{"'"}m an aspired high school student in Taiwan currently
@@ -110,19 +109,18 @@ export default async function RootPage() {
                 Science(大學程式設計先修檢測).
               </span>
             </Region>
-            <Region title={"Projects"} color="bg-slate-900">
-              {Object.values(projects).map((projectItem) => (
-                <ProjectComponent
-                  key={projectItem.name}
-                  project={projectItem}
-                />
-              ))}
-            </Region>
           </div>
         </Region>
 
+        <Region title={"Projects"} color="bg-slate-900">
+          <div className="flex flex-col justify-between lg:overflow-scroll masked-overflow ">
+            {Object.values(projects).map((projectItem) => (
+              <ProjectComponent key={projectItem.name} project={projectItem} />
+            ))}
+          </div>
+        </Region>
         <Region title={"Timeline"} color="bg-slate-900">
-          <div className="flex flex-col justify-between lg:overflow-scroll masked-overflow lg:max-h-[50vh]">
+          <div className="flex flex-col justify-between lg:overflow-scroll masked-overflow ">
             {Object.values(updateList).map((timelineitem) => (
               <TimelineComponent
                 key={timelineitem.title}
