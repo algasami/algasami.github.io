@@ -5,6 +5,7 @@ import PostLayout, {
   RelatedPostForPostLayout,
 } from "../../components/postLayout";
 import { allPostsNewToOld } from "../../components/contentLayerAdapter";
+import { Metadata, ResolvingMetadata } from "next";
 
 type PostForPostPage = PostForPostLayout & {
   title: string;
@@ -21,7 +22,19 @@ export function generateStaticParams() {
   return arr.length === 0 ? [{ slug: "not-found" }] : arr;
 }
 
-export default function PostSlugPage({ params }: { params: { slug: string } }) {
+type TProps = { params: { slug: string } };
+export function generateMetadata(
+  { params }: TProps,
+  parent: ResolvingMetadata
+): Metadata {
+  const { post, prevPost, nextPost, notFound } = buildProps(params.slug);
+  return {
+    title: post.title,
+    description: post.description,
+  };
+}
+
+export default function PostSlugPage({ params }: TProps) {
   const { post, prevPost, nextPost, notFound } = buildProps(params.slug);
   const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
