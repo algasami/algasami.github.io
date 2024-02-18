@@ -31,6 +31,14 @@ export function generateMetadata(
   return {
     title: post.title,
     description: post.description,
+    openGraph: {
+      title: `${post.title} | algasami`,
+      description: post.description,
+    },
+    twitter: {
+      title: `${post.title} | algasami`,
+      description: post.description,
+    },
   };
 }
 
