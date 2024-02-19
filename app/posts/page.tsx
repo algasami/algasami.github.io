@@ -2,6 +2,12 @@ import { format, parseISO } from "date-fns";
 import Link from "next/link";
 import { allPostsNewToOld } from "../components/contentLayerAdapter";
 import { Region } from "../components/region";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Post",
+  description: "This is the post gallery of algasami's works.",
+};
 
 function postNav({
   title,
