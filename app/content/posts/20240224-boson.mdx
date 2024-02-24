@@ -1,0 +1,41 @@
+---
+title: Boson Engine
+description: How I made a barebone raytracing engine.
+slug: 20240224-boson
+date: 2024-02-24
+type: Post
+---
+
+In real life, our eyes can see because of all the photons shooting into them. In a computer, we don't have that many resources to simulate
+an almost infinite number of photons radiated by a light source, let alone do so for tens of thousands of lights. Luckily, we do have a trick
+up our sleeve -- Since we only want photons that hit the camera, we can just simulate them; in other worlds, we can shoot rays out of the camera
+to produce the exactly same result. Voila! This does oddly resemble the early misconception of how eyes can see, though.
+
+# C++ Build
+
+## Just Some Sketches
+
+In the beginning, a rough picture was painted, with me drawing inspiration from `donut.c`, which is a famous 3D torus renderer. From the start, I'd
+encountered numerous issues in C++, such as the obligatory duplicate object error and expensive copying. The idea was that we could shoot a ray from
+our virtual screen in the math model, apply a ray step vector to it, determine if it collided with something, and then get the dot product of the
+collision surface's normal and our sunlight vector as the illumination index, which sounded easy... I spent one hour debugging why every pixel returned
+the same illumination index, and it turned out to be a typecasting issue (you can never be more careful!)
+
+## Linear Algebra Recap
+
+"Wait... stop right here! Give me some math for your renderer!" I know you are going to ask me this, so don't worry. In the renderer, three four-by-four
+matrices are used, respectively the view matrix, the model matrix, and the local matrix. Note that the local matrix has been evaluated into a vector.
+When we nudge our camera, the view matrix gets updated. With some basic multiplications, we can apply offsets with the W axis that is a constant, and
+apply scales with the diagonal elements.
+
+## The Good Part
+
+With a triangle successfully rendered, my goal was clear -- I wanted to render **more triangles**; hence, I jumped to work, but first thing first, I had
+to do some housekeeping! For one thing, matrices and vectors were all hardcoded with `std` structs which were not really readable. For another, everything
+was unorganized, crammed into a single `main.cpp` file that was starting to look like a tin filled with sardines. I split it into several files and added namespaces
+to create a more semantic environment. For linear algebra, with some TMP (Template Meta-Programming), matrices could come in different sizes without sacrificing
+performance as well as vectors. Now, what was left seemed like a ECS system waiting to be implemented...
+
+# Rust Build
+
+To be written!
