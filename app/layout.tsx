@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
         className={`overflow-hidden ${iosevka.variable} ${dosis.variable} font-sans`}
       >
