@@ -1,4 +1,4 @@
-import { Roboto, Fraunces, Dosis } from "next/font/google";
+import { Roboto, Dosis, Raleway } from "next/font/google";
 import localFont from "next/font/local";
 
 export const dosis = Dosis({
@@ -12,10 +12,10 @@ export const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-export const fraunces = Fraunces({
+export const raleway = Raleway({
   weight: ["300", "500", "700", "900"],
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-raleway",
 });
 
 export const iosevka = localFont({

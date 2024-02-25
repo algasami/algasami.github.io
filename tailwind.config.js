@@ -6,8 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-dosis)"],
-        serif: ["var(--font-fraunces)"],
+        sans: ["var(--font-roboto)"],
+        serif: ["var(--font-raleway)"],
         mono: ["var(--font-iosevka)"],
       },
     },
