@@ -28,10 +28,14 @@ matrices are used, respectively the view matrix, the model matrix, and the local
 When we nudge our camera, the view matrix gets updated. With some basic multiplications, we can apply offsets with the W axis that is a constant, and
 apply scales with the diagonal elements.
 
-ignore me... (math test)
-
 ```math
-x = 1
+V_f =
+\left[\begin{matrix}
+x       &   o_{yx}  &   o_{zx}     &   o_{wx} \\
+o_{xy}  &   y       &   o_{zy}     &   o_{wy} \\
+o_{xz}  &   o_{yz}  &   z          &   o_{wz} \\
+o_{xw}   &   o_{yw}  &   o_{zw}     &   w
+\end{matrix}\right] \cdot V_i
 ```
 
 ## The Good Part

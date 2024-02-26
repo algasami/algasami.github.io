@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { roboto, iosevka } from "./fonts";
+import Head from "next/head";
 
 const portlink = "https://algasami.github.io/";
 export const metadata: Metadata = {

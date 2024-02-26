@@ -1,6 +1,5 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeCodeTitles from "rehype-code-titles";
-import { Pluggable } from "unified";
 import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism-plus";
 import remarkMath from "remark-math";
@@ -44,6 +43,6 @@ export default makeSource({
       rehypeCodeTitles,
       [rehypePrism, { ignoreMissing: true }],
       rehypeKatex,
-    ] as Pluggable[],
+    ] as any,
   },
 });

@@ -8,6 +8,8 @@ import { allPostsNewToOld } from "../../components/contentLayerAdapter";
 import { Metadata, ResolvingMetadata } from "next";
 import { NoSsr } from "@mui/material";
 
+import "./post-slug.scss";
+
 type PostForPostPage = PostForPostLayout & {
   title: string;
   description: string;
