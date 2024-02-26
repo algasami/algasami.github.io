@@ -6,6 +6,7 @@ import PostLayout, {
 } from "../../components/postLayout";
 import { allPostsNewToOld } from "../../components/contentLayerAdapter";
 import { Metadata, ResolvingMetadata } from "next";
+import { NoSsr } from "@mui/material";
 
 type PostForPostPage = PostForPostLayout & {
   title: string;
@@ -58,21 +59,22 @@ export default function PostSlugPage({ params }: TProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main>
-        {notFound ? (
-          <></>
-        ) : (
-          <PostLayout
-            post={post}
-            prevPost={prevPost}
-            nextPost={nextPost}
-            locale={"en_US"}
-          >
-            <MDXContent />
-          </PostLayout>
-        )}
-      </main>
+      <NoSsr>
+        <main>
+          {notFound ? (
+            <></>
+          ) : (
+            <PostLayout
+              post={post}
+              prevPost={prevPost}
+              nextPost={nextPost}
+              locale={"en_US"}
+            >
+              <MDXContent />
+            </PostLayout>
+          )}
+        </main>
+      </NoSsr>
     </div>
   );
 }

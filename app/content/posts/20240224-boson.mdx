@@ -8,7 +8,7 @@ type: Post
 
 In real life, our eyes can see because of all the photons shooting into them. In a computer, we don't have that many resources to simulate
 an almost infinite number of photons radiated by a light source, let alone do so for tens of thousands of lights. Luckily, we do have a trick
-up our sleeve -- Since we only want photons that hit the camera, we can just simulate them; in other worlds, we can shoot rays out of the camera
+up our sleeve -- Since we only want photons that hit the camera, we can just simulate them; in other words, we can shoot rays out of the camera
 to produce the exactly same result. Voila! This does oddly resemble the early misconception of how eyes can see, though.
 
 # C++ Build
@@ -27,6 +27,12 @@ the same illumination index, and it turned out to be a typecasting issue (you ca
 matrices are used, respectively the view matrix, the model matrix, and the local matrix. Note that the local matrix has been evaluated into a vector.
 When we nudge our camera, the view matrix gets updated. With some basic multiplications, we can apply offsets with the W axis that is a constant, and
 apply scales with the diagonal elements.
+
+ignore me... (math test)
+
+```math
+x = 1
+```
 
 ## The Good Part
 

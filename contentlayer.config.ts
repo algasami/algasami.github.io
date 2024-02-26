@@ -1,6 +1,9 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeCodeTitles from "rehype-code-titles";
+import { Pluggable } from "unified";
+import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism-plus";
+import remarkMath from "remark-math";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
@@ -36,6 +39,11 @@ export default makeSource({
   contentDirPath: "app/content",
   documentTypes: [Post],
   mdx: {
-    rehypePlugins: [rehypeCodeTitles, [rehypePrism, { ignoreMissing: true }]],
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [
+      rehypeCodeTitles,
+      [rehypePrism, { ignoreMissing: true }],
+      rehypeKatex,
+    ] as Pluggable[],
   },
 });
