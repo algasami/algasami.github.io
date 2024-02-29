@@ -12,7 +12,6 @@ code[class*="language-"],
 pre[class*="language-"] {
     color: #3c3836;
     /* fg1 / fg */
-    font-family: "Iosevka Web", monospace;
     direction: ltr;
     text-align: left;
     white-space: pre;
@@ -28,6 +27,7 @@ pre[class*="language-"] {
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
+    @apply font-mono;
 }
 
 pre[class*="language-"]::-moz-selection,

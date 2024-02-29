@@ -1,9 +1,9 @@
 @use "sass:meta";
 
 html {
-    @include meta.load-css("./prism-gruvbox-light.css");
+  @include meta.load-css("./prism-gruvbox-light.css");
 }
 
 html.dark {
-    @include meta.load-css("./prism-dracula.css");
+  @include meta.load-css("./prism-night-owl.css");
 }

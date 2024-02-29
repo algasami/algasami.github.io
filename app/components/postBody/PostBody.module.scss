@@ -33,7 +33,7 @@
     @apply text-blue-500 dark:text-blue-400 underline hover:no-underline;
   }
   code {
-    @apply font-mono;
+    @apply font-mono font-normal;
   }
   p {
     text-indent: 4ch;
