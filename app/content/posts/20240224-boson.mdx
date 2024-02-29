@@ -11,6 +11,9 @@ an almost infinite number of photons radiated by a light source, let alone do so
 up our sleeve -- Since we only want photons that hit the camera, we can just simulate them; in other words, we can shoot rays out of the camera
 to produce the exactly same result. Voila! This does oddly resemble the early misconception of how eyes can see, though.
 
+- C++ Build: [here](https://github.com/algasami/BOSON)
+- Rust Build: [here](https://github.com/algasami/boson-rust)
+
 # C++ Build
 
 ## Just Some Sketches
@@ -44,8 +47,13 @@ With a triangle successfully rendered, my goal was clear -- I wanted to render *
 to do some housekeeping! For one thing, matrices and vectors were all hardcoded with `std` structs which were not really readable. For another, everything
 was unorganized, crammed into a single `main.cpp` file that was starting to look like a tin filled with sardines. I split it into several files and added namespaces
 to create a more semantic environment. For linear algebra, with some TMP (Template Meta-Programming), matrices could come in different sizes without sacrificing
-performance as well as vectors. Now, what was left seemed like a ECS system waiting to be implemented...
+performance as well as vectors. Now, what was left seemed like an ECS system waiting to be implemented...
 
 # Rust Build
 
-To be written!
+As I looked forward to marking this project by an ECS system, little did I foresee the maintenance issues of my engine. Intertwined definitions and declarations
+everywhere, making it difficult to fix a certain issue without turning it into a whack-a-mole; thus, I thought about rewriting the engine. Coincidentally, I was
+learning about Rust, so I ported Boson to Rust. One thing particular in Rust is that I no longer have to worry about references/pointers anymore, since the compiler
+is smart enough to validate my code thanks to the lifetime concept. Another is that Rust feels like C, but in a more robust (not elegant) way. It's not like C++,
+which is a bunch of different libraries and backward-compatibility glued together; instead, it gives off a feeling similar to C -- concise and simple. These reasons
+propelled me to develop a version of Boson in Rust, which can be found [here](https://github.com/algasami/boson-rust).
