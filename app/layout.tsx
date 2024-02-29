@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { roboto, iosevka } from "./fonts";
-import Head from "next/head";
+import { krypton, roboto } from "./fonts";
 
 const portlink = "https://algasami.github.io/";
 export const metadata: Metadata = {
@@ -31,7 +30,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
       <body
-        className={`overflow-hidden ${iosevka.variable} ${roboto.variable} font-sans`}
+        className={`overflow-hidden ${krypton.variable} ${roboto.variable} font-sans`}
       >
         {children}
       </body>
