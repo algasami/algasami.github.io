@@ -41,6 +41,20 @@ o_{xw}   &   o_{yw}  &   o_{zw}     &   w
 \end{matrix}\right] \cdot V_i
 ```
 
+For determining the collision, we can use a heuristic algorithm. Given a triangle consisting of three vertices $ v_1, v_2, v_3 $ and a ray position $ p $,
+such that
+
+```math
+n_1 = (v_1 - v) \times (v_2 - v) \\
+n_2 = (v_2 - v) \times (v_3 - v) \\
+n_3 = (v_3 - v) \times (v_1 - v)
+```
+
+, when any of them are zero, or when $ ||\hat{n_1} \cdot \hat{n_2}|| $ and $ ||\hat{n_2} \cdot \hat{n_3}|| $ are both one, we can conclude that the ray has
+collided with the triangle. The next step is to calculate the illumination index, which is the dot product of the normal of the triangle and the sunlight vector.
+This is only valid in an "ideal" world, where the computer does not suffer from floating point errors. In reality, we have to use a threshold (denoted as $\epsilon$)
+to determine if a value is close enough to one or zero.
+
 ## The Good Part
 
 With a triangle successfully rendered, my goal was clear -- I wanted to render **more triangles**; hence, I jumped to work, but first thing first, I had

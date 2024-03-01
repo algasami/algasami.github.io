@@ -18,11 +18,11 @@
   }
 
   h1 {
-    @apply text-6xl;
+    @apply text-5xl;
   }
 
   h2 {
-    @apply text-4xl;
+    @apply text-3xl;
   }
 
   h3 {
@@ -45,7 +45,7 @@
     @apply justify-center pt-16 max-w-[95vw] lg:max-w-[80vw];
   }
   body {
-    @apply dark:bg-slate-900 bg-orange-50 dark:text-slate-50 text-slate-900 text-lg;
+    @apply dark:bg-slate-900 bg-orange-50 dark:text-slate-50 text-slate-900;
   }
 
   .masked-overflow::-webkit-scrollbar-thumb {
@@ -69,7 +69,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  @apply font-light text-lg;
+  @apply font-light;
 }
 
 code {
