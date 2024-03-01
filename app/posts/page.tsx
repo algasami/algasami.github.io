@@ -1,38 +1,53 @@
+"use client";
 import { format, parseISO } from "date-fns";
 import Link from "next/link";
-import { allPostsNewToOld } from "../components/contentLayerAdapter";
+import { allPostsNewToOld, allTags } from "../components/contentLayerAdapter";
 import { Region } from "../components/region";
-import { Metadata } from "next";
+import React from "react";
 
-export const metadata: Metadata = {
-  title: "Post",
-  description: "This is the post gallery of algasami's works.",
-};
+function useSelectedTags() {
+  const [chosen_tags, set_chosen_tags] = React.useState<string[]>([]);
+  return { chosen_tags, set_chosen_tags };
+}
 
-function postNav({
+function PostNav({
   title,
   subtitle,
+  tags,
   color,
   content,
   buttonName,
   link,
-  key,
 }: {
   title: string;
   subtitle: string;
+  tags: string[];
   color: string;
   content: string;
   buttonName: string;
   link: string;
-  key: string;
 }) {
+  const { chosen_tags, set_chosen_tags } = useSelectedTags();
+  const lower_tags = tags.map((v) => v.toLowerCase());
   return (
     <div className="timelinecomponent" key={title}>
       <Region title={title} color={color} subtitle={subtitle}>
+        <ul className="flex flex-row flex-wrap">
+          {lower_tags.map((tag) => {
+            return (
+              <li
+                key={tag}
+                className={`tag-button ${tag} bg: min-w-[3em] dark:bg-amber-600 bg-amber-300 text-center p-1 m-1 rounded-lg transition-all shadow-lg`}
+              >
+                {tag}
+              </li>
+            );
+          })}
+        </ul>
         {content}
         {/* link icon followed by timelineitem's link */}
         {link && (
-          <Link style={{ textDecoration: "none" }} href={link} key={key}>
+          <Link style={{ textDecoration: "none" }} href={link}>
             <button className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-200 text-zinc-900 rounded-lg w-max font-semibold">
               {buttonName}
             </button>
@@ -43,30 +58,79 @@ function postNav({
   );
 }
 
-export default async function PostPage() {
-  const posts = await buildPosts();
+export default function PostPage() {
+  const { chosen_tags, set_chosen_tags } = useSelectedTags();
+  let possible_tags = [];
+  const current_posts = filtered_posts(chosen_tags);
+  for (const post of current_posts) {
+    for (const _t of post.tags) {
+      const t = _t.toLowerCase();
+      if (!possible_tags.includes(t)) {
+        possible_tags.push(t);
+      }
+    }
+  }
   return (
     <main className="post-page hallway-size max-w-[80vw] lg:max-w-[60vw]">
-      <h1>Post</h1>
-      <footer>Work-in-progress...</footer>
-      <ul className="grid grid-flow-row">
-        {posts.map((post) => {
-          return postNav({
-            title: post.title,
-            subtitle: format(parseISO(post.date), "LLLL d, yyyy"),
-            color: "bg-slate-900",
-            content: post.description,
-            buttonName: "Go to",
-            link: post.path,
-            key: post.slug,
-          });
+      <h1 className="text-center">Post</h1>
+      <div className="post-tags flex flex-row flex-wrap justify-center">
+        {allTags.map((tag) => {
+          if (!possible_tags.includes(tag)) {
+            return null;
+          }
+          return (
+            <button
+              className={`tag-button ${
+                chosen_tags.includes(tag)
+                  ? "dark:bg-amber-600 bg-amber-300"
+                  : "dark:bg-violet-600 bg-violet-300 dark:hover:bg-gray-400 hover:bg-gray-200"
+              } min-w-[3em]  p-1 m-1 rounded-lg transition-all hover:shadow-lg`}
+              key={tag}
+              onClick={() => {
+                if (chosen_tags.includes(tag)) {
+                  set_chosen_tags(chosen_tags.filter((t) => t !== tag));
+                } else {
+                  set_chosen_tags([...chosen_tags, tag]);
+                }
+              }}
+            >
+              {tag}
+            </button>
+          );
         })}
-      </ul>
+      </div>
+      <div className="flex flex-row justify-center">
+        <ul className="grid grid-flow-row">
+          {current_posts.map((post) => {
+            return (
+              <PostNav
+                title={post.title}
+                subtitle={format(parseISO(post.date), "LLLL d, yyyy")}
+                tags={post.tags}
+                color="bg-slate-900"
+                content={post.description}
+                buttonName="Go to"
+                link={post.path}
+                key={post.slug}
+              />
+            );
+          })}
+        </ul>
+      </div>
     </main>
   );
 }
 
-async function buildPosts() {
-  const posts = allPostsNewToOld;
-  return posts;
+function filtered_posts(tags: string[]) {
+  return allPostsNewToOld.filter((post) => {
+    let hasalltags = true;
+    const lower_tags = post.tags.map((v) => v.toLowerCase());
+    for (const tag of tags) {
+      if (!lower_tags.includes(tag)) {
+        hasalltags = false;
+        break;
+      }
+    }
+    return hasalltags;
+  });
 }
