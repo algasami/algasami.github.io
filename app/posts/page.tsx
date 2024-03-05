@@ -27,7 +27,6 @@ function PostNav({
   buttonName: string;
   link: string;
 }) {
-  const { chosen_tags, set_chosen_tags } = useSelectedTags();
   const lower_tags = tags.map((v) => v.toLowerCase());
   return (
     <div className="timelinecomponent" key={title}>
