@@ -1,0 +1,112 @@
+---
+title: ESP Embedded Systems
+description: My notes on Embedded Development
+slug: 20240305-esp
+date: 2024-03-05
+type: Post
+tags:
+  - embedded
+  - esp
+  - C++
+---
+
+## My Previous Experience
+
+Before I started working with the ESP32 & ESP8266, my experience with embedded systems was scarce. My only usage of
+C, C++ and Assembly was for competitive programming and operating systems. My codes were all run on powerful machines
+and I never had to worry about memory management, power consumption, or real-time constraints. This is why I was
+flabbergasted when I first started working with the ESP8266.
+
+## ESP32 (Smooth Sailing)
+
+The ESP32 was a breeze to work with. It has a dual-core processor, 520KB of RAM, and 4MB of flash memory. My project
+[ESP Rock](https://github.com/algasami/esp_rock) was a success and I was able to implement server hosting, AHRS analysis
+and a useful web interface. The ESP32 was powerful enough to handle all of this and more. It didn't differ much from my
+previous experience with C++ and I was able to use the STL and other libraries without any issues.
+
+## ESP8266 (Rough Waters)
+
+The ESP8266 was a different story. It has a single-core processor, 80KB of RAM, and 4MB of flash memory. My project
+[IOT Connect](https://github.com/algasami/iot_connect) faced a lot of issues, particularly the OOM (Out of Memory) error,
+which is notoriously difficult to debug, providing no useful information. Turns out, the async web server I was using
+had memory leaks and I had to switch to the good ol' synchronous web server `<ESP8266WebServer.h>` to fix the issue.
+For some reason, the ESP8266 also had issues with non-delaying analog reads, which I had to fix by using a non-blocking
+delay.
+
+```cpp
+// Non-blocking delay example
+void func() {
+  static unsigned long lastMillis = 0;
+  if (millis() - lastMillis > 1000) {
+    lastMillis = millis();
+    // Do something
+  }
+}
+```
+
+## New Learnings
+
+First off, `PROG_MEM` is a thing. It's a special memory space that is used to store constant data in the flash, which is
+useful for storing web pages, images, and other static data. Another thing I learned is that the ESP8266 hates dynamic
+memory allocation, so I had to rewrite all my programs into stack-based memory allocation. Hopefully, I was already using
+c style arrays and structs, so it wasn't too much of a hassle, but still, without all the debugging tools I'm used to,
+it was a pain to find the root of the problem.
+
+## Debugging Cheatsheet
+
+- OOM (Out of Memory) Error: Use `ESP.getFreeHeap()` to check the free heap size. If it is decreasing over time or due
+  to certain events, you have a memory leak, especially if it isn't being freed after the event. To find out what exactly
+  is causing the memory leak... well, good luck :) (Yeah I'm serious)
+
+- (Runtime) Alignment Error: Compile time alignment errors are easy to fix, but runtime alignment errors are a pain to
+  debug; sometimes I find it even more frustrating to work with than memory leaks. The best way to debug this is to
+  look for any pointer arithmetic or casting that might be causing the issue.
+
+- Remember to `.end()`/`.close()`/`.stop()`: Always remember to close the file, stop the server, or end the LittleFS
+  instance. This is a common mistake that can lead to memory leaks and runtime alignment errors. I like to introduce
+  a garbage stack to store lambda functions that will be executed at the end of the program to ensure that everything
+  is properly closed.
+
+```cpp
+
+//...
+#include <stack>
+#include <LittleFS.h>
+
+std::stack<std::function<void()>> garbage;
+
+void setupLittleFS() {
+  LittleFS.begin();
+  garbage.push([]() {
+    LittleFS.end();
+  });
+}
+
+void cleanup()
+{
+  while (!garbage.empty()) {
+    garbage.top()();
+    garbage.pop();
+  }
+}
+```
+
+- Use `PROGMEM` for static data: This is a no-brainer, but it's worth mentioning.
+
+- Use `volatile` for shared variables: Easy to miss and can cause a lot of headaches (like bad performance, or even
+  worse, UB).
+
+## After Thoughts
+
+While working with ESP8266 was a pain, it also gave me a sense of accomplishment. I was able to make a tiny little chip
+do so much with so little resources (squeeze hard!). It was a humbling experience and I learned a lot from it. As somebody
+once said, "Never judge a book by its cover," I would say, "Never judge a chip by its specs, and never think your code
+would work the same on it!"
+
+## Referenced Repositories
+
+- [ESP Rock](https://github.com/algasami/esp_rock): My ESP32 project (cool M5StickC project!)
+- [IOT Connect](https://github.com/algasami/iot_connect): My ESP8266 project (Moisture sensor, web server, and more!)
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer): The async web server I used to use
+- [ESP8266WebServer](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer): The synchronous web
+  server I switched to
