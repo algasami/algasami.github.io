@@ -1,0 +1,114 @@
+---
+title: Haskell
+description: Haskell Introduction
+slug: 20240305-haskell
+date: 2024-03-05
+type: Post
+tags:
+  - haskell
+  - Category Theory
+---
+
+## What is Haskell?
+
+I know you have probably heard of Haskell before, but what exactly makes it different from other languages?
+Haskell is a purely functional programming language, meaning that it is declarative rather than imperative.
+This means that you tell the computer what you want to do, rather than how to do it. "Can you give me more examples?" you might ask.
+Say no more, fam.
+
+```haskell
+add :: Int -> Int -> Int
+add x y = x + y
+```
+
+"Oh it takes two integers and returns an integer, I see," you might say. However, this is not the case.
+This is a function that takes an integer and returns a function that takes an integer and returns an integer, which is called
+**function currying**. This is a very powerful concept in Haskell, and it allows for a lot of flexibility in how you can use functions.
+For example, you can partially apply a function, which means that you can apply the function to some of its arguments and then
+apply the rest later.
+
+## What is Category Theory?
+
+Since Haskell is a functional programming language, it is tightly connected to category theory, which is a branch of mathematics
+that studies abstract structures and relationships between them. You can think of a category as a collection of objects and arrows
+between them, where the arrows represent morphisms. For instance, a function $F : A \rightarrow A$ is a morphism from object of
+type $A$ to another object of type $A$. It is called an endomorphism. We often draw the objects as small circles in a big circle (type),
+and the arrows as lines between them. This is called a _commutative diagram_.
+
+## Let's define some stuff!
+
+### Functor
+
+A functor is a type class that represents a mapping between two categories. It is defined as follows:
+
+```haskell
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+```
+
+Okay, what is this gibberish? Let's break it down. A functor is a type class, which means that it is a collection of types that
+have some common properties. In this case, the common property is that they can be mapped over. The `fmap` function takes a function
+from type `a` to type `b` and a functor of type `a`, and returns a functor of type `b`. This looks like taking something out of a box,
+transforming it, and putting it back in the box. For example, the `Maybe` type is a functor, implemented as follows:
+
+```haskell
+instance Functor Maybe where
+  fmap f (Just x) = Just (f x)
+  fmap f Nothing = Nothing
+```
+
+I admit that the `f` in `Functor f` is a terrible name, because `f` does not represent a function that can be invoked, but rather a type
+that supports the `fmap` function.
+
+### Applicative
+
+An applicative is a type class that represents a functor that can be applied to another functor. It is defined as follows:
+
+```haskell
+class Functor f => Applicative f where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+```
+
+The `pure` function takes a value and returns a functor of that value. The `<*>` function takes a functor of a function from type `a` to type `b`
+and a functor of type `a`, and returns a functor of type `b`. This looks like taking a function out of a box, taking a value out of another box,
+applying the function to the value, and putting the result back in the box. For example, the `Maybe` type is an applicative, implemented as follows:
+
+```haskell
+instance Applicative Maybe where
+  pure = Just
+  Just f <*> m = fmap f m
+  Nothing <*> _ = Nothing
+```
+
+### Monad
+
+A monad is a type class that represents a functor that can be sequenced. It is defined as follows:
+
+```haskell
+class Monad m where
+  return :: a -> m a
+  (>>=) :: m a -> (a -> m b) -> m b
+```
+
+Since it can be sequenced, it is also a monoid in the category of endofunctors.
+A monoid is a set with a binary operation and an identity element, while an endofunctor
+is a functor from a category to itself. I'll spare you the rigorous proof of why a monoid in the category of endofunctors can be sequenced,
+but the intuition is that you can take a value out of a box, apply a function to it, and put the result back in the original box, and do it
+again and again. For example, the `Maybe` type is a monad, implemented as follows:
+
+```haskell
+instance Monad Maybe where
+  return = Just
+  Just x >>= f = f x -- So you can literally do this for a gazillion times!!!
+  Nothing >>= _ = Nothing
+```
+
+## Conclusion
+
+I hope this gives you a good idea of what Haskell is and how it is connected to category theory.
+Well, it's time to go back to my cave and write some more Haskell code. See you next time, good morning, good afternoon, and good night!
+
+## Editor Logs
+
+- 2024-03-05: Initial draft
