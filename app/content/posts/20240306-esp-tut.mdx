@@ -114,6 +114,12 @@ inline void create_server()
 }
 
 inline void handle_wifi() {
+  static uint32_t last = millis();
+  uint32_t now = millis();
+  if (now - last < 1000) {
+    return;
+  }
+  last = now;
   if (WiFi.status() != WL_CONNECTED) {
     if(server_started) {
       server.stop(); // clean up some memory
@@ -149,6 +155,24 @@ once. If you want to use a multi-threaded web server, you can use the
 [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) library. On an ESP8266, it is not really necessary
 to use a multi-threaded web server since it eats up a lot of memory, and the ESP8266 has only 80KB. On the other hand,
 the ESP32 has 520KB, so it is more feasible to use a multi-threaded web server.
+
+## Special Stuff in Embedded Systems
+
+- `PROG_MEM` and `PROGMEM`: These are used to store data in the flash memory of the ESP8266 and ESP32. You can use the
+  `pgm_read_byte` function to read from the flash memory. This is useful when you want to store large amounts of data
+  that you don't want to store in the RAM.
+
+- `ICACHE_RAM_ATTR`: This is used to store functions in the instruction cache of the ESP8266 and ESP32. This is useful
+  when you want to store functions that are called frequently, as it will speed up the execution of the function.
+
+- Watch out for ISR functions: These are functions that are called when an interrupt is triggered.. It is always a good
+  practice to use `ICACHE_RAM_ATTR` for ISR functions as they are called frequently. **IMPORTANT: You should not
+  access flash memory from an ISR function, as it might happen to conflict with the main thread. Should this happen, [the
+  MCU will crash](https://www.dzombak.com/blog/2021/10/Debugging-an-Intermittent-Arduino-ESP8266-ISR-Crash.html)**.
+
+- `volatile`: While it is already known in C++, it is more important in embedded systems. It is used to tell the
+  compiler that the variable can change at any time, so it should not optimize it. This is useful when you want to
+  access a variable from an ISR function.
 
 ## Fun Things you can do
 
