@@ -159,6 +159,18 @@ export const projects = [
     `,
   },
   {
+    name: "boson-rust",
+    subtitle: "Single-bounce Ray Tracing Engine",
+    content: `I have been working on this project for a while. It is a simple ray tracing engine that can render
+    polygons. It is written in Rust from scratch.`,
+  },
+  {
+    name: "iot_connect",
+    subtitle: "ESP8266 Project",
+    content: `It was meant as a tutorial project to teach people about embedded C++, but I made several versions of
+    it. Details in README.md`,
+  },
+  {
     name: "nixos_dotfiles",
     subtitle: "NixOS Configs",
     content:
