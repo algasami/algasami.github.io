@@ -152,7 +152,7 @@ void loop()
 "Bu-bu-but single-threaded web servers are bad!" you might say. They can not handle too many requests, but there are
 times when you don't need a multi-threaded web server, especially when you have an ESP8266 that does many things at
 once. If you want to use a multi-threaded web server, you can use the
-[ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) library. On an ESP8266, it is not really necessary
+[ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer) library. On an ESP8266, it is not recommended
 to use a multi-threaded web server since it eats up a lot of memory, and the ESP8266 has only 80KB. On the other hand,
 the ESP32 has 520KB, so it is more feasible to use a multi-threaded web server.
 
