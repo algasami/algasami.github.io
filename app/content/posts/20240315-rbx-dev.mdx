@@ -1,0 +1,96 @@
+---
+title: Roblox Development + Netcode
+description: Development logic and Netcode in Roblox
+slug: 20240315-rbx-dev
+date: 2024-03-15
+type: Post
+tags:
+  - roblox
+  - typescript
+  - ecs
+  - netcode
+---
+
+This post is a brief overview of my development process and the netcode I use in Roblox.
+Let's get started.
+
+## Development Process
+
+Typescript is great for a type-safe and organized codebase. For Roblox, I use [Roblox-TS](https://roblox-ts.com/),
+a Typescript-to-Luau transpiler. Via [Rojo](https://rojo.space/), I can sync the transpiled code to Roblox Studio.
+For version control, I use Git and GitHub. Additionally, to create beautiful and readable code, I use ESLint and Prettier
+that are run automatically every time I save a file.
+
+## Libraries
+
+I keep my project as raw as possible, so I only use a few libraries to aid my development process.
+Here are the libraries I use:
+
+### Matter
+
+[Matter](https://eryn.io/matter/) is an ECS library. I am personally a big fan of ECS since my first encounter with it
+in Unity. Since it is based on immediate mode, codes are more readable and maintainable. For Roblox, among all the ECS
+libraries, Matter is the most well-maintained and feature-rich library. It is also guarded with immutability, which
+ensures no weird bugs due to mutation.
+
+### RbxNet
+
+[RbxNet](https://rbxnet.australis.dev) is a simple networking library. While it is based on Roblox's RemoteEvent, it
+provides a more organized and type-safe way to handle networking. You can also combine UUID Obfuscation to slow down
+exploiters; nevertheless, it is not a silver bullet for all my networking needs.
+
+### Fusion
+
+[Fusion](https://elttob.uk/Fusion/) provides a simple way to create semi-declarative UIs. I used to use Roact, but
+due to Roblox's imperative nature, I found Fusion to be more fitting for my needs. It is also more lightweight.
+
+## Netcode
+
+Inspired by the netcode in Overwatch, I've written a simple netcode based on the classic client-server model.
+Here's a brief overview of the netcode:
+
+### Client
+
+The client is predictive, meaning it predicts the future state of the game. It sends the input to the server and
+simulates the game based on the input immediately regardless of the server's response, which yields a temporary
+_ephemeral state_. When the server responds, the client corrects the game via something called _ephemeral cleanup_.
+This is done by a simple callback that is called when the server responds. This approach is better when the state
+cannot be numerically calculated, such as animations and physics.
+
+### Server
+
+The server is authoritative, meaning it has the final say in the game state. It receives the input from the client,
+validates it, and dispatches the command. It then sends a simple response to the client: success or failure. For syncing
+components and entities, the server has to process replicatable components and entities. This is done within a
+replication system that is called last in the game loop.
+
+### Action-based Framework
+
+The netcode in this model is action-based, meaning the input is a simple action and is discrete. For example, in an
+FPS game, the input is a simple action such as "shoot" or "move". When a world (the upmost structure of ECS) reconciles
+an action, it is called a _dispatch_. If the changed components are replicatable, they are then sent to the client;
+conversely, on the client, reverse replication (sending input to the server) can only be called actively rather than
+passively, which means the code has to specify that it wants to send an action to the server.
+
+The following is a simple example of networking:
+
+```
+client
+    INTERACT & EPH STATE -> SEND INPUT
+server                      |
+    SEND RES <- DISPATCH <- VALIDATE
+client  |
+    EPH CLEANUP -> (debug) SEND TO LOG
+```
+
+This framework is not without any flaws. It is not suitable for values that are continuous. For example, in a racing
+game, the speed of the car is continuous and cannot be represented as a simple action. In this case, the netcode has to
+incorporate a different model, such as a state-based model, making it exponentially more complex. The additional
+ephemeral cleanup also adds more complexity to the codebase.
+
+## Conclusion
+
+Having read all this, you might be wondering if developing on Roblox requires all this complexity. The answer is no,
+but it is a nice foundation for a more intricate game. Roblox is a platform that is easy to get started with, but it
+is far from easy to create a stable and scalable architecture. I hope this post has given you a brief overview of my
+development process and the netcode I use in Roblox. If you have any questions, just drop by my Discord @algasami.
