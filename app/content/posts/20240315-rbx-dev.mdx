@@ -88,6 +88,28 @@ game, the speed of the car is continuous and cannot be represented as a simple a
 incorporate a different model, such as a state-based model, making it exponentially more complex. The additional
 ephemeral cleanup also adds more complexity to the codebase.
 
+## Examples
+
+All the talks are abstract, so here are some examples.
+
+### Animations
+
+Animations are considered performance-intense, which means that they need to have precision down to a single frame, or
+there would be visible artifacts. Solving this issue requires a view-model-hydration system. Only the view model is
+replicated. The hydration process only occurs in clients. A view model is a concept that requires much less information
+than the actual thing it tries to represent. When hydration commences, a view model is implemented as the actual thing.
+
+In my system, `CAnimationView` is the view model of `CAnimation`. `CAnimationView` contains a list of animation names.
+Given that clients have already owned their own list of animations, `CAnimation` can be hydrated by using a LUT and
+loading animations into tracks.
+
+During early development, I found it extremely frustrating to work with Roblox's implicit client-to-server animation
+replication process that didn't allow selective filtering. Fortunately, by implementing an observer system on the
+server, I could stop client-sided animations from getting sent to others. This took me longer than I had expected due
+to the poorly-documented API docs (e.g. names are not replicated but ids are, which isn't documented at all.)
+
+### To be added
+
 ## Conclusion
 
 Having read all this, you might be wondering if developing on Roblox requires all this complexity. The answer is no,
