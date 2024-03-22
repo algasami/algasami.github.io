@@ -90,6 +90,10 @@ export default async function RootPage() {
                     <TableCell>Proficiency</TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableCell>TOEIC Listening & Reading</TableCell>
+                    <TableCell>985/990</TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableCell>GEPT</TableCell>
                     <TableCell>Advanced Intermediate</TableCell>
                   </TableRow>
