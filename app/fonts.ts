@@ -1,4 +1,4 @@
-import { Roboto, Dosis, Raleway } from "next/font/google";
+import { Roboto, Dosis, Raleway, Noto_Serif } from "next/font/google";
 import localFont from "next/font/local";
 
 export const dosis = Dosis({
@@ -12,10 +12,9 @@ export const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-export const raleway = Raleway({
-  weight: ["300", "500", "700", "900"],
+export const noto_serif = Noto_Serif({
   subsets: ["latin"],
-  variable: "--font-raleway",
+  variable: "--font-noto-serif",
 });
 
 export const krypton = localFont({
