@@ -17,19 +17,19 @@ places in the file hierarchy. NixOS opts for a different approach, utilizing a m
 settings; moreover, the system rollback and other features (detached configuration building) guarantee the immutability of
 a NixOS system. On the opposite side of the spectrum, NixOS also offers independent environments isolated from the core configs.
 
-# Forked Packages?
+## Forked Packages?
 
 In other operating systems, you can mask the upstream server with your custom sources to use modified packages. In NixOS, you
 can use overlays to control this behavior without changing your upstream. If you want to share this package with others, you
 can create a flake for it and share it on a git server.
 
-# Managing Project Dependencies?
+## Managing Project Dependencies?
 
 When developing the [Temporal Operating System](https://github.com/algasami/temporal) on NixOS, I had to manually build a cross-compiler
 from source. In the [flake](https://github.com/algasami/temporal/blob/main/toolchain/flake.nix), the sources for gcc and binutils had been
 declared; with some additional configurations pertinent to the parameters of Makefile, the toolchain could be built easily.
 
-# Issues of NixOS
+## Issues of NixOS
 
 - You have to use some secondary building system for your configurations to avoid long rebuild duration, such as Home Manager, after your
   core configs have grown inevitably large.
