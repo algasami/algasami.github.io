@@ -99,37 +99,12 @@ function SmallNav() {
   );
 }
 export default function Navbar({}) {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const main_page = document.querySelector("#main-content");
-    const handleScroll = () => {
-      setScrollY(main_page.scrollTop);
-    };
-
-    handleScroll();
-    main_page.addEventListener("scroll", handleScroll);
-    return () => {
-      main_page.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const getval = () => {
-    if (scrollY > 0)
-      return Math.floor((Math.min(scrollY, 200) / 200) * 10) / 10;
-    else return 0;
-  };
-
   return (
     <div
       className={`navbar absolute z-50  w-full shadow-xl p-2 bg-opacity-80`}
       style={{
-        backdropFilter: `blur(${getval() * 10}px) invert(${
-          (1 - getval()) * 0.1
-        })`,
-        WebkitBackdropFilter: `blur(${getval() * 10}px) invert(${
-          (1 - getval()) * 0.1
-        })`,
+        backdropFilter: `blur(10px)`,
+        WebkitBackdropFilter: `blur(10px)`,
       }}
     >
       <Box sx={{ display: { xs: "none", sm: "block" } }}>

@@ -61,12 +61,12 @@ export default async function RootPage() {
   const updateList = await buildUpdateList();
   return (
     <div className="max-w-max h-full flex flex-col hallway-size">
-      <h1 className="font-light text-center m-4 lg:tracking-widest select-none bg-clip-text text-transparent from-amber-700 to-violet-900 via-fuchsia-800 dark:from-amber-400 dark:to-violet-200 dark:via-fuchsia-500 bg-gradient-to-tr">
+      <h1 className="font-light text-center m-4 lg:tracking-widest">
         ALGASAMI
       </h1>
 
-      <footer className="text-center italic lg:tracking-widest select-none">
-        {age} years old, Web/Game/Low-level
+      <footer className="text-center italic lg:tracking-widest">
+        {age} years old, Comp Sci/Low Level
       </footer>
 
       <main className="flex lg:flex-row flex-col justify-between lg:max-h-[70vh]">
@@ -78,8 +78,9 @@ export default async function RootPage() {
                 creating a few computer science projects.
               </Region>
               <Region title={"Interests"} color="bg-slate-800">
-                I&apos;m interested in competitive programming, web development,
-                hardware design and computer science in general.
+                I{"'"}m interested in competitive programming, web development,
+                hardware design and computer science in general. I am also an
+                avid voice acting amateur.
               </Region>
             </div>
             <Region title={"Certificates"} color="bg-slate-900">

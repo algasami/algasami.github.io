@@ -179,14 +179,15 @@ export default function Graph() {
         </button>
       </div>
       <br />
-      <h1>How does it work?</h1>
+      <h2>How does it work?</h2>
       <hr />
       The graph shown above is a standard bipartite graph, which is a graph
       containing two self-disjoint graphs (which can be thought as primitive
       DSUs). By applying Hungarian Algorithm on this system, we are enabled to
       calculate the most optimal approach of connecting nodes (or vertices) with
       as few edges as possible, each node having only one edge connected to
-      others.
+      others. Note that this algorithm does not yield errors should it fail to
+      find any optimal solutions, which results in an incomplete matching.
     </main>
   );
 }
