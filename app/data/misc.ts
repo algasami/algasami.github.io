@@ -117,7 +117,7 @@ export const timeline: { [k: number]: TimelineItem } = [
     date: "2022",
     category: {
       tag: "GSAT",
-      color: "bg-violate-500",
+      color: "bg-violet-500",
     },
   },
   {
@@ -128,11 +128,21 @@ export const timeline: { [k: number]: TimelineItem } = [
     date: "2023",
     category: {
       tag: "Kernel",
-      color: "bg-violate-500",
+      color: "bg-violet-500",
     },
     link: {
       url: "https://github.com/algasami/temporal",
       text: "View on Github",
+    },
+  },
+  {
+    title: "University Prep",
+    content: `With the end of GSAT comes a large period of free time before I head to university. I've been previewing
+    calculus, linear algebra and computer science out of sheer boredom on MIT Open Course Ware.`,
+    date: "Early 2024",
+    category: {
+      tag: "Academy",
+      color: "bg-violet-500",
     },
   },
 ];
