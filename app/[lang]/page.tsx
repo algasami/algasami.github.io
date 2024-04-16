@@ -1,8 +1,10 @@
 import { NoSsr, Table, TableCell, TableRow } from "@mui/material";
 import React from "react";
-import { Region } from "./components/region";
-import { projects, timeline, TimelineItem, TProjectItem } from "./data/misc";
-import { age } from "../scripts/time-utils";
+import { Region } from "../components/region";
+import { TimelineItem, TProjectItem } from "../../data/misc";
+import { age } from "../../scripts/time-utils";
+import { Locale, i18n } from "i18n-config";
+import { getDictionary } from "get-dictionary";
 
 function TimelineComponent({
   timeline: timelineitem,
@@ -57,8 +59,18 @@ function ProjectComponent({ project }: { project: TProjectItem }) {
   );
 }
 
-export default async function RootPage() {
-  const updateList = await buildUpdateList();
+export async function generateStaticParams() {
+  return i18n.locales.map((loc) => ({
+    lang: loc,
+  }));
+}
+
+export default async function RootPage({
+  params,
+}: {
+  params: { lang: Locale };
+}) {
+  const dict = getDictionary(params.lang)["index"];
   return (
     <div className="max-w-max h-full flex flex-col hallway-size">
       <h1 className="font-light text-center m-4 lg:tracking-widest">
@@ -66,67 +78,61 @@ export default async function RootPage() {
       </h1>
 
       <footer className="text-center italic lg:tracking-widest">
-        {age} years old, Comp Sci/Low Level
+        {age}
+        {dict["author_subtitle"]}
       </footer>
 
       <main className="flex lg:flex-row flex-col justify-between lg:max-h-[70vh]">
-        <Region title={"About"} color="bg-slate-900">
+        <Region title={dict.about.title} color="bg-slate-900">
           <div className="flex flex-col lg:overflow-scroll masked-overflow">
             <div className="flex flex-col justify-between">
-              <Region title={"Education"} color="bg-slate-800">
-                I{"'"}m an aspired high school student in Taiwan currently
-                creating a few computer science projects.
+              <Region title={dict.about.education.title} color="bg-slate-800">
+                {dict.about.education.content}
               </Region>
-              <Region title={"Interests"} color="bg-slate-800">
-                I{"'"}m interested in competitive programming, web development,
-                hardware design and computer science in general. I am also an
-                avid voice acting amateur.
+              <Region title={dict.about.interests.title} color="bg-slate-800">
+                {dict.about.interests.content}
               </Region>
             </div>
-            <Region title={"Certificates"} color="bg-slate-900">
+            <Region title={dict.about.certs.title} color="bg-slate-900">
               <NoSsr>
                 <Table>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Proficiency</TableCell>
+                    <TableCell>{dict.about.certs.header_name}</TableCell>
+                    <TableCell>{dict.about.certs.header_pro}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>TOEIC Listening & Reading</TableCell>
+                    <TableCell>{dict.about.certs.toeic}</TableCell>
                     <TableCell>985/990</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>GEPT</TableCell>
-                    <TableCell>Advanced Intermediate</TableCell>
+                    <TableCell>{dict.about.certs.gept}</TableCell>
+                    <TableCell>{dict.about.certs.gept_level}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>APCS Concept Section</TableCell>
+                    <TableCell>{dict.about.certs.apcs_cs}</TableCell>
                     <TableCell>4/5</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>APCS Programming Section</TableCell>
+                    <TableCell>{dict.about.certs.apcs_ps}</TableCell>
                     <TableCell>4/5</TableCell>
                   </TableRow>
                 </Table>
               </NoSsr>
-              <span className="italic my-2">
-                GEPT stands for General English Proficiency Test(全民英檢). APCS
-                stands for Advanced Placement Computer
-                Science(大學程式設計先修檢測).
-              </span>
+              <span className="italic my-2">{dict.about.certs.footer}</span>
             </Region>
           </div>
         </Region>
 
-        <Region title={"Projects"} color="bg-slate-900">
+        <Region title={dict.project_title} color="bg-slate-900">
           <div className="flex flex-col justify-between lg:overflow-scroll masked-overflow ">
-            {Object.values(projects).map((projectItem) => (
+            {Object.values(dict.projects).map((projectItem) => (
               <ProjectComponent key={projectItem.name} project={projectItem} />
             ))}
           </div>
         </Region>
-        <Region title={"Timeline"} color="bg-slate-900">
+        <Region title={dict.timeline_title} color="bg-slate-900">
           <div className="flex flex-col justify-between lg:overflow-scroll masked-overflow ">
-            {Object.values(updateList).map((timelineitem) => (
+            {Object.values(dict.timeline).map((timelineitem) => (
               <TimelineComponent
                 key={timelineitem.title}
                 timeline={timelineitem}
@@ -137,8 +143,4 @@ export default async function RootPage() {
       </main>
     </div>
   );
-}
-
-async function buildUpdateList() {
-  return timeline;
 }

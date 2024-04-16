@@ -1,20 +1,33 @@
 import { NoSsr, Table, TableCell, TableRow } from "@mui/material";
 import React from "react";
-import updates from "../data/updates.json";
+import updates from "../../../data/updates.json";
 import type { Metadata } from "next";
+import { Locale, i18n } from "i18n-config";
+import { getDictionary } from "get-dictionary";
 
 export const metadata: Metadata = {
   title: "dev",
   description: "This documents the website's development journey.",
 };
 
-export default async function DevPage() {
+export async function generateStaticParams() {
+  return i18n.locales.map((loc) => ({
+    lang: loc,
+  }));
+}
+
+export default async function DevPage({
+  params,
+}: {
+  params: { lang: Locale };
+}) {
+  const dict = getDictionary(params.lang).dev;
   const updateList = await buildUpdates();
   return (
     <div className="dev-page hallway-size">
-      <h1>Dev Page</h1>
+      <h1>{dict.title}</h1>
 
-      <b className="w-full text-center">Temporary Logs</b>
+      <b className="w-full text-center">{dict.subtitle}</b>
       <hr />
 
       <NoSsr>

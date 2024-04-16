@@ -3,8 +3,8 @@ import Head from "next/head";
 import PostLayout, {
   PostForPostLayout,
   RelatedPostForPostLayout,
-} from "../../components/postLayout";
-import { allPostsNewToOld } from "../../components/contentLayerAdapter";
+} from "../../../components/postLayout";
+import { allPostsNewToOld } from "../../../components/contentLayerAdapter";
 import { Metadata, ResolvingMetadata } from "next";
 import { NoSsr } from "@mui/material";
 

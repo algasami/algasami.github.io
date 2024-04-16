@@ -4,8 +4,10 @@ import {
   BipartiteGraph,
   IBipartiteGraphInput,
   calculateAdjs,
-} from "../components/grapher/graph";
+} from "../../components/grapher/graph";
 import { useState } from "react";
+import { Locale } from "i18n-config";
+import { getDictionary } from "get-dictionary";
 
 function getMatching(input: IBipartiteGraphInput) {
   let current_turn = 0;
@@ -48,7 +50,8 @@ const default_graph: IBipartiteGraphInput = {
   adjs: [],
 };
 
-export default function Graph() {
+export default function Graph({ params }: { params: { lang: Locale } }) {
+  const dict = getDictionary(params.lang).graph;
   const [graphInput, setGraphInput] =
     useState<IBipartiteGraphInput>(default_graph);
 
@@ -56,7 +59,7 @@ export default function Graph() {
   const [selY, setSelY] = useState<string>("");
   return (
     <main className="graph-page hallway-size min-w-[40vw] max-w-[80vw] lg:max-w-[60vw]">
-      <h1>Graph Toolkit</h1>
+      <h1>{dict.title}</h1>
       <hr />
       <div className="graph-container flex flex-row justify-center w-full">
         <BipartiteGraph className="w-full my-4" input={graphInput} />
@@ -71,7 +74,7 @@ export default function Graph() {
             setGraphInput(cop);
           }}
         >
-          Add X
+          {dict.add_x}
         </button>
         <button
           className="add-node-button inter-button-neutral m-2"
@@ -82,7 +85,7 @@ export default function Graph() {
             setGraphInput(cop);
           }}
         >
-          Add Y
+          {dict.add_y}
         </button>
         <button
           className="calculate-node-button inter-button m-2"
@@ -103,7 +106,7 @@ export default function Graph() {
             setGraphInput(cop);
           }}
         >
-          Calculate
+          {dict.calculate}
         </button>
         <button
           className="reset-node-button inter-button-warning m-2"
@@ -113,12 +116,12 @@ export default function Graph() {
             setSelY("");
           }}
         >
-          Reset
+          {dict.reset}
         </button>
       </div>
       <div className="add-edge-button flex flex-row justify-center rounded-lg p-2 m-2 w-full bg-opacity-70 bg-violet-300">
         <FormControl sx={{ m: 1, minWidth: 100 }}>
-          <InputLabel id="demo-simple-select-label">X Node</InputLabel>
+          <InputLabel id="demo-simple-select-label">{dict.x_node}</InputLabel>
           <Select
             labelId="U_Node_Select_Label"
             id="U_Node_Select"
@@ -139,7 +142,7 @@ export default function Graph() {
           </Select>
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 100 }}>
-          <InputLabel id="demo-simple-select-label">Y Node</InputLabel>
+          <InputLabel id="demo-simple-select-label">{dict.y_node}</InputLabel>
           <Select
             labelId="V_Node_Select_Label"
             id="V_Node_Select"
@@ -175,19 +178,13 @@ export default function Graph() {
             setGraphInput(cop);
           }}
         >
-          Append Edge
+          {dict.append}
         </button>
       </div>
       <br />
-      <h2>How does it work?</h2>
+      <h2>{dict.how_it_work}</h2>
       <hr />
-      The graph shown above is a standard bipartite graph, which is a graph
-      containing two self-disjoint graphs (which can be thought as primitive
-      DSUs). By applying Hungarian Algorithm on this system, we are enabled to
-      calculate the most optimal approach of connecting nodes (or vertices) with
-      as few edges as possible, each node having only one edge connected to
-      others. Note that this algorithm does not yield errors should it fail to
-      find any optimal solutions, which results in an incomplete matching.
+      {dict.content}
     </main>
   );
 }

@@ -2,10 +2,12 @@
 import { Box } from "@mui/system";
 import NearMeRoundedIcon from "@mui/icons-material/NearMeRounded";
 import { IconButton, Modal } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ThemeSwitch from "./themeSwitch";
 import Link from "next/link";
-import { LinkList } from "app/data/linklist";
+import { LinkList } from "data/linklist";
+import { Locale } from "i18n-config";
+import { type getDictionary } from "get-dictionary";
 
 export function DynamicLink({ href, name }) {
   return (
@@ -19,11 +21,13 @@ export function DynamicLink({ href, name }) {
   );
 }
 
-function genList(className: string) {
+type TNavbarLocale = ReturnType<typeof getDictionary>["navbar"];
+
+function genList(className: string, lang: Locale, dict: TNavbarLocale) {
   return LinkList.map((s) => {
     return (
       <div key={s.link} className={className + " flex flex-col justify-center"}>
-        <DynamicLink href={s.link} name={s.name} />
+        <DynamicLink href={`/${lang}${s.link}`} name={dict[s.name]} />
       </div>
     );
   });
@@ -37,14 +41,20 @@ function NavIcon({ size }) {
   );
 }
 
-function BigNav() {
+function BigNav({
+  lang,
+  navbardict,
+}: {
+  lang: Locale;
+  navbardict: TNavbarLocale;
+}) {
   return (
     <nav className="flex flex-row justify-between">
       <div className="flex flex-row">
         <span className="flex flex-col justify-center mx-1 text-2xl text-black dark:text-zinc-50">
           ALGASAMI
         </span>
-        {genList("mx-3")}
+        {genList("mx-3", lang, navbardict)}
       </div>
       <div className="flex flex-row">
         <ThemeSwitch />
@@ -55,7 +65,13 @@ function BigNav() {
 
 // Mobile nav bar:
 // Opens a modal on trigger
-function SmallNav() {
+function SmallNav({
+  lang,
+  navbardict,
+}: {
+  lang: Locale;
+  navbardict: TNavbarLocale;
+}) {
   const [open, setOpen] = React.useState(false);
   function onClick() {
     setOpen(true);
@@ -91,14 +107,20 @@ function SmallNav() {
         >
           <div className="p-2 w-auto h-auto flex flex-col text-center">
             <h2>Menu</h2>
-            {genList("text-xl font-bold")}
+            {genList("text-xl font-bold", lang, navbardict)}
           </div>
         </Box>
       </Modal>
     </nav>
   );
 }
-export default function Navbar({}) {
+export default function Navbar({
+  lang,
+  navbardict,
+}: {
+  lang: Locale;
+  navbardict: TNavbarLocale;
+}) {
   return (
     <div
       className={`navbar absolute z-50  w-full shadow-xl p-2 bg-opacity-80`}
@@ -108,10 +130,10 @@ export default function Navbar({}) {
       }}
     >
       <Box sx={{ display: { xs: "none", sm: "block" } }}>
-        <BigNav />
+        <BigNav lang={lang} navbardict={navbardict} />
       </Box>
       <Box sx={{ display: { xs: "block", sm: "none" } }}>
-        <SmallNav />
+        <SmallNav lang={lang} navbardict={navbardict} />
       </Box>
     </div>
   );

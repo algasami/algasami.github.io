@@ -1,9 +1,14 @@
 "use client";
 import { format, parseISO } from "date-fns";
 import Link from "next/link";
-import { allPostsNewToOld, allTags } from "../components/contentLayerAdapter";
-import { Region } from "../components/region";
+import {
+  allPostsNewToOld,
+  allTags,
+} from "../../components/contentLayerAdapter";
+import { Region } from "../../components/region";
 import React from "react";
+import { Locale, i18n } from "i18n-config";
+import { getDictionary } from "get-dictionary";
 
 function useSelectedTags() {
   const [chosen_tags, set_chosen_tags] = React.useState<string[]>([]);
@@ -57,7 +62,8 @@ function PostNav({
   );
 }
 
-export default function PostPage() {
+export default function PostPage({ params }: { params: { lang: Locale } }) {
+  const dict = getDictionary(params.lang).posts;
   const { chosen_tags, set_chosen_tags } = useSelectedTags();
   let possible_tags = [];
   const current_posts = filtered_posts(chosen_tags);
@@ -71,7 +77,7 @@ export default function PostPage() {
   }
   return (
     <main className="post-page hallway-size max-w-[80vw] lg:max-w-[60vw]">
-      <h1 className="text-center">Post</h1>
+      <h1 className="text-center">{dict.title}</h1>
       <div className="post-tags flex flex-row flex-wrap justify-center">
         {allTags.map((tag) => {
           if (!possible_tags.includes(tag)) {
@@ -109,7 +115,7 @@ export default function PostPage() {
                 color="bg-slate-900"
                 content={post.description}
                 buttonName="Go to"
-                link={post.path}
+                link={`/${params.lang}/${post.path}`}
                 key={post.slug}
               />
             );

@@ -11,25 +11,25 @@ type TDate =
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://algasami.github.io",
+      url: "https://algasami.github.io/en",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
-      url: "https://algasami.github.io/posts",
+      url: "https://algasami.github.io/en/posts",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: "https://algasami.github.io/graph",
+      url: "https://algasami.github.io/en/graph",
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.5,
     },
     {
-      url: "https://algasami.github.io/dev",
+      url: "https://algasami.github.io/en/dev",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.4,
@@ -37,7 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ].concat(
     allPostsNewToOld.map((p) => {
       return {
-        url: `https://algasami.github.io/posts/${p.slug}`,
+        url: `https://algasami.github.io/en/posts/${p.slug}`,
         lastModified: new Date(p.date),
         changeFrequency: "monthly",
         priority: 0.8,
