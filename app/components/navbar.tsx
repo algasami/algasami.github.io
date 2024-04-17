@@ -88,7 +88,8 @@ function SmallNav({
           <NearMeRoundedIcon fontSize="large" />
         </IconButton>
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-row justify-center">
+        <LangSwitch lang={lang} />
         <ThemeSwitch />
       </div>
       <Modal

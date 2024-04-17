@@ -60,14 +60,6 @@ export default function PostSlugPage({ params }: TProps) {
       className="post-page p-6 pt-20 dark:bg-zinc-800 max-w-[90vw] lg:max-w-[50vw] shadow-lg font-serif bg-amber-50 text-zinc-800 dark:text-yellow-50"
       style={{ minHeight: "100dvh" }}
     >
-      <Head>
-        <title>Algasami | {notFound ? "NOT FOUND" : post.title}</title>
-        <meta
-          name="description"
-          content={notFound ? "NOT FOUND" : post.description}
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <NoSsr>
         <main>
           {notFound ? (
