@@ -81,15 +81,14 @@ export default function PostSlugPage({ params }: TProps) {
 }
 
 const buildProps = (slug: string, lang: Locale) => {
-  const postIndex = allPostsNewToOld.findIndex(
-    (post) => post.slug === slug && post.lang === lang
-  );
+  const filteredPosts = allPostsNewToOld.filter((p) => p.lang === lang);
+  const postIndex = filteredPosts.findIndex((p) => p.slug == slug);
   if (postIndex === -1) {
     return {
       notFound: true,
     };
   }
-  const postFull = allPostsNewToOld[postIndex];
+  const postFull = filteredPosts[postIndex];
   const post: PostForPostPage = {
     title: postFull.title,
     date: postFull.date,
@@ -98,10 +97,6 @@ const buildProps = (slug: string, lang: Locale) => {
       code: postFull.body.code,
     },
   };
-
-  const filteredPosts = allPostsNewToOld.filter(
-    (p) => p.lang === postFull.lang
-  );
 
   const prevFull = filteredPosts[postIndex + 1] || null;
   const prevPost: RelatedPostForPostLayout = prevFull

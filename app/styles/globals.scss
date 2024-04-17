@@ -33,10 +33,6 @@
     @apply text-xl;
   }
 
-  h5 {
-    @apply text-lg;
-  }
-
   .dynamic-link {
     @apply transition-all text-violet-700 hover:text-violet-900 dark:text-violet-400 dark:hover:text-violet-500 hover:shadow-xl shadow-white;
   }
@@ -45,7 +41,7 @@
     @apply justify-center pt-16 max-w-[95vw] lg:max-w-[80vw];
   }
   body {
-    @apply dark:bg-zinc-900 bg-orange-50 dark:text-slate-50 text-slate-900;
+    @apply text-lg dark:bg-zinc-900 bg-orange-50 dark:text-slate-50 text-slate-900;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -72,7 +68,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  @apply font-light text-lg;
+  @apply font-light;
 }
 
 code {

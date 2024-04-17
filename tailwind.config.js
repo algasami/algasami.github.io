@@ -7,7 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-roboto)"],
-        serif: ["var(--font-noto-serif)"],
+        serif: ["var(--font-ibm-plex-mono)"],
         mono: ["var(--font-krypton)"],
       },
     },
