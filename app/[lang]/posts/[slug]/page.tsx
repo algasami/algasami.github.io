@@ -17,10 +17,12 @@ type PostForPostPage = PostForPostLayout & {
   };
 };
 
-export function generateStaticParams() {
-  const arr = allPostsNewToOld.map((post) => ({
-    slug: `${post.slug}`,
-  }));
+export function generateStaticParams({ params }: { params: { lang: Locale } }) {
+  const arr = allPostsNewToOld
+    .filter((p) => p.lang === params.lang)
+    .map((post) => ({
+      slug: `${post.slug}`,
+    }));
   return arr.length === 0 ? [{ slug: "not-found" }] : arr;
 }
 

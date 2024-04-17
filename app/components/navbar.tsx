@@ -8,6 +8,7 @@ import Link from "next/link";
 import { LinkList } from "data/linklist";
 import { Locale } from "i18n-config";
 import { type getDictionary } from "get-dictionary";
+import LangSwitch from "./langSwitch/langSwitch";
 
 export function DynamicLink({ href, name }) {
   return (
@@ -57,6 +58,7 @@ function BigNav({
         {genList("mx-3", lang, navbardict)}
       </div>
       <div className="flex flex-row">
+        <LangSwitch lang={lang} />
         <ThemeSwitch />
       </div>
     </nav>
