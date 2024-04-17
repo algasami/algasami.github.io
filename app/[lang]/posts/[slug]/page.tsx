@@ -7,6 +7,7 @@ import PostLayout, {
 import { allPostsNewToOld } from "../../../components/contentLayerAdapter";
 import { Metadata, ResolvingMetadata } from "next";
 import { NoSsr } from "@mui/material";
+import { Locale } from "i18n-config";
 
 type PostForPostPage = PostForPostLayout & {
   title: string;
@@ -18,17 +19,20 @@ type PostForPostPage = PostForPostLayout & {
 
 export function generateStaticParams() {
   const arr = allPostsNewToOld.map((post) => ({
-    slug: post.slug,
+    slug: `${post.slug}`,
   }));
   return arr.length === 0 ? [{ slug: "not-found" }] : arr;
 }
 
-type TProps = { params: { slug: string } };
+type TProps = { params: { slug: string; lang: Locale } };
 export function generateMetadata(
   { params }: TProps,
   parent: ResolvingMetadata
 ): Metadata {
-  const { post, prevPost, nextPost, notFound } = buildProps(params.slug);
+  const { post, prevPost, nextPost, notFound } = buildProps(
+    params.slug,
+    params.lang
+  );
   return {
     title: post.title,
     description: post.description,
@@ -44,7 +48,10 @@ export function generateMetadata(
 }
 
 export default function PostSlugPage({ params }: TProps) {
-  const { post, prevPost, nextPost, notFound } = buildProps(params.slug);
+  const { post, lang, prevPost, nextPost, notFound } = buildProps(
+    params.slug,
+    params.lang
+  );
   const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
     <div
@@ -68,7 +75,7 @@ export default function PostSlugPage({ params }: TProps) {
               post={post}
               prevPost={prevPost}
               nextPost={nextPost}
-              locale={"en_US"}
+              locale={lang}
             >
               <MDXContent />
             </PostLayout>
@@ -79,21 +86,15 @@ export default function PostSlugPage({ params }: TProps) {
   );
 }
 
-const buildProps = (slug: string) => {
-  const postIndex = allPostsNewToOld.findIndex((post) => post.slug === slug);
+const buildProps = (slug: string, lang: Locale) => {
+  const postIndex = allPostsNewToOld.findIndex(
+    (post) => post.slug === slug && post.lang === lang
+  );
   if (postIndex === -1) {
     return {
       notFound: true,
     };
   }
-  const prevFull = allPostsNewToOld[postIndex + 1] || null;
-  const prevPost: RelatedPostForPostLayout = prevFull
-    ? { title: prevFull.title, path: prevFull.path }
-    : null;
-  const nextFull = allPostsNewToOld[postIndex - 1] || null;
-  const nextPost: RelatedPostForPostLayout = nextFull
-    ? { title: nextFull.title, path: nextFull.path }
-    : null;
   const postFull = allPostsNewToOld[postIndex];
   const post: PostForPostPage = {
     title: postFull.title,
@@ -104,6 +105,19 @@ const buildProps = (slug: string) => {
     },
   };
 
+  const filteredPosts = allPostsNewToOld.filter(
+    (p) => p.lang === postFull.lang
+  );
+
+  const prevFull = filteredPosts[postIndex + 1] || null;
+  const prevPost: RelatedPostForPostLayout = prevFull
+    ? { title: prevFull.title, path: prevFull.path }
+    : undefined;
+  const nextFull = filteredPosts[postIndex - 1] || null;
+  const nextPost: RelatedPostForPostLayout = nextFull
+    ? { title: nextFull.title, path: nextFull.path }
+    : undefined;
+
   if (!post) {
     return {
       notFound: true,
@@ -111,6 +125,7 @@ const buildProps = (slug: string) => {
   }
   return {
     post,
+    lang: postFull.lang as Locale,
     prevPost,
     nextPost,
   };

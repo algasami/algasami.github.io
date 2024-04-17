@@ -1,6 +1,7 @@
 import Link from "next/link";
 import formatDate from "./formatDate";
 import PostBody from "./postBody";
+import { Locale } from "i18n-config";
 
 export interface PostForPostLayout {
   date: string;
@@ -17,7 +18,7 @@ type Props = {
   nextPost: RelatedPostForPostLayout;
   prevPost: RelatedPostForPostLayout;
   children: React.ReactNode;
-  locale: string;
+  locale: Locale;
 };
 
 export default function PostLayout({
@@ -67,7 +68,7 @@ export default function PostLayout({
                       </h2>
                       <div className="flex flex-row justify-start">
                         <Link
-                          href={prevPost.path}
+                          href={`/${locale}/${prevPost.path}`}
                           className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                         >
                           <span>← {prevPost.title}</span>
@@ -80,7 +81,7 @@ export default function PostLayout({
                 <div />
               )}
               {nextPost && (
-                <Link href={nextPost.path} className="">
+                <Link href={`/${locale}/${nextPost.path}`}>
                   <div className="transition-colors dark:hover:text-yellow-100">
                     <button className="basis-6/12 flex flex-col">
                       <h2 className="mb-1 text-right text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">

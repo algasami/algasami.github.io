@@ -66,7 +66,7 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
   const dict = getDictionary(params.lang).posts;
   const { chosen_tags, set_chosen_tags } = useSelectedTags();
   let possible_tags = [];
-  const current_posts = filtered_posts(chosen_tags);
+  const current_posts = filtered_posts(params.lang, chosen_tags);
   for (const post of current_posts) {
     for (const _t of post.tags) {
       const t = _t.toLowerCase();
@@ -126,8 +126,10 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
   );
 }
 
-function filtered_posts(tags: string[]) {
+function filtered_posts(lang: Locale, tags: string[]) {
   return allPostsNewToOld.filter((post) => {
+    if (lang !== post.lang) return;
+
     let hasalltags = true;
     const lower_tags = post.tags.map((v) => v.toLowerCase());
     for (const tag of tags) {

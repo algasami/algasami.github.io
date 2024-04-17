@@ -21,6 +21,10 @@ export const Post = defineDocumentType(() => ({
       type: "string",
       required: true,
     },
+    lang: {
+      type: "string",
+      required: true,
+    },
     date: {
       type: "date",
       required: true,
@@ -36,7 +40,7 @@ export const Post = defineDocumentType(() => ({
   computedFields: {
     path: {
       type: "string",
-      resolve: (post) => `/posts/${post.slug}`,
+      resolve: (post: any) => `/posts/${post.slug}`,
     },
   },
 }));
