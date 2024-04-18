@@ -57,7 +57,7 @@ export default function PostSlugPage({ params }: TProps) {
   const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
     <div
-      className="post-page p-6 pt-20 dark:bg-zinc-800 max-w-screen lg:max-w-[60vw] shadow-lg font-serif bg-amber-50 text-zinc-800 dark:text-yellow-50"
+      className="post-page p-6 pt-20 dark:bg-zinc-800 max-w-[100vw] lg:max-w-[60vw] shadow-lg font-serif bg-amber-50 text-zinc-800 dark:text-yellow-50"
       style={{ minHeight: "100dvh" }}
     >
       <NoSsr>
