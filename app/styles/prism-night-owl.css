@@ -25,7 +25,7 @@ pre[class*="language-"] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
-	@apply font-mono text-lg;
+	@apply font-mono text-base;
 }
 
 pre[class*="language-"]::-moz-selection,
