@@ -150,6 +150,207 @@ BFS 是走訪時盡可能先拜訪相鄰點，通常使用佇列實作。DFS 與
 
 2. 埃特蒙德-卡普演算法：將二分圖的$U$向與$V$向各自接上源頭與終點，然後將每個邊的權重設為一，
    則尋找最大流的時候便是在尋找最大匹配了。因為要找到網路流，勢必要將一個點連向的其他點刪去，剩下一點，
-   這樣的剪裁步驟最大化，找到的便是最小點覆蓋，由柯尼西定理可知推得最大匹配。
+   這樣的剪裁步驟最大化，找到的便是最小點覆蓋，由柯尼西定理可知推得最大匹配。虛擬碼如下：
+
+```c
+from = ∅
+algorithm search_aug(res_graph, source, sink) returns boolean:
+	visited := {source}, queue q
+	append source to q
+	while q ≠ ∅:
+		c := front of q
+		pop q
+		for edge in edges that start from c:
+			v := edge.to
+			if v in visited or res_graph[edge] ≤ 0:
+				continue
+			if v == sink:
+				from[v] := u // 找到終端點
+				return true
+			append v to q
+			from[v] := u
+			append v to visited
+	return false
+
+algorithm ford_fulkerson(flow_network, src, sink) returns number:
+	res_graph := flow_network, max_flow := 0 // 初始容量圖
+	while search_aug(res_graph, src, sink):
+		path_flow := INT_MAX
+		v := sink
+		repeat // 找到目前擴增路徑的邊集合之最小容量
+			u := from[v]
+			path_flow := min(path_flow, res_graph[edge(u, v)])
+			v := u
+		until v == src
+		v := sink
+		repeat // 新增反向的可能
+			u := from[v]
+			res_graph[edge(u, v)] -= path_flow
+			res_graph[edge(v, u)] += path_flow
+			v := u
+		until v == src
+		max_flow += path_flow
+	return max_flow
+```
 
 3. 福特-富爾克森演算法：埃特蒙德-卡普演算法的 DFS 版，速度其實沒有差很多，理論值很大罷了。
+   實作上如下：
+
+```c
+visited := ∅
+algorithm find_path(u_node) returns boolean:
+	if u_node ∈ visited:
+		return false
+	for v_node in u_node.edges:
+		if v_node.match == null:
+			v_node.match := u_node
+			return true
+		if v_node.match != u_node and find_path(v_node.match):
+			v_node.match := u_node // 反轉匹配（匹配換人）
+			return true
+		// 若v_node.match == u_node代表這個位子不能找到增廣路徑
+	return false
+algorithm max_matching(U, V, E) returns number:
+	matches := 0
+	for u_node in U:
+		visited := ∅
+		if find_path(u_node):
+			matches := matches + 1
+	return matche
+```
+
+### 最短路徑問題
+
+最短路徑在許多區域都有應用，像是最直覺的便是找到地圖上兩點最短路徑。這種問題看似簡單，
+但是如果是使用廣度優先搜尋法，時間複雜度超乎想像，
+因此，許多運用動態程式設計的演算法如雨後春筍般冒出。
+
+1. 傳統 BFS 演算法：透過擴散找到觸及節點的瞬間，效率非常低。
+
+2. Djikstra 演算法：有透過動態程式設計的方式儲存現在的狀態，複雜度降低至$O(n \log{n})$
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NODES 100
+
+size_t nodes;
+int adjweight[MAX_NODES][MAX_NODES];
+int adjlist[MAX_NODES][MAX_NODES + 1] = {0};
+size_t previous[MAX_NODES];
+int mindist[MAX_NODES];
+int visited[MAX_NODES] = {0};
+
+size_t from, to;
+
+/**
+ * 定義優先佇列
+ * Define Priority Queue
+ */
+struct PriorityData {
+    size_t node;
+    int priority;
+};
+
+struct PriorityQueue {
+    struct PriorityData data[MAX_NODES];
+    size_t size;
+};
+
+int _priority_queue_cmp(struct PriorityData const *const a,
+                        struct PriorityData const *const b) {
+    return a->priority - b->priority;
+}
+
+//  是否空的
+int empty(struct PriorityQueue *const pq) { return !pq->size; }
+
+// 加入佇列並排序
+void enqueue(struct PriorityQueue *const pq, struct PriorityData val) {
+    pq->data[pq->size++] = val;
+    qsort(pq->data, pq->size, sizeof(struct PriorityData),
+          (int (*)(const void *, const void *))_priority_queue_cmp);
+}
+
+// 砍頭
+struct PriorityData dequeue(struct PriorityQueue *const pq) {
+    struct PriorityData x = pq->data[0];
+    for (size_t i = 1; i < pq->size--; i++) {
+        pq->data[i - 1] = pq->data[i];
+    }
+    return x;
+}
+
+struct PriorityQueue traverse_queue = {.size = 0};
+
+int main() {
+    memset(mindist, -1, sizeof(mindist));
+    printf("Node Count: ");
+    scanf("%zu", &nodes);
+    printf("Edges x y w until 0 0 0: \n");
+
+    while (1) {
+        size_t x, y;
+        int w;
+        scanf("%zu %zu %d", &x, &y, &w);
+        if (x == 0 && y == 0 && w == 0)
+            break;
+        if (x == y)
+            continue;
+
+        adjweight[x][y] = adjweight[y][x] = w;
+        adjlist[x][adjlist[x][MAX_NODES]++] = y;
+        adjlist[y][adjlist[y][MAX_NODES]++] = x;
+        /**
+         * 這次結合了相鄰矩陣的快速取值優點與陣列的列舉速度
+         * This combines the fast det. of adj matrices
+         * and the speed of array traversal
+         */
+    }
+
+    printf("From: ");
+    scanf("%u", &from);
+    printf("To: ");
+    scanf("%u", &to);
+
+    mindist[from] = 0; // 設定起點到起點的最短距離為0
+
+    enqueue(&traverse_queue,
+            (struct PriorityData){.node = from, .priority = 0});
+
+    // BFS開始
+    while (!empty(&traverse_queue)) {
+        size_t node = dequeue(&traverse_queue).node; // 目前BFS的位置
+        visited[node] = 1;
+        for (size_t i = 0; i < adjlist[node][MAX_NODES]; i++) {
+            size_t adjnode = adjlist[node][i];
+            if (visited[adjnode])
+                continue;
+
+            // 未走訪的鄰邊
+            int thisdist = mindist[node] + adjweight[node][adjnode];
+            if (mindist[adjnode] < 0 || (mindist[adjnode] > thisdist)) {
+                // 如果沒有最短距離，或者最短距離大於用這種方法走的距離時
+                mindist[adjnode] = thisdist;
+                previous[adjnode] = node;
+            }
+            enqueue(&traverse_queue,
+                    (struct PriorityData){.node = adjnode,
+                                          .priority = mindist[adjnode]});
+        }
+    }
+
+    printf("best: ");
+    size_t current = to;
+    // 由最後一路走到前面
+    while (current != from) {
+        printf("%d<-", current);
+        current = previous[current];
+    }
+    printf("%d", current);
+
+    return 0;
+}
+```
