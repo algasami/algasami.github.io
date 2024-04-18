@@ -45,6 +45,9 @@ tags:
 
 size_t nodes = 0;
 int adj[MAX_NODES][MAX_NODES] = {0};
+/**
+ * adj[x][y] = adj[y][x] = 是否連接
+ */
 
 int main()
 {
@@ -61,6 +64,7 @@ int main()
     for(size_t i = 0; i < nodes; i++)
     {
         printf("adjs of %d are: ", i);
+        // 線性搜尋O(mn)
         for(size_t j = 0; j < nodes; j++)
         {
             if(i == j || !adj[i][j]) continue;
@@ -98,6 +102,7 @@ int main()
     for(size_t i = 0; i < nodes; i++)
     {
         printf("adjs of %d are: ", i);
+        // 線性列舉O(m)
         for(size_t j = 0; j < adj[i][MAX_NODES]; j++)
         {
             printf("%u ", adj[i][j]);
