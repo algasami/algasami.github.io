@@ -87,6 +87,8 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
   const [selY, setSelY] = useState<string>("");
 
   const [trav_state, set_trav_state] = useState(0);
+  const [algo, set_algo] = useState(0);
+  const [total_visited, set_total_visited] = useState(0);
   const [obstacles, set_obstacles] = useState<Map<string, boolean>>(new Map());
   const [visited, set_visited] = useState<Map<string, boolean>>(new Map());
   const [mindist, set_mindist] = useState<Map<string, number>>(new Map());
@@ -178,6 +180,7 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       const firstkey = getKey(node_first.y, node_first.x);
 
       visited.set(firstkey, true);
+      set_total_visited(total_visited + 1);
       if (node_first.x === end.x && node_first.y === end.y) {
         set_pq([]);
         return;
@@ -219,7 +222,12 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
           });
           pqcopy.push({
             node: coord,
-            priority: mindist.get(key) + getdist(coord, end),
+            priority:
+              algo === 0
+                ? thisdist + getdist(coord, end)
+                : algo === 1
+                ? thisdist
+                : 0,
           });
         }
       };
@@ -364,7 +372,8 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       <p>{dict.content}</p>
       <h1>{dict.traversal_title}</h1>
       <hr />
-      <h3>{dict.STATE_TEXTS[trav_state]}</h3>
+      <h3>{`${dict.a_star_state_form}: ${dict.STATE_TEXTS[trav_state]} |
+      ${dict.a_star_algo_form}: ${dict.a_star_algos[algo]} | ${dict.a_star_visited}: ${total_visited}`}</h3>
       <div
         className="flex flex-wrap"
         style={{
@@ -375,10 +384,11 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       </div>
       <br />
       <button
-        className={`add-node-button inter-button-neutral`}
+        className={`add-node-button inter-button-neutral m-1`}
         onClick={() => {
           set_visited(new Map());
           set_previous(new Map());
+          set_total_visited(0);
           const trav_copy = (trav_state + 1) % dict.STATE_TEXTS.length;
           const distmap = new Map();
           if (trav_copy === 3 && start && end) {
@@ -394,7 +404,15 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
           set_trav_state(trav_copy);
         }}
       >
-        Next State
+        {dict.a_star_next_step}
+      </button>
+      <button
+        className={`add-node-button inter-button-neutral m-1`}
+        onClick={() => {
+          set_algo((algo + 1) % dict.a_star_algos.length);
+        }}
+      >
+        {dict.a_star_next_algo}
       </button>
       <h2>{dict.a_star_title}</h2>
       <hr />

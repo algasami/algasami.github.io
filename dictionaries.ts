@@ -77,12 +77,18 @@ export const en = {
     `,
     traversal_title: "Shortest Path Problem",
     STATE_TEXTS: ["Set Obstacles", "Set Start", "Set End", "Calculate"],
+    a_star_state_form: "Current Step",
+    a_star_algo_form: "Current Algo",
+    a_star_visited: "Total Visited:",
+    a_star_algos: ["A*", "Djikstra", "Flooding"],
     a_star_title: "A* Algorithm",
     a_star_content: `A* Algorithm's main difference from traditional BFS flooding method involves an informed
     search algorithm, whose information largely depends on the non-topological properties of a graph, restricting
     it from being generalized further. Despite this drawback, A* compensates it with a large leap of performance
     compared to traditional flooding and djikstra algorithm. The priority value for each node (less is better) is
     the sum of a heuristic function and the minimum distance from djikstra algorithm.`,
+    a_star_next_step: "Next State",
+    a_star_next_algo: "Change Algorithm",
   },
 };
 
@@ -151,11 +157,17 @@ export const zh_tw: typeof en = {
     `,
     traversal_title: "最短路徑問題",
     STATE_TEXTS: ["設定障礙物", "設定起點", "設定終點", "運算中"],
+    a_star_state_form: "目前步驟",
+    a_star_algo_form: "目前演算法",
+    a_star_visited: "拜訪方塊",
+    a_star_algos: ["A*", "Djikstra", "淹水法"],
     a_star_title: "A* 演算法",
     a_star_content: `A*演算法與傳統的BFS淹水法在於它所做的已知知識搜尋演算法
     （Informed Search Algorithm），其中它所使用的知識源自圖的
     非拓墣性質（Non-topological Properties），造成一個缺點——它難以被通用化。不過，
     儘管它的這個缺點，A*演算法透過驚人的速度超越淹水法與Djikstra演算法。A*的優先值使用
     經驗公式與Djikstra最短距離。`,
+    a_star_next_step: "下一步",
+    a_star_next_algo: "更改演算法",
   },
 };
