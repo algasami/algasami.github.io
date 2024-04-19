@@ -61,7 +61,6 @@ type TCoord = {
 
 const HEIGHT = 20,
   WIDTH = 20;
-const STATE_TEXTS = ["Set Obstacles", "Set Start", "Set End", "Calculate"];
 function getKey(i: number, j: number) {
   return `${i},${j}`;
 }
@@ -362,9 +361,10 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       <br />
       <h2>{dict.how_it_work}</h2>
       <hr />
-      {dict.content}
+      <p>{dict.content}</p>
       <h1>{dict.traversal_title}</h1>
-      <h3>{STATE_TEXTS[trav_state]}</h3>
+      <hr />
+      <h3>{dict.STATE_TEXTS[trav_state]}</h3>
       <div
         className="flex flex-wrap"
         style={{
@@ -379,7 +379,7 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
         onClick={() => {
           set_visited(new Map());
           set_previous(new Map());
-          const trav_copy = (trav_state + 1) % STATE_TEXTS.length;
+          const trav_copy = (trav_state + 1) % dict.STATE_TEXTS.length;
           const distmap = new Map();
           if (trav_copy === 3 && start && end) {
             distmap.set(getKey(start.y, start.x), 0);
@@ -396,6 +396,9 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       >
         Next State
       </button>
+      <h2>{dict.a_star_title}</h2>
+      <hr />
+      <p>{dict.a_star_content}</p>
     </main>
   );
 }
