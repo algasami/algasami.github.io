@@ -5,7 +5,7 @@ import {
   IBipartiteGraphInput,
   calculateAdjs,
 } from "../../components/grapher/graph";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Locale } from "i18n-config";
 import { getDictionary } from "get-dictionary";
 
@@ -43,6 +43,10 @@ function getMatching(input: IBipartiteGraphInput) {
   return matching;
 }
 
+function getdist(a: TCoord, b: TCoord) {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
+
 const default_graph: IBipartiteGraphInput = {
   nodes: [],
   x_size: 0,
@@ -50,6 +54,31 @@ const default_graph: IBipartiteGraphInput = {
   adjs: [],
 };
 
+type TCoord = {
+  x: number;
+  y: number;
+};
+
+const HEIGHT = 20,
+  WIDTH = 20;
+const STATE_TEXTS = ["Set Obstacles", "Set Start", "Set End", "Calculate"];
+function getKey(i: number, j: number) {
+  return `${i},${j}`;
+}
+function fromkey(str: string): TCoord {
+  const splits = str.split(",");
+  return {
+    x: parseInt(splits[1]),
+    y: parseInt(splits[0]),
+  };
+}
+function copyMap<K, V>(map: Map<K, V>) {
+  const copy = new Map<K, V>();
+  map.forEach((v, i) => {
+    copy.set(i, v);
+  });
+  return copy;
+}
 export default function Graph({ params }: { params: { lang: Locale } }) {
   const dict = getDictionary(params.lang).graph;
   const [graphInput, setGraphInput] =
@@ -57,6 +86,155 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
 
   const [selX, setSelX] = useState<string>("");
   const [selY, setSelY] = useState<string>("");
+
+  const [trav_state, set_trav_state] = useState(0);
+  const [obstacles, set_obstacles] = useState<Map<string, boolean>>(new Map());
+  const [visited, set_visited] = useState<Map<string, boolean>>(new Map());
+  const [mindist, set_mindist] = useState<Map<string, number>>(new Map());
+  const [start, set_start] = useState<TCoord | undefined>(undefined);
+  const [front, set_front] = useState<TCoord | undefined>(undefined);
+  const [previous, set_previous] = useState<Map<string, TCoord>>(new Map());
+  const [end, set_end] = useState<TCoord | undefined>(undefined);
+  const [pq, set_pq] = useState<{ node: TCoord; priority: number }[]>([]);
+
+  const path: TCoord[] = [];
+  let completeness = false;
+  if (trav_state === 3 && front !== undefined) {
+    path.push(front);
+    // display current path
+    let last = previous.get(getKey(front.y, front.x));
+    if (last !== undefined) {
+      path.push(last);
+      while (last.x !== start.x || last.y !== start.y) {
+        last = previous.get(getKey(last.y, last.x));
+        path.push(last);
+      }
+      if (last.x === start.x && last.y === start.y && pq.length === 0) {
+        completeness = true;
+      }
+    }
+  }
+
+  const grids = [];
+  for (let i = 0; i < HEIGHT; i++) {
+    for (let j = 0; j < WIDTH; j++) {
+      let color = "bg-gray-400 hover:bg-gray-200 transition-colors";
+      let isobs = false;
+      const key = getKey(i, j);
+      if (obstacles.has(key) && obstacles.get(key)) {
+        color = "bg-gray-900";
+        isobs = true;
+      }
+      if (start && start.x === j && start.y === i) {
+        color = "bg-green-600";
+      } else if (end && end.x === j && end.y === i) {
+        color = "bg-yellow-500";
+      }
+      if (visited.has(key) && visited.get(key)) {
+        color = "bg-red-600";
+      }
+      if (path.findIndex((v) => v.x === j && v.y === i) >= 0) {
+        color = "bg-yellow-500";
+      }
+      grids.push(
+        <button
+          key={key}
+          className={`${color} w-[20px] h-[20px]`}
+          onClick={() => {
+            if (trav_state === 0) {
+              // set obstacles
+              const cop = copyMap(obstacles);
+              if (cop.has(getKey(i, j))) {
+                cop.set(key, !cop.get(key));
+              } else {
+                cop.set(key, true);
+              }
+              set_obstacles(cop);
+            } else if (trav_state === 1 && !isobs) {
+              // set start
+              set_start({ x: j, y: i });
+            } else if (trav_state === 2 && !isobs) {
+              // set end
+              set_end({ x: j, y: i });
+            }
+          }}
+        ></button>
+      );
+    }
+  }
+  useEffect(() => {
+    const conn = setTimeout(() => {
+      if (
+        trav_state !== 3 ||
+        pq.length == 0 ||
+        start === undefined ||
+        end === undefined ||
+        completeness
+      )
+        return;
+      const pqcopy = [...pq];
+
+      const node_first = pqcopy.shift().node;
+      set_front(node_first);
+      const firstkey = getKey(node_first.y, node_first.x);
+
+      visited.set(firstkey, true);
+      if (node_first.x === end.x && node_first.y === end.y) {
+        set_pq([]);
+        return;
+      }
+      // get adjs
+      const up_adj = {
+        x: node_first.x,
+        y: node_first.y - 1,
+      };
+      const down_adj = {
+        x: node_first.x,
+        y: node_first.y + 1,
+      };
+      const left_adj = {
+        x: node_first.x - 1,
+        y: node_first.y,
+      };
+      const right_adj = {
+        x: node_first.x + 1,
+        y: node_first.y,
+      };
+      const pq_calc = (coord: TCoord) => {
+        const key = getKey(coord.y, coord.x);
+        if (
+          coord.x < 0 ||
+          coord.x >= WIDTH ||
+          coord.y < 0 ||
+          coord.y >= HEIGHT ||
+          obstacles.get(key)
+        ) {
+          return;
+        }
+        const thisdist = mindist.get(firstkey) + 1;
+        if (mindist.has(key) === false || mindist.get(key) > thisdist) {
+          mindist.set(key, thisdist);
+          previous.set(key, {
+            x: node_first.x,
+            y: node_first.y,
+          });
+          pqcopy.push({
+            node: coord,
+            priority: mindist.get(key) + getdist(coord, end),
+          });
+        }
+      };
+      pq_calc(up_adj);
+      pq_calc(down_adj);
+      pq_calc(left_adj);
+      pq_calc(right_adj);
+      pqcopy.sort((a, b) => a.priority - b.priority);
+      set_pq(pqcopy);
+    }, 10);
+    return () => {
+      clearTimeout(conn);
+    };
+  });
   return (
     <main className="graph-page hallway-size min-w-[40vw] max-w-[80vw] lg:max-w-[60vw]">
       <h1>{dict.title}</h1>
@@ -185,6 +363,39 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       <h2>{dict.how_it_work}</h2>
       <hr />
       {dict.content}
+      <h1>{dict.traversal_title}</h1>
+      <h3>{STATE_TEXTS[trav_state]}</h3>
+      <div
+        className="flex flex-wrap"
+        style={{
+          width: 20 * WIDTH,
+        }}
+      >
+        {grids}
+      </div>
+      <br />
+      <button
+        className={`add-node-button inter-button-neutral`}
+        onClick={() => {
+          set_visited(new Map());
+          set_previous(new Map());
+          const trav_copy = (trav_state + 1) % STATE_TEXTS.length;
+          const distmap = new Map();
+          if (trav_copy === 3 && start && end) {
+            distmap.set(getKey(start.y, start.x), 0);
+            set_pq([
+              {
+                node: start,
+                priority: 0,
+              },
+            ]);
+            set_mindist(distmap);
+          }
+          set_trav_state(trav_copy);
+        }}
+      >
+        Next State
+      </button>
     </main>
   );
 }

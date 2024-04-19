@@ -75,6 +75,7 @@ export const en = {
       edge connected to others. Note that this algorithm does not yield errors should
       it fail to find any optimal solutions, which results in an incomplete matching.
     `,
+    traversal_title: "Shortest Path Problem",
   },
 };
 
@@ -141,5 +142,6 @@ export const zh_tw: typeof en = {
     我們可以找到最有效的最大匹配解法，使用越少的邊達成這件事。雖然此演算法不會報錯，不過在特殊
     情形下可能找不到最優解，因此會採取妥協態度，產生不完整的匹配。
     `,
+    traversal_title: "最短路徑問題",
   },
 };
