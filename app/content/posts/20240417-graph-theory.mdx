@@ -10,4 +10,361 @@ tags:
   - computer science
 ---
 
-awaiting translation.
+Graph theory revolves around graphes... evidently. Graphs are objects composed
+of vertices and edges. An edge connects two vertices which can be the same.
+Through graph theory, we can simplify convoluted problems, so please stay tuned.
+
+## Definition
+
+A graph is a set denoted as $G=V+E$ where $V$ is a set of vertices and $E$ is a set
+of edges. We'll define some terms down here:
+
+- edge: An edge that goes from $u$ to $v$ is represented as $e(u, v)$. If it is a directional
+edge, then $u \neq v \implies e(u,v) \neq e(v, u)$.
+- loop: A loop is $e(n, n)$
+- cycle: A cycle is a valid path that leads from one vertex to itself.
+- weight: Vertices and edges can be assigned with weights -- numbers or information.
+
+Graphs can be categorized, too. The most intuitive graph is a simple graph, which has no
+loop or direction. The second most intuitive one is DAG(Directed Acyclic Graph), which has
+no cycle.
+
+## Topological Properties
+
+Since graphs are a means of representing relationships between elements, the shapes of them
+are not of top priority, so a graph can have arbitrarily placed vertices and edges without
+impacting the structure of it, which is called isomorphism.
+
+## Implementation of Graphes
+
+There are many ways a graph can be implemented with varying complexities.
+
+1. The first one is adjacency matrix
+
+```c
+#include <stdio.h>
+#define MAX_NODES 100
+
+size_t nodes = 0;
+int adj[MAX_NODES][MAX_NODES] = {0};
+/**
+ * adj[x][y] = adj[y][x] = is connected or not
+ */
+
+int main()
+{
+    printf("nodes: ");
+    scanf("%u", &nodes);
+    printf("input edges x y (until -1):\n");
+    while(1)
+    {
+        int x,y;
+        scanf("%d %d", &x, &y);
+        if(x < 0 || y < 0) break;
+        adj[x][y] = adj[y][x] = 1;
+    }
+    for(size_t i = 0; i < nodes; i++)
+    {
+        printf("adjs of %d are: ", i);
+        // linear search O(mn)
+        for(size_t j = 0; j < nodes; j++)
+        {
+            if(i == j || !adj[i][j]) continue;
+            printf("%d ", j);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+```
+
+2. Second is adjacency list
+
+```c
+#include <stdio.h>
+
+#define MAX_NODES 100
+
+size_t nodes = 0;
+size_t adj[MAX_NODES][MAX_NODES + 1] = {0};
+
+int main()
+{
+    printf("nodes: ");
+    scanf("%u", &nodes);
+    printf("input edges x y (until -1):\n");
+    while(1)
+    {
+        int x,y;
+        scanf("%d %d", &x, &y);
+        if(x < 0 || y < 0) break;
+        adj[x][adj[x][MAX_NODES]++] = y;
+        adj[y][adj[y][MAX_NODES]++] = x;
+    }
+    for(size_t i = 0; i < nodes; i++)
+    {
+        printf("adjs of %d are: ", i);
+        // 線性列舉O(m)
+        for(size_t j = 0; j < adj[i][MAX_NODES]; j++)
+        {
+            printf("%u ", adj[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+```
+
+When reading, adjacency matrix's upper bound is $O(n^2)$, adjacency list's being $O(n)$;
+nevertheless, adjacency matrix's upper bound when checking whether or not two vertices
+are connected is reduced to $O(1)$, whereas the adjacency list suffers a $O(n)$ time
+complexity.
+
+## Special Graphs
+
+These are some special graphs for special implementation.
+
+### Bipartite Graph
+
+A bipartite graph is composed of two graphes with null edge sets, so $G=(E_1 + E_2, V)$.
+It can represent a variety of matching problems.
+
+### Flow
+
+Flow is a state of a graph. If a graph reaches the requirement of a graph, the weights of the input edges
+and the weights of the output edges of a certain vertex must cancel each other out. Flows can be used to
+solve scheduling, optimization problems. With the right algorithm and the right type of graph, the process
+can be sped up. A graph that satisfies a flow must have a source and a sink vertex, respectively representing
+the total input flow and the total output flow which must be equivalent.
+
+## Graph Algorithms
+
+### Depth/Breadth First Search/Traversal
+
+When it comes to graph algorithms, we must first talk about the classic DFS and BFS. The former can be
+represented as a stack or a recursion. The latter prioritizes neighboring vertices. BFS is often implemented
+with queues. The generalized versions of them have non-polynomial time complexity, so optimization is vital.
+
+### Maximum Matching Problem
+
+In a graph, a matching is a subset of the edge set. In the version of the graph where the vertex set
+is substituted with the matching, each point can only connect to another point at most, which looks
+like a matching. The maximum matching problem asks if we can find a matching with the most points in a
+graph. The time complexity of it is considerable. However, some theorems can help speed things up.
+
+1. Kőnig's Theorem: Theorized by Dénes Kőnig in 1931 and proven with alternating paths (paths which
+go from non-matched edges and alternate between non-matched and matched edges), the theorem states
+that in any bipartite graphs, the number of edges in a maximum matching must be the same as the vertex
+count of a minimum vertex cover. With this theorem, we can use the minimum vertex cover to find the maximum
+matching.
+
+2. Edmonds-Karp Algorithm: By attaching the $U$ set to a source and the $V$ set to a sink in a bipartite graph,
+and setting the weight of each edge to one, we can find the maximum matching by finding the maximum flow, since
+in order to find a flow, we must cut down all the neighboring points except one point of a subject. When we
+maximize this cutting process, we find the minimum vertex cover. Via Kőnig's theorem, we can procure the maximum
+matching.
+
+```c
+from = ∅
+algorithm search_aug(res_graph, source, sink) returns boolean:
+	visited := {source}, queue q
+	append source to q
+	while q ≠ ∅:
+		c := front of q
+		pop q
+		for edge in edges that start from c:
+			u := edge.from
+			v := edge.to
+			if v in visited or res_graph[edge] ≤ 0:
+				continue
+			if v == sink:
+				from[v] := u // found the sink
+				return true
+			append v to q
+			from[v] := u
+			append v to visited
+	return false
+
+algorithm edmonds_karp(flow_network, src, sink) returns number:
+	res_graph := flow_network, max_flow := 0 // init residual graph
+	while search_aug(res_graph, src, sink):
+		path_flow := INT_MAX
+		v := sink
+		repeat // find the minimum capacity of alternating paths
+			u := from[v]
+			path_flow := min(path_flow, res_graph[edge(u, v)])
+			v := u
+		until v == src
+		v := sink
+		repeat // add inversions
+			u := from[v]
+			res_graph[edge(u, v)] -= path_flow
+			res_graph[edge(v, u)] += path_flow
+			v := u
+		until v == src
+		max_flow += path_flow
+	return max_flow
+```
+
+3. Ford-Fulkerson Algorithm: The DFS version of Edmonds-Karp.
+
+```c
+visited := ∅
+algorithm find_path(u_node) returns boolean:
+	if u_node ∈ visited:
+		return false
+	for v_node in u_node.edges:
+		if v_node.match == null:
+			v_node.match := u_node
+			return true
+		if v_node.match != u_node and find_path(v_node.match):
+			v_node.match := u_node // inversion
+			return true
+		// can't find alternating paths here
+	return false
+algorithm max_matching(U, V, E) returns number:
+	matches := 0
+	for u_node in U:
+		visited := ∅
+		if find_path(u_node):
+			matches := matches + 1
+	return matche
+```
+
+### Shortest Path Problem
+
+The shortest path problem has a wide range of application, with the most straightforward one being finding
+the shortest path between two points on a map. It may seem trivial at first, but the time complexity of solving
+it would be gigantic with BFS or brute force, so some algorithms that utilize dynamic programming have sprung
+up.
+
+1. Traditional Flooding: It uses flood-like traversal technique, which is really slow.
+
+2. Djikstra Algorithm: It uses dynamic programming to memorize the current state, lowering the complexity to
+$O(n \log {n})$. The advantage of Djikstra is its weakness, it can find the shortest path to a given point for
+all points on the map. When it comes to implementation, flooding uses queue, where Djikstra uses priority
+queues. The lower the priority is (closer to the source), the faster it gets processed, which means $p(v)=d(v)$,
+because it has a larger chance to find the shortest path.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NODES 100
+
+size_t nodes;
+int adjweight[MAX_NODES][MAX_NODES];
+int adjlist[MAX_NODES][MAX_NODES + 1] = {0};
+size_t previous[MAX_NODES];
+int mindist[MAX_NODES];
+int visited[MAX_NODES] = {0};
+
+size_t from, to;
+
+/**
+ * Define Priority Queue
+ */
+struct PriorityData {
+    size_t node;
+    int priority;
+};
+
+struct PriorityQueue {
+    struct PriorityData data[MAX_NODES];
+    size_t size;
+};
+
+int _priority_queue_cmp(struct PriorityData const *const a,
+                        struct PriorityData const *const b) {
+    return a->priority - b->priority;
+}
+
+int empty(struct PriorityQueue *const pq) { return !pq->size; }
+
+void enqueue(struct PriorityQueue *const pq, struct PriorityData val) {
+    pq->data[pq->size++] = val;
+    qsort(pq->data, pq->size, sizeof(struct PriorityData),
+          (int (*)(const void *, const void *))_priority_queue_cmp);
+}
+
+struct PriorityData dequeue(struct PriorityQueue *const pq) {
+    struct PriorityData x = pq->data[0];
+    for (size_t i = 1; i < pq->size--; i++) {
+        pq->data[i - 1] = pq->data[i];
+    }
+    return x;
+}
+
+struct PriorityQueue traverse_queue = {.size = 0};
+
+int main() {
+    memset(mindist, -1, sizeof(mindist));
+    printf("Node Count: ");
+    scanf("%zu", &nodes);
+    printf("Edges x y w until 0 0 0: \n");
+
+    while (1) {
+        size_t x, y;
+        int w;
+        scanf("%zu %zu %d", &x, &y, &w);
+        if (x == 0 && y == 0 && w == 0)
+            break;
+        if (x == y)
+            continue;
+
+        adjweight[x][y] = adjweight[y][x] = w;
+        adjlist[x][adjlist[x][MAX_NODES]++] = y;
+        adjlist[y][adjlist[y][MAX_NODES]++] = x;
+        /**
+         * This combines the fast det. of adj matrices
+         * and the speed of array traversal
+         */
+    }
+
+    printf("From: ");
+    scanf("%u", &from);
+    printf("To: ");
+    scanf("%u", &to);
+
+    mindist[from] = 0;
+
+    enqueue(&traverse_queue,
+            (struct PriorityData){.node = from, .priority = 0});
+
+    while (!empty(&traverse_queue)) {
+        size_t node = dequeue(&traverse_queue).node;
+        visited[node] = 1;
+        for (size_t i = 0; i < adjlist[node][MAX_NODES]; i++) {
+            size_t adjnode = adjlist[node][i];
+            if (visited[adjnode])
+                continue;
+
+            int thisdist = mindist[node] + adjweight[node][adjnode];
+            if (mindist[adjnode] < 0 || (mindist[adjnode] > thisdist)) {
+                mindist[adjnode] = thisdist;
+                previous[adjnode] = node;
+            }
+            enqueue(&traverse_queue,
+                    (struct PriorityData){.node = adjnode,
+                                          .priority = mindist[adjnode]});
+        }
+    }
+
+    printf("best: ");
+    size_t current = to;
+    while (current != from) {
+        printf("%d<-", current);
+        current = previous[current];
+    }
+    printf("%d", current);
+
+    return 0;
+}
+```
+
+3. A\* Algorithm: The A\* algorithm (A Star) is almost identical to Djikstra, with the only difference being
+that the priority of a target depends not only on the distance of it from the source but also a heuristic
+function that is "informed" with additional information about the graph. In $p(v)=d(v)+h(v)$, $h(v)$ is often
+the shortest distance between the source and the target in the physical space. It isn't hard to see that
+A\* depends on the non-topological properties of a graph, so it is not isomorphism-friendly.

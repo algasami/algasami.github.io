@@ -167,6 +167,7 @@ algorithm search_aug(res_graph, source, sink) returns boolean:
 		c := front of q
 		pop q
 		for edge in edges that start from c:
+			u := edge.from
 			v := edge.to
 			if v in visited or res_graph[edge] ≤ 0:
 				continue
@@ -178,7 +179,7 @@ algorithm search_aug(res_graph, source, sink) returns boolean:
 			append v to visited
 	return false
 
-algorithm ford_fulkerson(flow_network, src, sink) returns number:
+algorithm edmonds_karp(flow_network, src, sink) returns number:
 	res_graph := flow_network, max_flow := 0 // 初始容量圖
 	while search_aug(res_graph, src, sink):
 		path_flow := INT_MAX
