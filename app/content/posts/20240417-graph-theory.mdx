@@ -10,7 +10,7 @@ tags:
   - computer science
 ---
 
-Graph theory revolves around graphes... evidently. Graphs are objects composed
+Graph theory revolves around graphs... evidently. Graphs are objects composed
 of vertices and edges. An edge connects two vertices which can be the same.
 Through graph theory, we can simplify convoluted problems, so please stay tuned.
 
@@ -20,7 +20,7 @@ A graph is a set denoted as $G=V+E$ where $V$ is a set of vertices and $E$ is a 
 of edges. We'll define some terms down here:
 
 - edge: An edge that goes from $u$ to $v$ is represented as $e(u, v)$. If it is a directional
-edge, then $u \neq v \implies e(u,v) \neq e(v, u)$.
+  edge, then $u \neq v \implies e(u,v) \neq e(v, u)$.
 - loop: A loop is $e(n, n)$
 - cycle: A cycle is a valid path that leads from one vertex to itself.
 - weight: Vertices and edges can be assigned with weights -- numbers or information.
@@ -35,7 +35,7 @@ Since graphs are a means of representing relationships between elements, the sha
 are not of top priority, so a graph can have arbitrarily placed vertices and edges without
 impacting the structure of it, which is called isomorphism.
 
-## Implementation of Graphes
+## Implementation of Graphs
 
 There are many ways a graph can be implemented with varying complexities.
 
@@ -126,7 +126,7 @@ These are some special graphs for special implementation.
 
 ### Bipartite Graph
 
-A bipartite graph is composed of two graphes with null edge sets, so $G=(E_1 + E_2, V)$.
+A bipartite graph is composed of two graphs with null edge sets, so $G=(E_1 + E_2, V)$.
 It can represent a variety of matching problems.
 
 ### Flow
@@ -153,16 +153,16 @@ like a matching. The maximum matching problem asks if we can find a matching wit
 graph. The time complexity of it is considerable. However, some theorems can help speed things up.
 
 1. Kőnig's Theorem: Theorized by Dénes Kőnig in 1931 and proven with alternating paths (paths which
-go from non-matched edges and alternate between non-matched and matched edges), the theorem states
-that in any bipartite graphs, the number of edges in a maximum matching must be the same as the vertex
-count of a minimum vertex cover. With this theorem, we can use the minimum vertex cover to find the maximum
-matching.
+   go from non-matched edges and alternate between non-matched and matched edges), the theorem states
+   that in any bipartite graphs, the number of edges in a maximum matching must be the same as the vertex
+   count of a minimum vertex cover. With this theorem, we can use the minimum vertex cover to find the maximum
+   matching.
 
 2. Edmonds-Karp Algorithm: By attaching the $U$ set to a source and the $V$ set to a sink in a bipartite graph,
-and setting the weight of each edge to one, we can find the maximum matching by finding the maximum flow, since
-in order to find a flow, we must cut down all the neighboring points except one point of a subject. When we
-maximize this cutting process, we find the minimum vertex cover. Via Kőnig's theorem, we can procure the maximum
-matching.
+   and setting the weight of each edge to one, we can find the maximum matching by finding the maximum flow, since
+   in order to find a flow, we must cut down all the neighboring points except one point of a subject. When we
+   maximize this cutting process, we find the minimum vertex cover. Via Kőnig's theorem, we can procure the maximum
+   matching.
 
 ```c
 from = ∅
@@ -241,10 +241,10 @@ up.
 1. Traditional Flooding: It uses flood-like traversal technique, which is really slow.
 
 2. Djikstra Algorithm: It uses dynamic programming to memorize the current state, lowering the complexity to
-$O(n \log {n})$. The advantage of Djikstra is its weakness, it can find the shortest path to a given point for
-all points on the map. When it comes to implementation, flooding uses queue, where Djikstra uses priority
-queues. The lower the priority is (closer to the source), the faster it gets processed, which means $p(v)=d(v)$,
-because it has a larger chance to find the shortest path.
+   $O(n \log {n})$. The advantage of Djikstra is its weakness, it can find the shortest path to a given point for
+   all points on the map. When it comes to implementation, flooding uses queue, where Djikstra uses priority
+   queues. The lower the priority is (closer to the source), the faster it gets processed, which means $p(v)=d(v)$,
+   because it has a larger chance to find the shortest path.
 
 ```c
 #include <stdio.h>
@@ -364,7 +364,7 @@ int main() {
 ```
 
 3. A\* Algorithm: The A\* algorithm (A Star) is almost identical to Djikstra, with the only difference being
-that the priority of a target depends not only on the distance of it from the source but also a heuristic
-function that is "informed" with additional information about the graph. In $p(v)=d(v)+h(v)$, $h(v)$ is often
-the shortest distance between the source and the target in the physical space. It isn't hard to see that
-A\* depends on the non-topological properties of a graph, so it is not isomorphism-friendly.
+   that the priority of a target depends not only on the distance of it from the source but also a heuristic
+   function that is "informed" with additional information about the graph. In $p(v)=d(v)+h(v)$, $h(v)$ is often
+   the shortest distance between the source and the target in the physical space. It isn't hard to see that
+   A\* depends on the non-topological properties of a graph, so it is not isomorphism-friendly.
