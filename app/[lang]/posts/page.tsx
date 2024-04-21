@@ -115,7 +115,7 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
                 color="bg-slate-900"
                 content={post.description}
                 buttonName="Go to"
-                link={`/${params.lang}/${post.path}`}
+                link={`/${params.lang}${post.path}`}
                 key={post.slug}
               />
             );

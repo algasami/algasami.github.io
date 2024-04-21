@@ -42,6 +42,8 @@ export const en = {
     projects: projects_en,
     timeline_title: "Timeline",
     timeline: timeline_en,
+    meta_description:
+      "Hello there. I'm Algasami, an aspired low-level, software and web developer and a student.",
   },
   navbar: {
     home: "Home",
@@ -126,6 +128,8 @@ export const zh_tw: typeof en = {
     projects: projects_zh_tw,
     timeline_title: "時間線",
     timeline: timeline_zh_tw,
+    meta_description:
+      "你好，我是Algasami，一個低階軟體設計師與網頁設計師，也是一名學生。",
   },
   navbar: {
     home: "主頁",
