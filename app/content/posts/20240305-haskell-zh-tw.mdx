@@ -1,0 +1,105 @@
+---
+title: Haskell簡介
+description: 這一篇文章將教會你一點Haskell。
+slug: 20240305-haskell
+lang: zh-tw
+date: 2024-03-05
+type: Post
+tags:
+  - haskell
+  - Category Theory
+---
+
+## 甚麼是 Haskell 語言？
+
+你可能以前多多少少有聽過 Haskell 這個語言，不過，它和其他程式語言有甚麼不同嗎？Haskell 是一個純函數導向程式語言，
+代表說它是定義式而非命令式。因此，我們做的事是讓電腦知道我們想要的東西，而不是一步一步教電腦做某件事。聽起來很抽象吧，
+所以來看幾個例子。
+
+```haskell
+add :: Int -> Int -> Int
+add x y = x + y
+```
+
+上述的例子看起來像是`add`是一個取兩個整數並相加後回傳的函數，
+不過實際上`add x y`是一個回傳「一個回傳一個整數且接受一個整數的函數」的函數，這件事叫做**柯里化**。
+這一個概念在 Haskell 中十分強大，因為函數可以部分接受參數，變得有彈性。
+
+## 範疇論是什麼？
+
+因為 Haskell 是一個函數導向程式語言，它和範疇論之間的關係非常緊密，範疇論是一項探究物體之間的關係的純數學理論，
+一個範疇可以被想成含有物件，物件間有有向箭頭，這些箭頭叫做態射，例如$F: A \rightarow A$是一個在範疇$A$中的態射，
+這個沒有改變物體的態射叫做自同態射。如果我們把物件化成圈圈，把態射化成箭頭，產生的圖叫做圖示。
+
+## 寬鬆定義
+
+### 函子 Functor
+
+函子是一個 type class（可以想成 Haskell 的介面，描述範疇的特性），可以寫成這樣：
+
+```haskell
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+```
+
+函子所定義的性質為`fmap`函數，如果一個型別是函子，它就必須可以使用`fmap`函數。`fmap`函數接受一個從`a`轉換到`b`的函數，
+一個我們所使用的範疇`f`所包含的`a`範疇，並映射到`f`包含的`b`。其中，`f a`的意思可以想成是有一個盒子裡包著`a`類別的物體，
+而`f`就是盒子。因此`fmap`可以想成是將一個盒子打開，拿出東西並轉換，最後放回盒子裡。
+
+```haskell
+instance Functor Maybe where
+  fmap f (Just x) = Just (f x)
+  fmap f Nothing = Nothing
+```
+
+必須說，`Functor f`是一個不好的命名，因為這樣我們都把`f`誤認為是函數，但是它其實是泛型。
+
+### 應用式函子 Applicative
+
+應用式函子看起來好像函子，但是差別在於，應用式函子所吃的函數也包在盒子裡。
+
+```haskell
+class Functor f => Applicative f where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+```
+
+`pure`做的事是將物件包裹起來，`<*>`做的事類似`fmap`，不過差在函數包在`f`中。
+Haskell 的`Maybe`型別是應用式函子，如下定義：
+
+```haskell
+instance Applicative Maybe where
+  pure = Just
+  Just f <*> m = fmap f m
+  Nothing <*> _ = Nothing
+```
+
+### 單子 Monad
+
+符合單子的類別是可以連續串在一起的動作，如下定義：
+
+```haskell
+class Monad m where
+  return :: a -> m a
+  (>>=) :: m a -> (a -> m b) -> m b
+```
+
+因為它可以被串再一起，一個單子也叫做是一個在自同態射範疇中的么半群，
+一個么半群是一個二元運算函數和自函數的集合。實際上，串在一起的動作可以被解釋為：
+拿一個東西出來轉換，放回去，再拿出來轉換，再放回去……。例如，`Maybe`型別是一個單子，這樣定義：
+
+```haskell
+instance Monad Maybe where
+  return = Just
+  Just x >>= f = f x -- 所以可以重複做n次喔
+  Nothing >>= _ = Nothing
+```
+
+## 總結
+
+希望這篇文章給你一些關於 Haskell 與函數程式設計的觀念。掰掰！
+
+## 編輯日誌
+
+- 2024-03-05: 初稿
+- 2024-04-21: 中文翻譯
