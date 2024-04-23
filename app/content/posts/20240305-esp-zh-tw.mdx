@@ -1,0 +1,99 @@
+---
+title: ESP嵌入式系統
+description: 我開發嵌入式系統的筆記
+slug: 20240305-esp
+lang: zh-tw
+date: 2024-03-05
+type: Post
+tags:
+  - embedded
+  - esp
+  - C++
+---
+
+## 先前經驗
+
+我在開發 ESP32 和 ESP8266 版之前對嵌入式系統一無所知，我先前少數有用到 C、C++、組合語言的場合是競賽程式設計與作業系統製作，
+我所寫的程式碼都在強大的電腦上跑，所以我都不需要為記憶體管理、功率控制與實時限制感到擔憂，
+這就是為甚麼我第一次開發 ESP8266 時被現實當頭棒喝。
+
+## ESP32 輕鬆做
+
+ESP32 版非常好做，它搭載兩物理核心處理器、520KB 的動態記憶體和 4MB 的快閃。我在 ESP32 做的專案
+[ESP Rock](https://github.com/algasami/esp_rock)大獲成功，
+我在一塊小小的版上實作伺服器、AHRS 六元自由度定位與網頁介面，ESP32 輕而易舉就負擔的起，和之前我開發 C++時差不多。
+
+## ESP8266 災難連環發
+
+ESP8266 就是完全相反的，它只有單核心處理器、80KB 的動態記憶體與 4MB 的快閃。
+我在開發[IOT Connect](https://github.com/algasami/iot_connect)時遇到許多問題，
+尤其是記憶體不足的問題，超難除錯，最後發現罪惡禍首是非同步伺服器，有記憶體外洩，
+因此只能改成同步伺服器`<ESP8266WebServer.h>`。然後我又發現 ESP8266 在讀類比訊號時如果沒有緩衝會發狂，
+所以又要用非阻擋等待讓它喘口氣。
+
+```cpp
+// 非阻擋等待的例子
+void func() {
+  static unsigned long lastMillis = 0;
+  if (millis() - lastMillis > 1000) {
+    lastMillis = millis();
+    // 做事...
+  }
+}
+```
+
+## 新發現
+
+首先，`PROG_MEM`是一個巨集，定義某些變數被寫入快閃記憶體中，可以儲存巨大檔案和其他靜態檔案，
+另一件事是 ESP8266 討厭動態記憶體配置，所以我要將程式碼改寫成大部分使用呼叫堆疊的記憶體。
+幸好之前就強迫自己使用 C-Style 陣列，所以不是太大的麻煩，不過由於沒有除錯器，一開始真的不知道從何修起。
+
+## 除錯小抄
+
+- OOM 記憶體不足錯誤：可以用`ESP.getFreeHeap()`來檢查剩餘的記憶體堆，如果一直減低的話，可能有記憶體外洩。要怎麼除錯呢……，
+  我也不知道。
+
+- 執行時對齊錯誤：編譯期間的對齊錯誤很好修，不過執行時的便非常難除錯，通常要看是否有奇怪的指標運算或轉型。
+
+- 記得`.end()`/`.close()`/`.stop()`：大部分記憶體外洩與對齊錯誤的元凶，我通常會做一個垃圾堆疊，
+  使用$\lambda$函數清乾淨。
+
+```cpp
+
+//...
+#include <stack>
+#include <LittleFS.h>
+
+std::stack<std::function<void()>> garbage;
+
+void setupLittleFS() {
+  LittleFS.begin();
+  garbage.push([]() {
+    LittleFS.end();
+  });
+}
+
+void cleanup()
+{
+  while (!garbage.empty()) {
+    garbage.top()();
+    garbage.pop();
+  }
+}
+```
+
+- 對靜態資料用`PROGMEM`：用膝蓋想都知道。
+
+- 在 ISR 函數中用`volatile`：容易降低效率，或者造成未定義問題。
+
+## 感想
+
+雖然用 ESP8266 很累，但是超有成就感。能讓一顆小小的晶片做這麼多事真的讓人感到喜悅，這次的開發經驗也教導了我從底層思考，
+有人說過人不可貌相，那晶片也就不可貌規格了。
+
+## 參考函數庫
+
+- [ESP Rock](https://github.com/algasami/esp_rock): 我的 M5StickC ESP32 專案。
+- [IOT Connect](https://github.com/algasami/iot_connect): 我的 ESP8266 專案。
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer): 曾經使用的非同步伺服器。
+- [ESP8266WebServer](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer): 後來採用的同步伺服器。
