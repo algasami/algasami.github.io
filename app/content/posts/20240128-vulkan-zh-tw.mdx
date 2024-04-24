@@ -1,0 +1,78 @@
+---
+title: Vulkan
+description: 我開發Vulkan的筆記
+slug: 20240128-vulkan
+lang: zh-tw
+date: 2024-01-28
+type: Post
+tags:
+  - vulkan
+  - graphics
+---
+
+這一篇文章是我開發 Vulkan 所做的筆記。幾年前，我曾透過[vulkan-tutorial.com](https://vulkan-tutorial.com/)學習且做出一個渲染引擎，
+雖然大獲成功，不過我因為架構太過複雜而沒有完全讀透。上週一，我正巧看到[vkguide.dev](https://vkguide.dev)這個網站，步調稍慢，
+它是 vulkan-tutorial 的改版，所以較新。我希望可以透過這個網站學習到 Vulkan 的精華。
+
+## 電腦配備
+
+- Vulkan 版本： 1.3.x
+- 實體 GPU：4070 Ti
+- CPU: AMD Ryzen 9 5950x
+
+## 資源
+
+- [vulkan-tutorial.com](https://vulkan-tutorial.com/)
+- [vkguide.dev](https://vkguide.dev/)
+- [docs.vulkan.org](https://docs.vulkan.org/)
+
+## 觀念
+
+## 實體裝置 vs 邏輯裝置
+
+在 Vulkan 中，許多物件都是指向真實物件的指標，這些物件通常叫做手把，為了和真實的物體接觸，我們需要使用邏輯裝置，
+邏輯裝置使用`vkCreateDevice`與實體裝置的描述產生。
+
+### <a className="anchor" name="sync-structures"></a> 同步架構
+
+現代電腦圖形系統通常會使用到平行處理，像是 GPU 就是實際的平行處理例子，因為它可以在多個物理核心上處理多資料
+（請看[SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)），而 CPU 也有這個特質。
+
+雖然平行處理可以快速處理資料，不過也因為非同步而產生問題——我們的 GPU 指令（使用`VkQueue`上傳）需要等交替鏈騰出一個影像才可以在上面渲染東西，
+那要怎麼知道是否有這個照片呢？這時候就需要使用`VkSemaphore`，一個確保 GPU 指令同步的架構，可以想成是等紅綠燈的車輛，所以 Semaphore 中文叫做號誌，
+分為兩類：等待號誌（在等綠燈來的車）和訊號號誌（切換紅綠燈的人），只能有一個訊號號誌，而等待號誌無上限。號誌在 Vulkan 中只適用在 GPU 內作業。
+對於 GPU 對 CPU 或 CPU 對 GPU 作業則需使用`VkFence`[\[1\]](#ref-1)。
+
+### 指令執行流程
+
+Vulkan 傳指令到 GPU 的過程是使用佇列`VkQueue`。一系列的指令由`VkCommandBuffer`代表，此指令緩衝的記憶由`VkCommandPool`分配器分配。
+`VkQueue`和一般佇列實作不同的是，`VkQueue`指向的東西是真實物體或韌體中所含有的物件，通常由 GPU 的驅動定義，就像是物理裝置一樣。
+請注意，由於不同的指令佇列可能會相衝，所以要使用[同步架構](#sync-structures)預防這件事的發生
+
+### 影像
+
+影像在 Vulkan 中由`VkImage`代表。這些非透明（抽象）手把最好是使用 Image Views 讀取。一般來講，傳去 GPU 的影像（交替鏈影像）不能被人類讀取，
+因為它們被優化成 GPU 讀取的最佳格式。如果要寫入照片，我們需要使用`vkutil::transition_image`轉換格式，直接寫入交替鏈上的影像不是好主意，
+因為如果我們更改影像的性質，就必須要做一個全新的影像出來，所以我們通常會寫入另一個獨立的影像，最後 blit（BITBLT）進去交替鏈，
+因此需要用到`vkutil::copy_image_to_image`。
+
+### 描述集
+
+一個描述器是一個可以用來讀取寫入特殊架構的手把，舉個例子，一個緩衝描述器是用來讀取寫入指令緩衝的。描述器只能被批次產出，所以多個描述器就叫做描述集，
+我們使用`VkDescriptorPool`來產生描述集，而描述集的性質由`VkDescriptorSetLayout`決定。如果要用著色器讀取資料，我們需要將描述器綁定到渲染管線上。
+
+## 函數褲
+
+正在更新 ⋯⋯ (◉ 3 ◉)
+
+## 註腳
+
+1. <a name="ref-1"></a> 可能要再研究研究一番
+
+## 編輯紀錄
+
+- 1.28.2024: 第一個紀錄
+- 1.29.2024: 更改連結
+- 1.30.2024: 新增交叉參考與指令緩衝
+- 2.1.2024: 新增圖片來源
+- 4.24.2024: 新增中文翻譯
