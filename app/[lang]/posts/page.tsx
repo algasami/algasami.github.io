@@ -7,7 +7,7 @@ import {
 } from "../../components/contentLayerAdapter";
 import { Region } from "../../components/region";
 import React from "react";
-import { Locale, i18n } from "i18n-config";
+import { Locale } from "i18n-config";
 import { getDictionary } from "get-dictionary";
 
 function useSelectedTags() {
@@ -23,6 +23,7 @@ function PostNav({
   content,
   buttonName,
   link,
+  dict,
 }: {
   title: string;
   subtitle: string;
@@ -31,6 +32,7 @@ function PostNav({
   content: string;
   buttonName: string;
   link: string;
+  dict: ReturnType<typeof getDictionary>["tags"];
 }) {
   const lower_tags = tags.map((v) => v.toLowerCase());
   return (
@@ -43,7 +45,7 @@ function PostNav({
                 key={tag}
                 className={`tag-button ${tag} bg: min-w-[3em] dark:bg-amber-600 bg-amber-300 text-center p-1 m-1 rounded-lg transition-all shadow-lg`}
               >
-                {tag}
+                {dict[tag] ?? tag}
               </li>
             );
           })}
@@ -64,6 +66,7 @@ function PostNav({
 
 export default function PostPage({ params }: { params: { lang: Locale } }) {
   const dict = getDictionary(params.lang).posts;
+  const tagdict = getDictionary(params.lang).tags;
   const { chosen_tags, set_chosen_tags } = useSelectedTags();
   let possible_tags = [];
   const current_posts = filtered_posts(params.lang, chosen_tags);
@@ -99,7 +102,7 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
                 }
               }}
             >
-              {tag}
+              {tagdict[tag] ?? tag}
             </button>
           );
         })}
@@ -117,6 +120,7 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
                 buttonName="Go to"
                 link={`/${params.lang}${post.path}`}
                 key={post.slug}
+                dict={tagdict}
               />
             );
           })}
