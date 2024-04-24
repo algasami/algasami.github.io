@@ -110,6 +110,7 @@ export const en = {
     graphics: "Graphics",
     linux: "Linux",
     vulkan: "Vulkan",
+    web: "Web",
   },
 };
 
@@ -211,5 +212,6 @@ export const zh_tw: typeof en = {
     graphics: "圖形",
     linux: "Linux",
     vulkan: "Vulkan",
+    web: "網頁",
   },
 };
