@@ -50,11 +50,11 @@ export default function RootLayout({
   return (
     <html lang={params.lang} className="dark">
       <body
-        className={`overflow-hidden ${krypton.variable} ${roboto.variable} font-sans`}
+        className={`overflow-x-hidden ${krypton.variable} ${roboto.variable} font-sans`}
       >
         <Navbar lang={params.lang} navbardict={dict["navbar"]} />
         <div
-          className="w-screen h-screen overflow-x-hidden flex flex-col justify-start z-10"
+          className="w-screen overflow-x-hidden flex flex-col justify-start z-10"
           id="main-content"
         >
           <div className="relative flex flex-row justify-center z-10">
