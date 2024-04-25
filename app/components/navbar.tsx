@@ -126,7 +126,7 @@ export default function Navbar({
 }) {
   return (
     <div
-      className={`navbar absolute z-50  w-full shadow-xl p-2 bg-opacity-80`}
+      className={`navbar fixed z-50  w-full shadow-xl p-2 bg-opacity-80`}
       style={{
         backdropFilter: `blur(10px)`,
         WebkitBackdropFilter: `blur(10px)`,
