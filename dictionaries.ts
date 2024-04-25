@@ -78,7 +78,7 @@ export const en = {
       it fail to find any optimal solutions, which results in an incomplete matching.
     `,
     traversal_title: "Shortest Path Problem",
-    STATE_TEXTS: ["Set Obstacles", "Set Start", "Set End", "Calculate"],
+    STATE_TEXTS: ["Set Obstacles", "Set Start", "Set End", "Calculating"],
     a_star_state_form: "Current Step",
     a_star_algo_form: "Current Algo",
     a_star_visited: "Total Visited:",
@@ -149,7 +149,7 @@ export const zh_tw: typeof en = {
     timeline_title: "時間線",
     timeline: timeline_zh_tw,
     meta_description:
-      "你好，我是Algasami，一個低階軟體設計師與網頁設計師，也是一名學生。",
+      "安安，我是Algasami，一個軟體設計師與網頁設計師，也是一名學生。",
   },
   navbar: {
     home: "主頁",
@@ -175,7 +175,7 @@ export const zh_tw: typeof en = {
     y_node: "Y節點",
     append: "連結邊",
     how_it_work: "背後的原理",
-    content: `你所看到的圖是一個傳統的二分圖，一個二分圖由兩個互斥集組成。使用匈牙利演算法，
+    content: `你所看到的圖是傳統的二分圖，由兩個互斥集組成。透過匈牙利演算法，
     我們可以找到最有效的最大匹配解法，使用越少的邊達成這件事。雖然此演算法不會報錯，不過在特殊
     情形下可能找不到最優解，因此會採取妥協態度，產生不完整的匹配。
     `,
