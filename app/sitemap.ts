@@ -34,16 +34,51 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.4,
     },
-  ].concat(
-    allPostsNewToOld.map((p) => {
-      return {
-        url: `https://algasami.github.io/en/posts/${p.slug}`,
-        lastModified: new Date(p.date),
-        changeFrequency: "monthly",
-        priority: 0.8,
-      };
-    })
-  ) as {
+    {
+      url: "https://algasami.github.io/zh-tw",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: "https://algasami.github.io/zh-tw/posts",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: "https://algasami.github.io/zh-tw/graph",
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: "https://algasami.github.io/zh-tw/dev",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.4,
+    },
+  ]
+    .concat(
+      allPostsNewToOld.map((p) => {
+        return {
+          url: `https://algasami.github.io/en/posts/${p.slug}`,
+          lastModified: new Date(p.date),
+          changeFrequency: "monthly",
+          priority: 0.8,
+        };
+      })
+    )
+    .concat(
+      allPostsNewToOld.map((p) => {
+        return {
+          url: `https://algasami.github.io/zh-tw/posts/${p.slug}`,
+          lastModified: new Date(p.date),
+          changeFrequency: "monthly",
+          priority: 0.8,
+        };
+      })
+    ) as {
     url: string;
     lastModified: Date;
     changeFrequency: TDate;
