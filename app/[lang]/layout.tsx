@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang={params.lang} className="dark">
       <body
-        className={`overflow-x-hidden ${krypton.variable} ${roboto.variable} font-sans`}
+        className={`overflow-x-hidden ${krypton.variable} ${roboto.variable} font-sans min-h-screen`}
       >
         <Navbar lang={params.lang} navbardict={dict["navbar"]} />
         <div
@@ -61,7 +61,7 @@ export default function RootLayout({
             {children}
           </div>
 
-          <Footer />
+          <Footer locale={params.lang} />
         </div>
       </body>
     </html>
