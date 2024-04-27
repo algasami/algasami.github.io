@@ -41,7 +41,7 @@
     @apply justify-center pt-16 max-w-[95vw] lg:max-w-[80vw];
   }
   body {
-    @apply text-lg dark:bg-zinc-900 bg-orange-50 dark:text-slate-50 text-slate-900;
+    @apply text-lg dark:from-slate-900 dark:to-zinc-900 bg-gradient-to-b from-orange-100 to-orange-200 dark:text-slate-50 text-slate-900;
   }
 
   ::-webkit-scrollbar-thumb {
