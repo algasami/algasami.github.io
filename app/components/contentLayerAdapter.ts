@@ -8,7 +8,7 @@ export const allPostsNewToOld =
 export const allTags = allPosts
   .reduce((acc, post) => {
     post.tags.forEach((_tag) => {
-      const tag = _tag.toLowerCase(); // case insensitive
+      const tag = _tag.toLowerCase().trim(); // case insensitive
       if (!acc.includes(tag)) {
         acc.push(tag);
       }

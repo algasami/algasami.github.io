@@ -34,7 +34,7 @@ function PostNav({
   link: string;
   dict: ReturnType<typeof getDictionary>["tags"];
 }) {
-  const lower_tags = tags.map((v) => v.toLowerCase());
+  const lower_tags = tags.map((v) => v.toLowerCase().trim());
   return (
     <div className="timelinecomponent" key={title}>
       <Region title={title} color={color} subtitle={subtitle}>
@@ -72,7 +72,7 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
   const current_posts = filtered_posts(params.lang, chosen_tags);
   for (const post of current_posts) {
     for (const _t of post.tags) {
-      const t = _t.toLowerCase();
+      const t = _t.toLowerCase().trim();
       if (!possible_tags.includes(t)) {
         possible_tags.push(t);
       }
@@ -81,7 +81,7 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
   return (
     <main className="post-page hallway-size max-w-[80vw] lg:max-w-[60vw]">
       <h1 className="text-center">{dict.title}</h1>
-      <div className="post-tags flex flex-row flex-wrap justify-center">
+      <div className="post-tags flex flex-row flex-wrap justify-center max-w-full">
         {allTags.map((tag) => {
           if (!possible_tags.includes(tag)) {
             return null;
