@@ -111,6 +111,7 @@ export const en = {
     linux: "Linux",
     vulkan: "Vulkan",
     web: "Web",
+    keyboard: "Keyboard",
   },
 };
 
@@ -213,5 +214,6 @@ export const zh_tw: typeof en = {
     linux: "Linux",
     vulkan: "Vulkan",
     web: "網頁",
+    keyboard: "鍵盤",
   },
 };
