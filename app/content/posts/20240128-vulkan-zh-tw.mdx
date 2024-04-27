@@ -47,7 +47,10 @@ tags:
 
 Vulkan 傳指令到 GPU 的過程是使用佇列`VkQueue`。一系列的指令由`VkCommandBuffer`代表，此指令緩衝的記憶由`VkCommandPool`分配器分配。
 `VkQueue`和一般佇列實作不同的是，`VkQueue`指向的東西是真實物體或韌體中所含有的物件，通常由 GPU 的驅動定義，就像是物理裝置一樣。
-請注意，由於不同的指令佇列可能會相衝，所以要使用[同步架構](#sync-structures)預防這件事的發生
+請注意，由於不同的指令佇列可能會相衝，所以要使用[同步架構](#sync-structures)預防這件事的發生。
+
+<img src="https://vkguide.dev/diagrams/vkcommands.png" width={"70%"} />
+_影像截自vkguide.dev_ 請注意，Render Pass在新版的Vulkan已被`vkBeginCommandBuffer`取代.
 
 ### 影像
 
