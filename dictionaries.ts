@@ -112,6 +112,8 @@ export const en = {
     vulkan: "Vulkan",
     web: "Web",
     keyboard: "Keyboard",
+    dsa: "DSA",
+    dynamic_programming: "Dynamic Programming",
   },
 };
 
@@ -215,5 +217,7 @@ export const zh_tw: typeof en = {
     vulkan: "Vulkan",
     web: "網頁",
     keyboard: "鍵盤",
+    dsa: "DSA",
+    dynamic_programming: "動態程式設計",
   },
 };

@@ -1,0 +1,189 @@
+---
+title: （拆分）輪廓動態程式設計
+description: 淺談輪廓DP的原理和例題。
+slug: 20240428-profile-dp
+lang: zh-tw
+date: 2024-04-28
+type: Post
+tags:
+  - dsa
+  - dynamic_programming
+---
+
+> 小 P 家裡養了很多隻蛇，他每天都會陪牠們玩。
+> 怎麼玩呢？ 他把家裡劃分成 $N \times M$ 的方格，接著把這些蛇擺上地板。
+> 每個方格只能被一隻蛇的身體容納，所以每隻蛇的位置都可以用一串連續方格表示。
+> 這些蛇由於很害羞，所以他們都咬著自己的尾巴。也就是每隻蛇都形成一個環狀。
+> 然而有些格子上有插座，如果一隻蛇佔據了有插座的格子，這樣就少一個插座用很不方便。
+> 所以小 P 希望有插座的格子不能被蛇佔據。
+> 而且小 P 也不希望沒有插座的格子上面是空的，也就是希望每個格子都被恰好一隻蛇佔據。
+
+\- a228, Zero Judge
+
+這個問題因為過於複雜沒辦法暴搜，因此我們需要不同的解法。
+
+## 簡單化問題
+
+在解這種問題的時候，我們可以找到小問題分而治之，當務之急是找到可以用前一個狀態推得新的狀態的表示法，這樣就可以產生由下往上堆的迭代解，
+因為這個問題是二為矩陣，所以可以看成是每行每行的掃描，我們將狀態空間設為$DP[i][j][s]$，其中$i, j$是現在方格，$s$則是一個整數「輪廓」，
+其中它的$y$個位元代表是否有蛇經過。更精確來說，請看下圖，$P$和$Q$各是前一個和下一個輪廓，可以把它們想成是事實的分隔線。
+在$P$之前的方格都布滿蛇，而在$Q$之前的方格*將會*布滿蛇。我們要做的事便是找到如何把$P$轉換成$Q$。
+
+_雖然聽起來像是我們要用$P$推得$Q$，實際上，因為迭代解法的本質，我們要做的事恰好相反。_
+
+<img src="/imgs/profile-dp-profiles.png" width={"70%"} />
+
+## 狀態轉換
+
+在解 DP 問題時，我們時不時會需要透過特定狀態更改狀態空間的索引值，我們在用蛇填滿目前方格的同時想要找到如何變換輪廓。在這個章節，
+我們會一探所有可能性。接下來，我們將蛇通過輪廓這件事稱為「插入」。
+
+### 插座
+
+這是所有可能性最直接的。如果$Q[j+1]=Q[j]=0$，即沒有蛇穿過插座，這個輪廓是合理的，因此，它的狀態原封不動，不然就是不合理，可能的放法為零。
+
+$P = Q$
+$DP[i][j][Q] = DP[i][j-1][P]$
+
+### 無插入
+
+如果沒有蛇會插入（$Q[j+1] = Q[j] = 0$），則一個ㄥ字型的插入需要是前一個狀態。
+
+$P=Q + 2^j + 2^{j+1}$
+
+$DP[i][j][Q] = DP[i][j-1][P]$
+
+<img src="/imgs/profile-dp-zero-pen.png" width={"70%"} />
+
+### ㄥ字型插入
+
+如果一個蛇會有個ㄥ字型插入（$Q[j+1]=Q[j]=1$），則代表沒有蛇可以在前一個狀態插入。
+
+$P = Q - 2^j - 2^{j+1}$
+
+$DP[i][j][Q] = DP[i][j-1][P]$
+
+<img src="/imgs/profile-dp-two-pen.png" width={"70%"} />
+
+### 單個插入
+
+這個地方比較複雜，但是只是技術上麻煩而已。如果只有一個地方會被插入（$Q[j+1] \oplus Q[j] = 1$），
+這代表在前一個狀態中，只能有一個地方可以被插入，請注意有兩種可能性，所以要把它們加起來。
+
+$P_1 = Q, P_2 = Q \oplus (2^{j} + 2^{j + 1})$
+
+$DP[i][j][Q] = DP[i][j-1][P_1] + DP[i][j-1][P_2]$
+
+<img src="/imgs/profile-dp-one-pen.png" width={"70%"} />
+
+## C 實作
+
+請看這裡，還有加註解呦！
+
+```c
+/**
+ * 就少一個插座很不方便
+ * 輪廓DP
+ */
+
+#include <stdio.h>
+#include <string.h>
+
+#define MODULO 1000000007U
+
+unsigned int n, m;
+unsigned int map[12][12];
+unsigned int combs[12][12][1 << 12];
+
+unsigned int solve()
+{
+    memset(combs, 0, sizeof(combs));
+
+    combs[0][m][0] = 1;
+    // 基本步，等等會被複製到1,1方格中
+
+    for (size_t i = 1; i <= n; i++)
+    {
+        for (size_t s = 0; s < (size_t)(1 << m); s++)
+        {
+            combs[i][0][s << 1] = combs[i - 1][m][s];
+            // 複製輪廓
+            // 我們少複製一個位元，因為第一個新方格的輪廓的第一個（最上面）一定是0。
+        }
+
+        for (size_t j = 1; j <= m; j++)
+        {
+            // 找出蛇的插入
+            size_t up = 1 << (j - 1);
+            size_t left = 1 << (j + 1 - 1);
+            // 在部落格貼文中，輪廓的位元是以一出發的，但是在範例中，它是以零出發的，
+            // 而由於我們使用以一出發的陣列，要再減一彌補。
+            for (size_t s = 0; s < (size_t)(1 << (m + 1)); s++)
+            {
+                if (map[i][j]) // 沒有插座
+                {
+                    if ((up & s) && (left & s)) // 雙插入
+                    {
+                        // 會有兩個插入，所以由沒有插入轉換
+                        combs[i][j][s] = combs[i][j - 1][s - up - left];
+                    }
+                    else if ((up & s) || (left & s))
+                    {
+                        // 其中一個有插入
+                        combs[i][j][s] = (combs[i][j - 1][s] + combs[i][j - 1][s ^ (up | left)]) % MODULO;
+                        // s ^ (up | left)
+                        // 如果上會有插入，那就加左和上。
+                        // 如果左會有插入，那就加上和左。
+                    }
+                    else
+                    {
+                        // 沒有插入
+                        combs[i][j][s] = combs[i][j - 1][s + up + left];
+                        // 加上會有雙插入的
+                    }
+                }
+                else // 插座
+                {
+                    if (!(up & s) && !(left & s))
+                    {
+                        // 合法的沒插入
+                        combs[i][j][s] = combs[i][j - 1][s];
+                    }
+                    else
+                    {
+                        // 不合法，可能放法為零。
+                        combs[i][j][s] = 0;
+                    }
+                }
+            }
+        }
+    }
+    // 最後結果發生在combs[n][m][0]
+
+    return combs[n][m][0] % MODULO;
+}
+
+int main()
+{
+    unsigned int C;
+    scanf("%u", &C);
+    for (unsigned int i = 1; i <= C; i++)
+    {
+        scanf("%u %u", &n, &m);
+        for (size_t i = 1; i <= n; i++)
+            for (size_t j = 1; j <= m; j++)
+                scanf("%u", &map[i][j]);
+
+        printf("Case %u: %u\n", i, solve());
+    }
+    return 0;
+}
+
+```
+
+## 參考資料
+
+- ZeroJudge 例題: [https://zerojudge.tw/ShowProblem?problemid=a228](https://zerojudge.tw/ShowProblem?problemid=a228)
+- USACO 拆分輪廓 DP 教學:
+  [https://usaco.guide/adv/dp-more?lang=cpp#dp-on-broken-profile](https://usaco.guide/adv/dp-more?lang=cpp#dp-on-broken-profile)
+- 超讚影片: [https://youtu.be/0bnMHlFUM_o](https://youtu.be/0bnMHlFUM_o)
