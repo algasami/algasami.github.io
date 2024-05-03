@@ -1,7 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css");
 
 .postBody {
-  @apply text-xl;
+  @apply text-xl leading-loose;
 
   :global(.rehype-code-title) {
     @apply mt-3 -mb-3 rounded-tl rounded-tr bg-slate-500 px-4 pt-1 pb-2 font-mono text-lg text-gray-200 dark:bg-violet-200 shadow-md;
