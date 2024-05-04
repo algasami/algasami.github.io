@@ -1,0 +1,212 @@
+---
+title: Data Type Makes Huge Difference
+description: Data types might be pretty unamusing, but they sometimes do make a big difference.
+slug: 20240504-datatype-c
+lang: en
+date: 2024-05-04
+type: Post
+tags:
+  - cpp
+  - computer_science
+---
+
+Why do data types matter outside of the realm of memory? When I was solving the
+[Special Sequence](https://zerojudge.tw/ShowProblem?problemid=a250) problem in ZeroJudge,
+I encountered a weird quirk of zero optimization from the compiler.
+
+## Prefix Sum
+
+The problem is simple: find a subsequence whose sum can be divided by $k$ and whose starting point and the
+tail of it are both the lowest. The parent sequence can have up to 100000 elements. Since we are constantly checking
+the sums of subsequences, we can use a technique called prefix sum. For a sequence $a_x$, the prefix sum of it is
+$P_x=a_1 + a_2 + \cdots + a_x$. This means that $P_j - P_i = a_{i+1} + a_{i+2} + \cdots + a_{j} = S_{i+1, j} $,
+which can be used to calculate the sum of a subsequence in constant time. Since we are finding if the sum can be divided
+by $k$ or not, we can check $(P_j - P_i) \mod k = (P_j \mod k - P_i \mod k) \mod k$, since we can precalculate the
+latter and since $k$ is of a smaller datatype, theoretically speaking, the latter should downcast the bag of things
+in front of $\mod k$ to $k$'s datatype, which would result in a faster operation.
+We can write the solution like this:
+
+```c
+#include <stdio.h>
+// prefix sum (from i = 1)
+long long int sum[100001] = {0};
+long long int mods[100001];
+int solve()
+{
+    size_t n;
+    int k;
+
+    scanf("%zu", &n);
+
+    if (!n)
+        return 0;
+
+    for (size_t i = 1; i <= n; i++)
+    {
+        int x;
+        scanf("%d", &x);
+        sum[i] = sum[i - 1] + x;
+    }
+
+    scanf("%d", &k);
+
+    for (size_t i = 0; i <= n; i++)
+    {
+        mods[i] = sum[i] % k;
+    }
+
+    // sum[b] - sum[a] = [a+1, b]
+    for (size_t i = 0; i < n; i++)
+    {
+        for (size_t j = i + 1; j <= n; j++)
+        {
+            if ((mods[j] - mods[i]) % k == 0) // (sum[j] - sum[i]) % k = (sum[j] % k - sum[i] % k) % k
+            {
+                printf("%zu %zu\n", i + 1, j);
+                return 1;
+            }
+        }
+    }
+    printf("no solutions.\n");
+    return 1;
+}
+
+int main()
+{
+    while (solve())
+        ;
+    return 0;
+}
+```
+
+However, this resulted in TLE (Time Limit Error), but there is no way to know for sure who the culprit is.
+
+## WYSIWYG
+
+_What you see is what you get_
+
+With the help of [Compiler Explorer](https://godbolt.org/), I delved into the depth of the assembly behind the scene.
+Since ZeroJudge does not optimize your code at all, I left the compiler options empty. Turned out,
+`(mods[j] - mods[i]) % k` was kept as-is with no modification. This resulted in an `idiv` operation of a `QWORD`, which
+would take longer than one with a `DWORD`. Thus, I swapped the original code with this:
+
+```diff
+-long long int mods[100001];
++int mods[100001];
+```
+
+Now, it used `idiv` with `DWORD`, which was very nice!
+
+## Profiling
+
+To further confirm my conjecture, I decided to profile them with the following code,
+with every test being 100000 modulo operations.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define MAX_TESTS 100
+#define MAX_UNITS 100000
+
+#define GET_TIME(x, dt)                              \
+    {                                                \
+        clock_t begin, end;                          \
+        begin = clock();                             \
+        x;                                           \
+        end = clock();                               \
+        dt = (double)(end - begin) / CLOCKS_PER_SEC; \
+    }
+
+long long int buffer[MAX_UNITS];
+
+int main()
+{
+    srand(time(NULL));
+    for (size_t i = 0; i < MAX_UNITS; i++)
+    {
+        buffer[i] = (long long int)(((float)rand() / (float)RAND_MAX) * 10000.0f);
+    }
+    int k = 57;
+    double sm = 0;
+    int a = 0;
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((unsigned long long int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    double avg = sm / (double)MAX_TESTS;
+    printf("unsigned long long int: %f sec\n", avg);
+    sm = 0.0;
+
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((unsigned int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    avg = sm / (double)MAX_TESTS;
+    printf("unsigned int: %f sec\n", avg);
+    sm = 0.0;
+
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((long long int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    avg = sm / (double)MAX_TESTS;
+    printf("long long int: %f sec\n", avg);
+    sm = 0.0;
+
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    avg = sm / (double)MAX_TESTS;
+    printf("int: %f sec\n", avg);
+    sm = 0.0;
+
+    return 0;
+}
+```
+
+<img src="/imgs/datatype-modulo.png" width={"70%"} />
+
+I was right. They did take different time to complete under no optimization.
+
+## Data Types are Important
+
+When you are using a low-level programming language, always watch out for data types, as they can accumulate significant
+performance hurdles if you are developing a performance-intense application.

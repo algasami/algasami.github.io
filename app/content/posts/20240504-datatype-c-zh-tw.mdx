@@ -1,0 +1,206 @@
+---
+title: 型別的大影響
+description: 型別可能很不起眼，但是它們有時造成的影響其實頗大。
+slug: 20240504-datatype-c
+lang: zh-tw
+date: 2024-05-04
+type: Post
+tags:
+  - cpp
+  - computer_science
+---
+
+除了記憶體用量之外，型別有什麼作用？當我在解
+[Special Sequence](https://zerojudge.tw/ShowProblem?problemid=a250)這個 ZeroJudge 問題時，
+我發現了沒有使用優化的古怪行為。
+
+## 前輟和
+
+這個問題很簡單：找到一個子陣列，其和可被$k$整除且起始點與結束點都是最小的。母陣列可以長達 100000 元素。由於檢測時會大量使用到陣列和，
+我們可以使用前輟和，對陣列$a_x$而言，其前輟和是$P_x=a_1 + a_2 + \cdots + a_x$，這代表
+$P_j - P_i = a_{i+1} + a_{i+2} + \cdots + a_{j} = S_{i+1, j} $，可用來在常數時間內找到陣列和。
+由於我們在找的是可被$k$整除這件事，我們可以檢查$(P_j - P_i) \mod k = (P_j \mod k - P_i \mod k) \mod k$，
+又由於我們可以提前算後者，且$k$是較小的型別，理論上來說，後者括號中的數值可以被自動隱晦轉型成和$k$一樣小的型別，
+這樣速度就快許多了。於是，我寫了這個解：
+
+```c
+#include <stdio.h>
+// prefix sum (from i = 1)
+long long int sum[100001] = {0};
+long long int mods[100001];
+int solve()
+{
+    size_t n;
+    int k;
+
+    scanf("%zu", &n);
+
+    if (!n)
+        return 0;
+
+    for (size_t i = 1; i <= n; i++)
+    {
+        int x;
+        scanf("%d", &x);
+        sum[i] = sum[i - 1] + x;
+    }
+
+    scanf("%d", &k);
+
+    for (size_t i = 0; i <= n; i++)
+    {
+        mods[i] = sum[i] % k;
+    }
+
+    // sum[b] - sum[a] = [a+1, b]
+    for (size_t i = 0; i < n; i++)
+    {
+        for (size_t j = i + 1; j <= n; j++)
+        {
+            if ((mods[j] - mods[i]) % k == 0) // (sum[j] - sum[i]) % k = (sum[j] % k - sum[i] % k) % k
+            {
+                printf("%zu %zu\n", i + 1, j);
+                return 1;
+            }
+        }
+    }
+    printf("no solutions.\n");
+    return 1;
+}
+
+int main()
+{
+    while (solve())
+        ;
+    return 0;
+}
+```
+
+不過，結果是 TLE（超時錯誤），還不知道兇手是誰。
+
+## WYSIWYG
+
+_所看等於所得_
+
+透過[編譯器探索器](https://godbolt.org/)，我潛入了背後的組合語言深淵。
+由於 ZeroJudge 不優化程式碼，我將編譯器參數留空。結果我發現`(mods[j] - mods[i]) % k`根本沒有被轉型。產生了使用`QWORD`的`idiv`指令，
+比預期的`DWORD`慢一些。因此，我將原程式碼修改成這樣。
+
+```diff
+-long long int mods[100001];
++int mods[100001];
+```
+
+現在它使用`DWORD`，水喔！
+
+## 測試分析
+
+為了證明我的臆測，我使用下列程式碼分析所花時間，每個測驗皆是 100000 個取模運算。
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define MAX_TESTS 100
+#define MAX_UNITS 100000
+
+#define GET_TIME(x, dt)                              \
+    {                                                \
+        clock_t begin, end;                          \
+        begin = clock();                             \
+        x;                                           \
+        end = clock();                               \
+        dt = (double)(end - begin) / CLOCKS_PER_SEC; \
+    }
+
+long long int buffer[MAX_UNITS];
+
+int main()
+{
+    srand(time(NULL));
+    for (size_t i = 0; i < MAX_UNITS; i++)
+    {
+        buffer[i] = (long long int)(((float)rand() / (float)RAND_MAX) * 10000.0f);
+    }
+    int k = 57;
+    double sm = 0;
+    int a = 0;
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((unsigned long long int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    double avg = sm / (double)MAX_TESTS;
+    printf("unsigned long long int: %f sec\n", avg);
+    sm = 0.0;
+
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((unsigned int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    avg = sm / (double)MAX_TESTS;
+    printf("unsigned int: %f sec\n", avg);
+    sm = 0.0;
+
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((long long int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    avg = sm / (double)MAX_TESTS;
+    printf("long long int: %f sec\n", avg);
+    sm = 0.0;
+
+    for (unsigned int iter = 0; iter < MAX_TESTS; iter++)
+    {
+        double dt;
+        GET_TIME(
+            for (size_t i = 0; i < MAX_UNITS; i++) {
+                if ((int)buffer[i] % k == 0)
+                {
+                    ++a;
+                }
+            },
+            dt)
+        sm += dt;
+    }
+    avg = sm / (double)MAX_TESTS;
+    printf("int: %f sec\n", avg);
+    sm = 0.0;
+
+    return 0;
+}
+```
+
+<img src="/imgs/datatype-modulo.png" width={"70%"} />
+
+我是對的，它們確實在未優化的情況下花了不同多的時間。
+
+## 型別很重要
+
+當你在使用低階程式語言時，請注意使用的型別，當你在開發攸關效率的應用程式，它們可以積累效率上的問題。
