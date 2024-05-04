@@ -204,7 +204,10 @@ int main()
 
 <img src="/imgs/datatype-modulo.png" width={"70%"} />
 
-I was right. They did take different time to complete under no optimization.
+I was right. They did take different time to complete under no optimization. If we take this into account, the worst
+duration for the program is $\binom{100000}{2} \cdot \frac{n}{100000}$ seconds where $n$ is the time taken in the above
+image for the corresponding datatype. The coefficient of $n$ is 49999.5, which is large enough to dictate whether TLE
+should occur or not.
 
 ## Data Types are Important
 
