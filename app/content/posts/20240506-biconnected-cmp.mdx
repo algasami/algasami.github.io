@@ -1,0 +1,104 @@
+---
+title: Biconnected Component & Articulation Point
+description: The usage of these two important concept in problems.
+slug: 20240506-biconnected-cmp
+lang: en
+date: 2024-05-06
+type: Post
+tags:
+  - math
+  - computer_science
+---
+
+An articulation point is a vertex that when removed, can result in two or more disconnected graphs. When a graph does
+not have any articulation points, it is called a biconnected graph. Such a graph with the maximum possible nodes
+is called a biconnected component. Finding these articulation points can directly lead to the discovery of biconnected
+subgraphs; thus, we need a way to do this quickly.
+
+## Naive Algorithm
+
+We can run an algorithm that uses dfs to visit the entire graph every time we remove a vertex.
+
+```
+nodes = 1000
+visited = [0, ..., 0]
+algorithm DFS(now, removed):
+  visited[now] = true
+  for n in now.adjs:
+    if n == removed:
+      continue
+    DFS(n, removed)
+
+algorithm get_components():
+  aps = []
+  og_components = 0
+  for i from 0 to nodes:
+    if visited[i] is false:
+      components = components + 1
+      DFS(now, -1)
+  for i from 0 to nodes: -- removes i
+    visited = [0, ..., 0]
+    components = 0
+    for j from 0 to nodes:
+      if i == j:
+        continue
+      if visited[i] is false:
+        components = components + 1
+        DFS(now, i)
+    if components > og_components:
+      aps = aps + 1
+  return aps
+```
+
+## Tarjan's Algorithm
+
+However, the above algorithm evidently has some fatal flaws, with the biggest one being its inefficiency, so in 1973,
+John Hopcroft and Robert Tarjan devised a new algorithm. This algorithm works by taking note of the discovery time
+of a node, and use a special value called _lowpoint_ to deduce if we can travel to the node faster than using a
+specific point to bypass the lack of back edges (edges that are connected back to the upper layers of a DFS tree).
+If node $N$ is an articulation point, then it must satisfy the following:
+
+1. If $N$ is a root in a DFS tree, then $N$ must have at least two children.
+2. If $N$ is not a root, then at least one of $N$'s children can't have a backedge back to the ancestors of $N$.
+
+```
+
+nodes = 1000
+time = 0
+visited = []
+discovery = []
+lowpoint = []
+aps = {} -- a non-duplicating set
+algorithm DFS(now, parent):
+  children = 0
+  time = time + 1
+  visited[now] = true
+  discovery[now] = lowpoint[now] = time
+
+  for next in now.adjs:
+    if visited[next] == false:
+      children = children + 1
+      DFS(next, now)
+      lowpoint[now] = min(lowpoint[now], lowpoint[next])
+      if parent == -1 and lowpoint[next] >= discovery[now]:
+        aps = aps or {now} -- or union
+    else: -- already discovered
+      lowpoint[now] = min(lowpoint[now], discovery[next])
+
+  if parent == -1 and children >= 2:
+    aps = aps or {now}
+
+algorithm Tarjan():
+  for i from 0 to nodes:
+    DFS(i, -1)
+  return aps
+
+```
+
+This algorithm runs in linear time with its time complexity asymptote $O(V + E)$, which is lightning fast.
+
+## Real Applications
+
+Finding articulation points can be useful for finding the most important points in a network, since with the removal
+of them comes two or more disconnected networks. They can also be used in social networks to find the most important
+people for keeping the social network immediately/vicariously relevant to an existing group of people.

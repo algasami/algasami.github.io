@@ -1,0 +1,98 @@
+---
+title: 雙連通元件與關節點
+description: 這兩個重要概念在問題中的運用。
+slug: 20240506-biconnected-cmp
+lang: zh-tw
+date: 2024-05-06
+type: Post
+tags:
+  - math
+  - computer_science
+---
+
+一個關節點是一種當被剔除時，會造成原有的圖形裂成兩個（包含）以上的圖。如果一個圖沒有任何關節點，它便是一個雙連通圖，
+一個有極多點的雙連通圖被稱為雙連通元件。找到關節點可以順便找到雙連通子圖，所以我們需要有個快速的求法。
+
+## 基本演算法
+
+我們可以在每次剔除一個節點時跑一次 DFS（深度優先搜尋）。
+
+```
+nodes = 1000
+visited = [0, ..., 0]
+algorithm DFS(now, removed):
+  visited[now] = true
+  for n in now.adjs:
+    if n == removed:
+      continue
+    DFS(n, removed)
+
+algorithm get_components():
+  aps = []
+  og_components = 0
+  for i from 0 to nodes:
+    if visited[i] is false:
+      components = components + 1
+      DFS(now, -1)
+  for i from 0 to nodes: -- 剃除i
+    visited = [0, ..., 0]
+    components = 0
+    for j from 0 to nodes:
+      if i == j:
+        continue
+      if visited[i] is false:
+        components = components + 1
+        DFS(now, i)
+    if components > og_components:
+      aps = aps + 1
+  return aps
+```
+
+## Tarjan 演算法
+
+不過上述演算法有些嚴重錯誤，其中最大是它的低效率問題，因此在 1973 年，John Hopcroft 與 Robert Tarjan 想出了一個新的演算法，
+它運作的方法是找到每個節點的 DFS 尋找時間，並使用一個特別的值*lowpoint*來判斷我們可不可以用比原本節點更短的路徑走到另一個節點，
+為了補足沒有反邊的問題（在 DFS 樹中連回到另一個上層的邊）。如果一個節點$N$是關節點，那它必須滿足下列條件：
+
+1. 如果$N$是 DFS 樹的樹根，則$N$必須有至少兩個子節點。
+2. 如果$N$不是樹根，則至少有一個$N$的子節點沒有回到$N$的祖先的反邊。
+
+```
+
+nodes = 1000
+time = 0
+visited = []
+discovery = []
+lowpoint = []
+aps = {} -- 集合
+algorithm DFS(now, parent):
+  children = 0
+  time = time + 1
+  visited[now] = true
+  discovery[now] = lowpoint[now] = time
+
+  for next in now.adjs:
+    if visited[next] == false:
+      children = children + 1
+      DFS(next, now)
+      lowpoint[now] = min(lowpoint[now], lowpoint[next])
+      if parent == -1 and lowpoint[next] >= discovery[now]:
+        aps = aps or {now} -- 或集
+    else: -- 之前就找過
+      lowpoint[now] = min(lowpoint[now], discovery[next])
+
+  if parent == -1 and children >= 2:
+    aps = aps or {now}
+
+algorithm Tarjan():
+  for i from 0 to nodes:
+    DFS(i, -1)
+  return aps
+
+```
+
+這演算法以線性時間$O(V + E)$執行，非常快。
+
+## 真實世界應用
+
+關節點是一個網路中最重要的點，因為刪除它們意味著多個彼此分開的圖，在社交網路上，它們代表的是一群使社交網路對人而言有間接或直接共鳴的重要人物。
