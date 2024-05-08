@@ -5,5 +5,5 @@ html {
 }
 
 html.dark {
-  @include meta.load-css("./prism-night-owl.css");
+  @include meta.load-css("./prism-vscode-dark.css");
 }

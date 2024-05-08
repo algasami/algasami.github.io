@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { krypton, roboto } from "../fonts";
+import { victor_mono, roboto } from "../fonts";
 import { Locale } from "i18n-config";
 import Footer from "app/components/footer";
 import Navbar from "app/components/navbar";
@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang={params.lang} className="dark">
       <body
-        className={`overflow-x-hidden ${krypton.variable} ${roboto.variable} font-sans min-h-screen`}
+        className={`overflow-x-hidden ${victor_mono.variable} ${roboto.variable} font-sans min-h-screen`}
       >
         <Navbar lang={params.lang} navbardict={dict["navbar"]} />
         <div

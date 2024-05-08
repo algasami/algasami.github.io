@@ -1,5 +1,4 @@
-import { Roboto, Dosis, Roboto_Serif } from "next/font/google";
-import localFont from "next/font/local";
+import { Roboto, Dosis, Roboto_Serif, Victor_Mono } from "next/font/google";
 
 export const dosis = Dosis({
   subsets: ["latin"],
@@ -17,7 +16,7 @@ export const roboto_serif = Roboto_Serif({
   variable: "--font-roboto-serif",
 });
 
-export const krypton = localFont({
-  src: "./krypton/MonaspaceKryptonVarVF.woff2",
-  variable: "--font-krypton",
+export const victor_mono = Victor_Mono({
+  subsets: ["latin"],
+  variable: "--font-victor-mono",
 });
