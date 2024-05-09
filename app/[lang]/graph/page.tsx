@@ -78,6 +78,7 @@ function copyMap<K, V>(map: Map<K, V>) {
   });
   return copy;
 }
+let mouseisdown = false;
 export default function Graph({ params }: { params: { lang: Locale } }) {
   const dict = getDictionary(params.lang).graph;
   const [graphInput, setGraphInput] =
@@ -97,6 +98,21 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
   const [previous, set_previous] = useState<Map<string, TCoord>>(new Map());
   const [end, set_end] = useState<TCoord | undefined>(undefined);
   const [pq, set_pq] = useState<{ node: TCoord; priority: number }[]>([]);
+
+  useEffect(() => {
+    const downevent = () => {
+      mouseisdown = true;
+    };
+    const upevent = () => {
+      mouseisdown = false;
+    };
+    window.addEventListener("mousedown", downevent);
+    window.addEventListener("mouseup", upevent);
+    return () => {
+      window.removeEventListener("mousedown", downevent);
+      window.removeEventListener("mouseup", upevent);
+    };
+  });
 
   const path: TCoord[] = [];
   let completeness = false;
@@ -137,28 +153,33 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       if (path.findIndex((v) => v.x === j && v.y === i) >= 0) {
         color = "bg-yellow-500";
       }
+      const activate = () => {
+        if (trav_state === 0) {
+          // set obstacles
+          const cop = copyMap(obstacles);
+          if (cop.has(getKey(i, j))) {
+            cop.set(key, !cop.get(key));
+          } else {
+            cop.set(key, true);
+          }
+          set_obstacles(cop);
+        } else if (trav_state === 1 && !isobs) {
+          // set start
+          set_start({ x: j, y: i });
+        } else if (trav_state === 2 && !isobs) {
+          // set end
+          set_end({ x: j, y: i });
+        }
+      };
       grids.push(
         <button
           key={key}
           className={`${color} w-[20px] h-[20px]`}
-          onClick={() => {
-            if (trav_state === 0) {
-              // set obstacles
-              const cop = copyMap(obstacles);
-              if (cop.has(getKey(i, j))) {
-                cop.set(key, !cop.get(key));
-              } else {
-                cop.set(key, true);
-              }
-              set_obstacles(cop);
-            } else if (trav_state === 1 && !isobs) {
-              // set start
-              set_start({ x: j, y: i });
-            } else if (trav_state === 2 && !isobs) {
-              // set end
-              set_end({ x: j, y: i });
-            }
+          onMouseOver={() => {
+            if (!mouseisdown) return;
+            activate();
           }}
+          onClick={activate}
         ></button>
       );
     }
@@ -414,9 +435,22 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       >
         {dict.a_star_next_algo}
       </button>
-      <h2>{dict.a_star_title}</h2>
+      <button
+        className={`add-node-button inter-button-warning m-1`}
+        onClick={() => {
+          set_trav_state(0);
+          set_algo(0);
+          set_visited(new Map());
+          set_obstacles(new Map());
+          set_start(undefined);
+          set_end(undefined);
+        }}
+      >
+        {dict.a_star_rst}
+      </button>
+      <h2>{dict.a_star_desc[algo].title}</h2>
       <hr />
-      <p>{dict.a_star_content}</p>
+      <p>{dict.a_star_desc[algo].content}</p>
     </main>
   );
 }

@@ -83,14 +83,31 @@ export const en = {
     a_star_algo_form: "Current Algo",
     a_star_visited: "Total Visited:",
     a_star_algos: ["A*", "Djikstra", "Flooding"],
-    a_star_title: "A* Algorithm",
-    a_star_content: `A* Algorithm's main difference from traditional BFS flooding method involves an informed
+    a_star_desc: [
+      {
+        title: "A* Algorithm",
+        content: `A* algorithm's main difference from traditional BFS flooding method involves an informed
     search algorithm, whose information largely depends on the non-topological properties of a graph, restricting
     it from being generalized further. Despite this drawback, A* compensates it with a large leap of performance
     compared to traditional flooding and djikstra algorithm. The priority value for each node (less is better) is
     the sum of a heuristic function and the minimum distance from djikstra algorithm.`,
+      },
+      {
+        title: "Djikstra Algorithm",
+        content: `Djikstra algorithm is similar to A*, with the priority value for each node being the minimum distance
+        from the tree root. Note that it does not contain a heuristic function as Djikstra algorithm is topologically
+        flexible.`,
+      },
+      {
+        title: "Flooding",
+        content: `Flooding works by flooding the grid, of course. It is BFS with no addition. The algorithm performs
+        worst among the three algorithms albeit its simplicity; nevertheless, it is a great algorithm to get started
+        from in a beginnner course.`,
+      },
+    ],
     a_star_next_step: "Next State",
     a_star_next_algo: "Change Algorithm",
+    a_star_rst: "Reset",
   },
   tags: {
     math: "Math",
@@ -188,14 +205,29 @@ export const zh_tw: typeof en = {
     a_star_algo_form: "目前演算法",
     a_star_visited: "拜訪方塊",
     a_star_algos: ["A*", "Djikstra", "淹水法"],
-    a_star_title: "A* 演算法",
-    a_star_content: `A*演算法與傳統的BFS淹水法在於它所做的已知知識搜尋演算法
+    a_star_desc: [
+      {
+        title: "A* 演算法",
+        content: `A*演算法與傳統的BFS淹水法在於它所做的已知知識搜尋演算法
     （Informed Search Algorithm），其中它所使用的知識源自圖的
     非拓墣性質（Non-topological Properties），造成一個缺點——它難以被通用化。不過，
     儘管它的這個缺點，A*演算法透過驚人的速度超越淹水法與Djikstra演算法。A*的優先值使用
-    經驗公式與Djikstra最短距離。`,
+    經驗公式與根節點的最短距離。`,
+      },
+      {
+        title: "Djikstra演算法",
+        content: `Djikstra演算法很像A*，不過它的優先值只有使用與根節點的最短距離，
+        沒有經驗公式。`,
+      },
+      {
+        title: "淹水法",
+        content: `淹水法用類似淹水的方式走訪，它就是原汁原味的廣度優先搜尋，雖然演算法簡單，
+        它的表現卻是三者最差的，然而它仍是好的初學者教材。`,
+      },
+    ],
     a_star_next_step: "下一步",
     a_star_next_algo: "更改演算法",
+    a_star_rst: "重置",
   },
   tags: {
     math: "數學",
