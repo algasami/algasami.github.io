@@ -5,10 +5,6 @@
 @import "material-symbols";
 
 @layer base {
-  hr {
-    @apply text-black bg-black my-2;
-  }
-
   h1,
   h2,
   h3,
@@ -38,7 +34,7 @@
   }
 
   .hallway-size {
-    @apply justify-center pt-16 max-w-[95vw] lg:max-w-[80vw];
+    @apply justify-center pt-16 max-w-[100vw] lg:max-w-[60vw];
   }
   body {
     @apply text-lg dark:bg-zinc-900 dark:from-slate-900 dark:to-zinc-900 bg-gradient-to-b bg-orange-100 from-orange-100 to-orange-200 dark:text-slate-50 text-slate-900;
@@ -62,12 +58,19 @@
   .inter-button-warning {
     @apply shadow-sm bg-red-300 hover:bg-red-400 dark:bg-red-700 dark:hover:bg-red-800 rounded-xl p-4 font-bold transition-colors;
   }
+  hr {
+    @apply text-black bg-black my-2;
+  }
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
+}
+
+hr {
+  @apply border-black dark:border-white;
 }
 
 code {

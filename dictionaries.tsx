@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import {
   projects_en,
   projects_zh_tw,
@@ -55,12 +56,37 @@ export const en = {
   dev: {
     title: "Dev Page",
     subtitle: "Temporary Logs",
+    meta_description: "This is the dev & description page for the site.",
+    feature: "Feature",
+    dev_in_charge: "Dev in Charge",
+    date: "Date",
+    content: (
+      <>
+        This site is built upon Next.js' static site export feature. It was
+        originally a page router application, but now most components have been
+        migrated to the latest app router introduced in Next.js 14. The site is
+        a hundred percent open to everyone's viewing pleasure, with the source
+        code located at{" "}
+        <a
+          className="dynamic-link"
+          href="https://github.com/algasami/algasami.github.io"
+        >
+          this repository
+        </a>
+        . If you have trouble navigating around on the site on mobile, please
+        press the compass icon on the top left of your screen. This opens up a
+        navigation modal for you to traverse through this site. It also supports{" "}
+        <b>full bilingual translation</b> with the top right button as well.
+      </>
+    ),
   },
   posts: {
     title: "Posts",
+    meta_description: "Repository for the site's posts.",
   },
   graph: {
-    title: "Graph Toolkit",
+    title: "Graph",
+    meta_description: "This serves as a toolkit for graph manipulation.",
     add_x: "Add X",
     add_y: "Add Y",
     calculate: "Calculate",
@@ -181,12 +207,33 @@ export const zh_tw: typeof en = {
   dev: {
     title: "開發面板",
     subtitle: "暫時性日誌",
+    meta_description: "這是本網站的說明與開發紀錄。",
+    feature: "功能",
+    dev_in_charge: "開發人員",
+    date: "日期",
+    content: (
+      <>
+        這網站透過Next.js的靜態網站系統產生，它原先使用page
+        router製作，不過目前大部分的原件已經被更新為Next.js 14的app router。
+        網站100%是開放給大家閱覽的，原始碼在
+        <a
+          className="dynamic-link"
+          href="https://github.com/algasami/algasami.github.io"
+        >
+          這個程式庫中
+        </a>
+        。如果你在行動載具上瀏覽此網站有困難，請點擊左上角的指北針符號，
+        它會打開一個瀏覽頁面。本網站也透過右上角按鈕支援<b>全雙語翻譯</b>。
+      </>
+    ),
   },
   posts: {
     title: "貼文",
+    meta_description: "本網站的貼文儲存點。",
   },
   graph: {
-    title: "圖論工具箱",
+    title: "圖論",
+    meta_description: "這是圖論相關操作的工具箱。",
     add_x: "新增X",
     add_y: "新增Y",
     calculate: "計算最大匹配",
