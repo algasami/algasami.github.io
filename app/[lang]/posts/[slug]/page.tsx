@@ -1,21 +1,19 @@
 import { useMDXComponent } from "next-contentlayer/hooks";
-import Head from "next/head";
 import PostLayout, {
-  PostForPostLayout,
   RelatedPostForPostLayout,
 } from "../../../components/postLayout";
 import { allPostsNewToOld } from "../../../components/contentLayerAdapter";
 import { Metadata, ResolvingMetadata } from "next";
 import { NoSsr } from "@mui/material";
 import { Locale } from "i18n-config";
-
-type PostForPostPage = PostForPostLayout & {
-  title: string;
-  description: string;
-  body: {
-    code: string;
-  };
-};
+import {
+  MdxH1,
+  MdxH2,
+  MdxH3,
+  MdxH4,
+  MdxH5,
+  MdxH6,
+} from "app/components/mdxHeadings";
 
 export function generateStaticParams({ params }: { params: { lang: Locale } }) {
   const arr = allPostsNewToOld
@@ -49,6 +47,15 @@ export function generateMetadata(
   };
 }
 
+const mdxComponents = {
+  h1: MdxH1,
+  h2: MdxH2,
+  h3: MdxH3,
+  h4: MdxH4,
+  h5: MdxH5,
+  h6: MdxH6,
+};
+
 export default function PostSlugPage({ params }: TProps) {
   const { post, lang, prevPost, nextPost, notFound } = buildProps(
     params.slug,
@@ -71,7 +78,7 @@ export default function PostSlugPage({ params }: TProps) {
               nextPost={nextPost}
               locale={lang}
             >
-              <MDXContent />
+              <MDXContent components={mdxComponents} />
             </PostLayout>
           )}
         </main>
@@ -89,7 +96,7 @@ const buildProps = (slug: string, lang: Locale) => {
     };
   }
   const postFull = filteredPosts[postIndex];
-  const post: PostForPostPage = {
+  const post = {
     title: postFull.title,
     date: postFull.date,
     description: postFull.description,

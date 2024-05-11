@@ -1,7 +1,9 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeCodeTitles from "rehype-code-titles";
 import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism-plus";
+import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
 
 export const Post = defineDocumentType(() => ({
@@ -51,6 +53,7 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
+      rehypeSlug,
       rehypeCodeTitles,
       [rehypePrism, { ignoreMissing: true }],
       rehypeKatex,
