@@ -2,6 +2,7 @@ import Link from "next/link";
 import formatDate from "./formatDate";
 import PostBody from "./postBody";
 import { Locale } from "i18n-config";
+import { getDictionary } from "get-dictionary";
 
 export interface PostForPostLayout {
   date: string;
@@ -28,6 +29,7 @@ export default function PostLayout({
   children,
   locale,
 }: Props) {
+  const dict = getDictionary(locale)["posts"];
   const { date, title } = post;
   return (
     <article>
@@ -40,9 +42,8 @@ export default function PostLayout({
 
             <dl className="space-y-10">
               <div>
-                <dt className="sr-only">發佈時間</dt>
                 <dd className="text-base font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400">
-                  <time dateTime={date}>{formatDate(date)}</time>
+                  <time dateTime={date}>{formatDate(date, locale)}</time>
                 </dd>
               </div>
             </dl>
@@ -64,7 +65,7 @@ export default function PostLayout({
                   <div className="transition-colors dark:hover:text-yellow-100">
                     <button className="basis-6/12 flex flex-col">
                       <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
-                        上一篇
+                        {dict.last}
                       </h2>
                       <div className="flex flex-row justify-start">
                         <Link
@@ -85,7 +86,7 @@ export default function PostLayout({
                   <div className="transition-colors dark:hover:text-yellow-100">
                     <button className="basis-6/12 flex flex-col">
                       <h2 className="mb-1 text-right text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
-                        下一篇
+                        {dict.next}
                       </h2>
                       <div className="flex flex-row justify-end">
                         <span>{nextPost.title} →</span>

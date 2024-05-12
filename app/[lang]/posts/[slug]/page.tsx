@@ -1,9 +1,6 @@
+"use client";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import PostLayout, {
-  RelatedPostForPostLayout,
-} from "../../../components/postLayout";
-import { allPostsNewToOld } from "../../../components/contentLayerAdapter";
-import { Metadata, ResolvingMetadata } from "next";
+import PostLayout from "../../../components/postLayout";
 import { NoSsr } from "@mui/material";
 import { Locale } from "i18n-config";
 import {
@@ -14,38 +11,12 @@ import {
   MdxH5,
   MdxH6,
 } from "app/components/mdxHeadings";
-
-export function generateStaticParams({ params }: { params: { lang: Locale } }) {
-  const arr = allPostsNewToOld
-    .filter((p) => p.lang === params.lang)
-    .map((post) => ({
-      slug: `${post.slug}`,
-    }));
-  return arr.length === 0 ? [{ slug: "not-found" }] : arr;
-}
+import { useEffect } from "react";
+import { buildProps } from "./utils";
+import { useParams, usePathname } from "next/navigation";
+import { useHash } from "app/components/hash-utils";
 
 type TProps = { params: { slug: string; lang: Locale } };
-export function generateMetadata(
-  { params }: TProps,
-  parent: ResolvingMetadata
-): Metadata {
-  const { post, prevPost, nextPost, notFound } = buildProps(
-    params.slug,
-    params.lang
-  );
-  return {
-    title: post.title,
-    description: post.description,
-    openGraph: {
-      title: `${post.title} | algasami`,
-      description: post.description,
-    },
-    twitter: {
-      title: `${post.title} | algasami`,
-      description: post.description,
-    },
-  };
-}
 
 const mdxComponents = {
   h1: MdxH1,
@@ -61,6 +32,28 @@ export default function PostSlugPage({ params }: TProps) {
     params.slug,
     params.lang
   );
+  const hash = useHash();
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (document === undefined) return;
+      console.log(hash);
+      let target = document.getElementById(hash);
+      console.log(target);
+
+      if (!target) return;
+
+      const elementPosition = target.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+      return () => {
+        clearTimeout(timeout);
+      };
+    }, 200);
+  }, [hash]);
   const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
     <div
@@ -86,43 +79,3 @@ export default function PostSlugPage({ params }: TProps) {
     </div>
   );
 }
-
-const buildProps = (slug: string, lang: Locale) => {
-  const filteredPosts = allPostsNewToOld.filter((p) => p.lang === lang);
-  const postIndex = filteredPosts.findIndex((p) => p.slug == slug);
-  if (postIndex === -1) {
-    return {
-      notFound: true,
-    };
-  }
-  const postFull = filteredPosts[postIndex];
-  const post = {
-    title: postFull.title,
-    date: postFull.date,
-    description: postFull.description,
-    body: {
-      code: postFull.body.code,
-    },
-  };
-
-  const prevFull = filteredPosts[postIndex + 1] || null;
-  const prevPost: RelatedPostForPostLayout = prevFull
-    ? { title: prevFull.title, path: prevFull.path }
-    : undefined;
-  const nextFull = filteredPosts[postIndex - 1] || null;
-  const nextPost: RelatedPostForPostLayout = nextFull
-    ? { title: nextFull.title, path: nextFull.path }
-    : undefined;
-
-  if (!post) {
-    return {
-      notFound: true,
-    };
-  }
-  return {
-    post,
-    lang: postFull.lang as Locale,
-    prevPost,
-    nextPost,
-  };
-};

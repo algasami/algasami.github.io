@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build && touch ./out/.nojekyll",
     "serve": "pnpm run build && serve ./out",
+    "win_serve": "next build && serve ./out",
     "start": "next start",
     "lint": "next lint",
     "deploy-production": "pm2 deploy ecosystem.config.js production --force",
