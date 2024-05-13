@@ -13,8 +13,8 @@ import {
 } from "app/components/mdxHeadings";
 import { useEffect } from "react";
 import { buildProps } from "./utils";
-import { useParams, usePathname } from "next/navigation";
 import { useHash } from "app/components/hash-utils";
+import "katex/dist/katex.min.css";
 
 type TProps = { params: { slug: string; lang: Locale } };
 

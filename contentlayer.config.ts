@@ -52,10 +52,10 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [
+      rehypeKatex,
       rehypeSlug,
       rehypeCodeTitles,
       [rehypePrism, { ignoreMissing: true }],
-      rehypeKatex,
     ] as any,
   },
 });
