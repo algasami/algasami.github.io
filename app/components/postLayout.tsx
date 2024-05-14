@@ -3,10 +3,13 @@ import formatDate from "./formatDate";
 import PostBody from "./postBody";
 import { Locale } from "i18n-config";
 import { getDictionary } from "get-dictionary";
+import { Icon } from "@mui/material";
+import { CalendarToday, Source } from "@mui/icons-material";
 
 export interface PostForPostLayout {
   date: string;
   title: string;
+  slug: string;
 }
 
 export type RelatedPostForPostLayout = {
@@ -41,10 +44,28 @@ export default function PostLayout({
             </div>
 
             <dl className="space-y-10">
-              <div>
-                <dd className="text-base font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400">
+              <div className="text-base font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400 flex flex-row justify-center">
+                <div id="post-publish-date" className="flex flex-col mx-2">
+                  <Icon className="flex flex-row justify-center w-full mb-2">
+                    <CalendarToday color="inherit" />
+                    {dict.date}
+                  </Icon>
                   <time dateTime={date}>{formatDate(date, locale)}</time>
-                </dd>
+                </div>
+                <div id="post-source-code" className="flex flex-col mx-2">
+                  <Icon className="flex flex-row justify-center w-full mb-2">
+                    <Source color="inherit" />
+                    {dict.source}(GitHub)
+                  </Icon>
+                  <a
+                    className="dynamic-link"
+                    href={`https://github.com/algasami/algasami.github.io/tree/main/app/content/posts/${post.slug}.mdx`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    {post.slug}.mdx
+                  </a>
+                </div>
               </div>
             </dl>
           </div>

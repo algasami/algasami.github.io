@@ -85,6 +85,8 @@ export const en = {
     meta_description: "Repository for the site's posts.",
     next: "Next Post",
     last: "Last Post",
+    date: "Date",
+    source: "Source",
   },
   graph: {
     title: "Graph",
@@ -234,6 +236,8 @@ export const zh_tw: typeof en = {
     meta_description: "本網站的貼文儲存點。",
     next: "下一篇",
     last: "上一篇",
+    date: "日期",
+    source: "來源",
   },
   graph: {
     title: "圖論",

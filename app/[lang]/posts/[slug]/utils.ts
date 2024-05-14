@@ -14,6 +14,7 @@ export const buildProps = (slug: string, lang: Locale) => {
   const post = {
     title: postFull.title,
     date: postFull.date,
+    slug: slug,
     description: postFull.description,
     body: {
       code: postFull.body.code,
