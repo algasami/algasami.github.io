@@ -35,12 +35,12 @@ export default async function DevPage({
     <div className="dev-page hallway-size mx-2">
       <h1>{dict.title}</h1>
 
-      <p>{dict.content}</p>
-
-      <b className="w-full text-center">{dict.subtitle}</b>
-      <hr />
-
       <NoSsr>
+        <p>{dict.content}</p>
+
+        <b className="w-full text-center">{dict.subtitle}</b>
+        <hr />
+
         <Table>
           <TableRow>
             <TableCell>{dict.feature}</TableCell>

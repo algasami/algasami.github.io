@@ -62,21 +62,35 @@ export const en = {
     date: "Date",
     content: (
       <>
-        This site is built upon Next.js' static site export feature. It was
-        originally a page router application, but now most components have been
-        migrated to the latest app router introduced in Next.js 14. The site is
-        a hundred percent open to everyone's viewing pleasure, with the source
-        code located at{" "}
-        <a
-          className="dynamic-link"
-          href="https://github.com/algasami/algasami.github.io"
-        >
-          this repository
-        </a>
-        . If you have trouble navigating around on the site on mobile, please
-        press the compass icon on the top left of your screen. This opens up a
-        navigation modal for you to traverse through this site. It also supports{" "}
-        <b>full bilingual translation</b> with the top right button as well.
+        <p className="mb-2">
+          This site is built upon Next.js' static site export feature. It was
+          originally a page router application, but now most components have
+          been migrated to the latest app router introduced in Next.js 14. The
+          site is a hundred percent open to everyone's viewing pleasure, with
+          the source code located at{" "}
+          <a
+            className="dynamic-link"
+            href="https://github.com/algasami/algasami.github.io"
+          >
+            this repository
+          </a>
+          . If you have trouble navigating around on the site on mobile, please
+          press the compass icon on the top left of your screen. This opens up a
+          navigation modal for you to traverse through this site. It also
+          supports <b>full bilingual translation</b> with the top right button
+          as well.
+        </p>
+        <p className="mb-2">
+          Posts are written in MDX, an extended format for the markdown
+          language. They are then parsed by Unified Interface with Remark and
+          Rehype to enable features such as LaTex (remark-math + rehype-katex)
+          and codeblocks (rehype-prism).
+        </p>
+        <p className="mb-2">
+          <b>Disclaimer:</b> My opinions expressed on this website are only
+          personal, which means that they are not pertinent to groups,
+          organizations that I am currently in, or was in.
+        </p>
       </>
     ),
   },
@@ -217,17 +231,27 @@ export const zh_tw: typeof en = {
     date: "日期",
     content: (
       <>
-        這網站透過Next.js的靜態網站系統產生，它原先使用page
-        router製作，不過目前大部分的原件已經被更新為Next.js 14的app router。
-        網站100%是開放給大家閱覽的，原始碼在
-        <a
-          className="dynamic-link"
-          href="https://github.com/algasami/algasami.github.io"
-        >
-          這個程式庫中
-        </a>
-        。如果你在行動載具上瀏覽此網站有困難，請點擊左上角的指北針符號，
-        它會打開一個瀏覽頁面。本網站也透過右上角按鈕支援<b>全雙語翻譯</b>。
+        <p className="mb-2">
+          這網站透過Next.js的靜態網站系統產生，它原先使用page
+          router製作，不過目前大部分的原件已經被更新為Next.js 14的app router。
+          網站100%是開放給大家閱覽的，原始碼在
+          <a
+            className="dynamic-link"
+            href="https://github.com/algasami/algasami.github.io"
+          >
+            這個程式庫中
+          </a>
+          。如果你在行動載具上瀏覽此網站有困難，請點擊左上角的指北針符號，
+          它會打開一個瀏覽頁面。本網站也透過右上角按鈕支援<b>全雙語翻譯</b>。
+        </p>
+        <p className="mb-2">
+          我使用MDX格式撰寫貼文，一種延伸Markdown語法的語言。它們會經過Unified管線，透過Remark與Rehype開啟許多功能，像是LaTex
+          （remark-math + rehype-katex）與程式碼（rehype-prism）。
+        </p>
+        <p className="mb-2">
+          <b>免責聲明：</b>
+          我在這個網站上發表的皆為個人意見，這代表它們與我現在或先前所在的群組、組織無關。
+        </p>
       </>
     ),
   },
