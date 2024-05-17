@@ -1,0 +1,58 @@
+---
+title: About the Site
+description: This page acts as a description for algasami.github.io. You can familiarize yourself with this manual.
+slug: 20240517-about
+lang: en
+date: 2024-05-17
+type: Post
+tags:
+  - web
+pinned: true
+---
+
+Welcome to my portfolio that also acts as a miniature blog! This post is intended to help you understand the site's
+philosophy and functionalities. Details are shown below.
+
+## Home
+
+This is the index of my site. You can assess my abilities in academy, as well as checking out my projects. I tried to
+be as neutral as possible during the curation of my portfolio. Note that the timeline may be slightly inaccurate since
+it was written in retrospect.
+
+## Development
+
+Development is a small developer log functionality I added to the site about a year ago. It seldom gets updated due to
+maintenance issues; hence, currently the development page serves as a brief introduction to the site.
+
+## Posts
+
+The post page is the heart of the site. In the column view, rows of purple buttons are present. They are called tags
+and serve as a decoupled way to categorize posts. These buttons can be turned on and off. When on, they appear to be
+orange and filter out posts without the specified tags. As for individual posts, some of them have a special purple badge
+that reads "Pinned." They are pinned onto the top of the page for easy navigation.
+
+When you enter a post, you can view its metadata on the top row and its content below. When you click on headings, the
+url becomes suffixed by the heading's ID. Sharing this suffixed url makes all the visitors who have clicked on this link
+automatically scroll to the heading.
+
+## Graph
+
+Graph is the most interactive part of the site. Offering bipartite graph maximum matching finder and shortest path
+algorithm visualizer, this page is perfect for introducing graph theory to adolescents.
+
+## Knots
+
+This is a three.js visualizer. It looks primitive and has limited functionality. I added it with a full 3D portfolio
+in my mind, but I never realized the full picture due to the difficulty of programming and modeling such sites.
+
+## Technical Details
+
+Two years ago, I had built a small portfolio in my old account [Penquuin](https://github.com/penquuin), which
+can still be access on [penquuin.github.io](https://penquuin.github.io). This site was pretty primitive since I was still
+getting the hang of web development, but it was also during that period I got in contact with Next.js and React.
+
+This site is the old site's successor. Built with the latest Next.js feature (v14) and powered by ContentLayer, Rehype
+and Remark, the site combines their strong suits into different parts of the site. ContentLayer is used as the extended
+markdown (mdx) parser, whereas Rehype and Remark are part of the Unified pipeline.
+
+It wouldn't be possible to build this site without all the open source contributors around the world.
