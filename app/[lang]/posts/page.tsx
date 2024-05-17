@@ -18,8 +18,8 @@ function useSelectedTags() {
 function PostNav({
   title,
   subtitle,
+  pinned,
   tags,
-  color,
   content,
   buttonName,
   link,
@@ -27,8 +27,8 @@ function PostNav({
 }: {
   title: string;
   subtitle: string;
+  pinned: boolean;
   tags: string[];
-  color: string;
   content: string;
   buttonName: string;
   link: string;
@@ -37,7 +37,11 @@ function PostNav({
   const lower_tags = tags.map((v) => v.toLowerCase().trim());
   return (
     <div className="timelinecomponent" key={title}>
-      <Region title={title} color={color} subtitle={subtitle}>
+      <Region
+        title={title}
+        color={pinned ? "amber" : "purple"}
+        subtitle={subtitle}
+      >
         <ul className="flex flex-row flex-wrap">
           {lower_tags.map((tag) => {
             return (
@@ -49,6 +53,14 @@ function PostNav({
               </li>
             );
           })}
+          {pinned ? (
+            <li
+              key={"pinned"}
+              className={`tag-button bg: min-w-[3em] dark:bg-violet-600 bg-violet-300 text-center p-1 m-1 rounded-lg transition-all shadow-lg`}
+            >
+              {dict["pinned"]}
+            </li>
+          ) : undefined}
         </ul>
         {content}
         {/* link icon followed by timelineitem's link */}
@@ -113,9 +125,9 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
             return (
               <PostNav
                 title={post.title}
+                pinned={post.pinned ?? false}
                 subtitle={format(parseISO(post.date), "LLLL d, yyyy")}
                 tags={post.tags}
-                color="bg-slate-900"
                 content={post.description}
                 buttonName="Go to"
                 link={`/${params.lang}${post.path}`}

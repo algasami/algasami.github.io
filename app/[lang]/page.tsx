@@ -38,11 +38,7 @@ function TimelineComponent({
 function ProjectComponent({ project }: { project: TProjectItem }) {
   return (
     <div className="projectcomponent">
-      <Region
-        title={project.name}
-        color={"bg-slate-500"}
-        subtitle={project.subtitle}
-      >
+      <Region title={project.name} color={"purple"} subtitle={project.subtitle}>
         {project.content}
         {/* link icon followed by timelineitem's link */}
         <a

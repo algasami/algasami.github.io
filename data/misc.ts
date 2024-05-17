@@ -21,7 +21,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "Around 2016",
     category: {
       tag: "Roblox",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -33,7 +33,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "Early 2018",
     category: {
       tag: "C/C++",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -42,7 +42,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "Late 2018",
     category: {
       tag: "Web Development",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -52,7 +52,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "2019",
     category: {
       tag: "Python",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -62,7 +62,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "2020",
     category: {
       tag: "Competitive Programming",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -74,7 +74,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "2020",
     category: {
       tag: "Linux",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -86,7 +86,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "Early 2021",
     category: {
       tag: "IC Design",
-      color: "bg-blue-500",
+      color: "blue",
     },
     link: {
       url: "https://github.com/algasami/RV32i_Imp",
@@ -103,7 +103,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "2021",
     category: {
       tag: "NECC",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
 
@@ -115,7 +115,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "2022",
     category: {
       tag: "GSAT",
-      color: "bg-violet-500",
+      color: "violet",
     },
   },
   {
@@ -126,7 +126,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "2023",
     category: {
       tag: "Kernel",
-      color: "bg-violet-500",
+      color: "violet",
     },
     link: {
       url: "https://github.com/algasami/temporal",
@@ -140,7 +140,7 @@ export const timeline_en: { [k: number]: TimelineItem } = [
     date: "Early 2024",
     category: {
       tag: "Academy",
-      color: "bg-violet-500",
+      color: "violet",
     },
   },
 ];
@@ -153,7 +153,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2016左右",
     category: {
       tag: "Roblox",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -163,7 +163,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2018年初",
     category: {
       tag: "C/C++",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -172,7 +172,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2018年底",
     category: {
       tag: "Web Development",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -182,7 +182,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2019",
     category: {
       tag: "Python",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -192,7 +192,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2020",
     category: {
       tag: "Competitive Programming",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -203,7 +203,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2020",
     category: {
       tag: "Linux",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -213,7 +213,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2021年初",
     category: {
       tag: "IC Design",
-      color: "bg-blue-500",
+      color: "blue",
     },
     link: {
       url: "https://github.com/algasami/RV32i_Imp",
@@ -227,7 +227,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2021",
     category: {
       tag: "NECC",
-      color: "bg-blue-500",
+      color: "blue",
     },
   },
   {
@@ -236,7 +236,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2022",
     category: {
       tag: "GSAT",
-      color: "bg-violet-500",
+      color: "violet",
     },
   },
   {
@@ -247,7 +247,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2023",
     category: {
       tag: "Kernel",
-      color: "bg-violet-500",
+      color: "violet",
     },
     link: {
       url: "https://github.com/algasami/temporal",
@@ -261,7 +261,7 @@ export const timeline_zh_tw: { [k: number]: TimelineItem } = [
     date: "2024年初",
     category: {
       tag: "Academy",
-      color: "bg-violet-500",
+      color: "violet",
     },
   },
 ];

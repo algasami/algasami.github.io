@@ -175,6 +175,7 @@ export const en = {
     keyboard: "Keyboard",
     dsa: "DSA",
     dynamic_programming: "Dynamic Programming",
+    pinned: "Pinned",
   },
 };
 
@@ -330,5 +331,6 @@ export const zh_tw: typeof en = {
     keyboard: "鍵盤",
     dsa: "DSA",
     dynamic_programming: "動態程式設計",
+    pinned: "置頂",
   },
 };

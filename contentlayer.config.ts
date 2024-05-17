@@ -37,6 +37,10 @@ export const Post = defineDocumentType(() => ({
       },
       required: true,
     },
+    pinned: {
+      type: "boolean",
+      required: false,
+    },
   },
   computedFields: {
     path: {
