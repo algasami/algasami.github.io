@@ -10,6 +10,7 @@ import {
   MdxH4,
   MdxH5,
   MdxH6,
+  MdxA,
 } from "app/components/mdxHeadings";
 import { useEffect } from "react";
 import { buildProps } from "./utils";
@@ -17,15 +18,6 @@ import { useHash } from "app/components/hash-utils";
 import "katex/dist/katex.min.css";
 
 type TProps = { params: { slug: string; lang: Locale } };
-
-const mdxComponents = {
-  h1: MdxH1,
-  h2: MdxH2,
-  h3: MdxH3,
-  h4: MdxH4,
-  h5: MdxH5,
-  h6: MdxH6,
-};
 
 export default function PostSlugPage({ params }: TProps) {
   const { post, lang, prevPost, nextPost, notFound } = buildProps(
@@ -71,7 +63,17 @@ export default function PostSlugPage({ params }: TProps) {
               nextPost={nextPost}
               locale={lang}
             >
-              <MDXContent components={mdxComponents} />
+              <MDXContent
+                components={{
+                  h1: MdxH1,
+                  h2: MdxH2,
+                  h3: MdxH3,
+                  h4: MdxH4,
+                  h5: MdxH5,
+                  h6: MdxH6,
+                  a: MdxA,
+                }}
+              />
             </PostLayout>
           )}
         </main>

@@ -25,6 +25,15 @@ const MdxHeading = ({ h, id, children }) => {
   return <h1>{children}</h1>;
 };
 
+export const MdxA = ({ id, href, children }) => {
+  return (
+    <a href={href}>
+      {children}
+      <a className="anchor" id={id}></a>
+    </a>
+  );
+};
+
 // cycle through and make H1 - H6 heading tags to use
 export const MdxH1 = (props) => <MdxHeading h="h1" {...props} />;
 export const MdxH2 = (props) => <MdxHeading h="h2" {...props} />;

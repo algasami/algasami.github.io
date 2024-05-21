@@ -33,7 +33,7 @@ tags:
 在 Vulkan 中，許多物件都是指向真實物件的指標，這些物件通常叫做手把，為了和真實的物體接觸，我們需要使用邏輯裝置，
 邏輯裝置使用`vkCreateDevice`與實體裝置的描述產生。
 
-### <a className="anchor" name="sync-structures"></a> 同步架構
+### 同步架構
 
 現代電腦圖形系統通常會使用到平行處理，像是 GPU 就是實際的平行處理例子，因為它可以在多個物理核心上處理多資料
 （請看[SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)），而 CPU 也有這個特質。
@@ -41,7 +41,9 @@ tags:
 雖然平行處理可以快速處理資料，不過也因為非同步而產生問題——我們的 GPU 指令（使用`VkQueue`上傳）需要等交替鏈騰出一個影像才可以在上面渲染東西，
 那要怎麼知道是否有這個照片呢？這時候就需要使用`VkSemaphore`，一個確保 GPU 指令同步的架構，可以想成是等紅綠燈的車輛，所以 Semaphore 中文叫做號誌，
 分為兩類：等待號誌（在等綠燈來的車）和訊號號誌（切換紅綠燈的人），只能有一個訊號號誌，而等待號誌無上限。號誌在 Vulkan 中只適用在 GPU 內作業。
-對於 GPU 對 CPU 或 CPU 對 GPU 作業則需使用`VkFence`[\[1\]](#ref-1)。
+對於 GPU 對 CPU 或 CPU 對 GPU 作業則需使用`VkFence` [^1] 。
+
+[^1]: 可能要再研究研究一番
 
 ### 指令執行流程
 
@@ -67,10 +69,6 @@ _影像截自vkguide.dev_ 請注意，Render Pass在新版的Vulkan已被`vkBegi
 ## 函數褲
 
 正在更新 ⋯⋯ (◉ 3 ◉)
-
-## 註腳
-
-1. <a name="ref-1"></a> 可能要再研究研究一番
 
 ## 編輯紀錄
 
