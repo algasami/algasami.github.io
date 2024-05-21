@@ -4,6 +4,7 @@ import updates from "../../../data/updates.json";
 import type { Metadata } from "next";
 import { Locale, i18n } from "i18n-config";
 import { getDictionary } from "get-dictionary";
+import Image from "next/image";
 
 export function generateMetadata({
   params,
@@ -34,6 +35,25 @@ export default async function DevPage({
   return (
     <div className="dev-page hallway-size mx-2">
       <h1>{dict.title}</h1>
+
+      <ul>
+        <li>
+          <Image
+            alt="CI/CD Status"
+            height={80}
+            width={300}
+            src="https://github.com/algasami/algasami.github.io/actions/workflows/main.yml/badge.svg"
+          />
+        </li>
+        <li>
+          <Image
+            alt="Commit Activity"
+            height={80}
+            width={300}
+            src="https://img.shields.io/github/commit-activity/m/algasami/algasami.github.io"
+          />
+        </li>
+      </ul>
 
       <NoSsr>
         <p>{dict.content}</p>
