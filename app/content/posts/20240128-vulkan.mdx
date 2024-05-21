@@ -55,7 +55,9 @@ which is a way to make sure GPU commands can be sync-ed with each other. A semap
 two types: wait semaphores and signal semaphores. There can only be one signal semaphores, while there's
 no uppper limit for the number of wait semaphores. Semaphores in Vulkan are used exclusively for
 GPU-to-GPU operations, so the developers at Khronos Group come up with `VkFence` for GPU-to-CPU operations,
-which works identically[\[1\]](#ref-1).
+which works identically[^1].
+
+[^1]: I might have to research about this later.
 
 ### Command Execution Process
 
@@ -86,10 +88,6 @@ to our rendering pipelines.
 ## Libraries
 
 WIP... (◉ 3 ◉)
-
-## Notes
-
-1. <a name="ref-1"></a> I may have to research about this later.
 
 ## Edit Logs
 

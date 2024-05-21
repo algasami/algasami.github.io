@@ -3,6 +3,7 @@ import rehypeCodeTitles from "rehype-code-titles";
 import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
 export const Post = defineDocumentType(() => ({
@@ -54,7 +55,7 @@ export default makeSource({
   contentDirPath: "app/content",
   documentTypes: [Post],
   mdx: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: [remarkMath, remarkGfm],
     rehypePlugins: [
       rehypeKatex,
       rehypeSlug,
