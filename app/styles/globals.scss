@@ -76,6 +76,13 @@ hr {
 code {
   @apply font-mono;
 }
+.title-anchor {
+  display: flex;
+  position: relative;
+  top: -200px;
+  visibility: hidden;
+}
+
 .anchor {
   display: flex;
   position: absolute;

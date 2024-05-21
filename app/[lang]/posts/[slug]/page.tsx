@@ -10,6 +10,7 @@ import {
   MdxH4,
   MdxH5,
   MdxH6,
+  MdxA,
 } from "app/components/mdxHeadings";
 import { useEffect } from "react";
 import { buildProps } from "./utils";
@@ -43,7 +44,7 @@ export default function PostSlugPage({ params }: TProps) {
       return () => {
         clearTimeout(timeout);
       };
-    }, 200);
+    }, 400);
   }, [hash]);
   const MDXContent = useMDXComponent(notFound ? "# NOT FOUND" : post.body.code);
   return (
@@ -70,6 +71,7 @@ export default function PostSlugPage({ params }: TProps) {
                   h4: MdxH4,
                   h5: MdxH5,
                   h6: MdxH6,
+                  a: MdxA,
                 }}
               />
             </PostLayout>
