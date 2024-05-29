@@ -1,5 +1,6 @@
 "use client";
 import { format, parseISO } from "date-fns";
+import { enUS, zhTW, Locale as DFLocale } from "date-fns/locale";
 import Link from "next/link";
 import {
   allPostsNewToOld,
@@ -9,6 +10,11 @@ import { Region } from "../../components/region";
 import React from "react";
 import { Locale } from "i18n-config";
 import { getDictionary } from "get-dictionary";
+
+const LocaleFromLang: { [k in Locale]: DFLocale } = {
+  en: enUS,
+  "zh-tw": zhTW,
+};
 
 function useSelectedTags() {
   const [chosen_tags, set_chosen_tags] = React.useState<string[]>([]);
@@ -126,7 +132,9 @@ export default function PostPage({ params }: { params: { lang: Locale } }) {
               <PostNav
                 title={post.title}
                 pinned={post.pinned ?? false}
-                subtitle={format(parseISO(post.date), "LLLL d, yyyy")}
+                subtitle={format(parseISO(post.date), "LLLL d, yyyy", {
+                  locale: LocaleFromLang[params.lang],
+                })}
                 tags={post.tags}
                 content={post.description}
                 buttonName="Go to"
