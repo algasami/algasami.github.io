@@ -8,7 +8,7 @@ import {
 
 export const en = {
   index: {
-    author_subtitle: " years old, Comp Sci/Low-Level",
+    author_subtitle: " years old, Comp Sci/Middle-Level",
     about: {
       title: "About",
       education: {
@@ -181,7 +181,7 @@ export const en = {
 
 export const zh_tw: typeof en = {
   index: {
-    author_subtitle: "歲。資工/低階設計",
+    author_subtitle: "歲。資工/中階設計",
     about: {
       title: "關於",
       education: {
