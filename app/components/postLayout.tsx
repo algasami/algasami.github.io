@@ -5,6 +5,7 @@ import { Locale } from "i18n-config";
 import { getDictionary } from "get-dictionary";
 import { Icon } from "@mui/material";
 import { CalendarToday, Source } from "@mui/icons-material";
+import { Region } from "./region";
 
 export interface PostForPostLayout {
   date: string;
@@ -48,14 +49,12 @@ export default function PostLayout({
                 <div id="post-publish-date" className="flex flex-col mx-2">
                   <Icon className="flex flex-row justify-center w-full mb-2">
                     <CalendarToday color="inherit" />
-                    {dict.date}
                   </Icon>
                   <time dateTime={date}>{formatDate(date, locale)}</time>
                 </div>
                 <div id="post-source-code" className="flex flex-col mx-2">
                   <Icon className="flex flex-row justify-center w-full mb-2">
                     <Source color="inherit" />
-                    {dict.source}(GitHub)
                   </Icon>
                   <a
                     className="dynamic-link"
@@ -71,7 +70,20 @@ export default function PostLayout({
           </div>
         </header>
 
-        <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700">
+        <div className="flex flex-col">
+          <div className="flex flex-row justify-center">
+            <Region color="amber" title="雙語翻譯 Bilingual Translation">
+              這篇文章支援雙語翻譯，請點擊下方的連結或右上方按鈕切換語言。 This
+              post supports bilingual translation. Please click the link below
+              or the button on the top right to switch languages.
+              <Link
+                href={`/${locale == "en" ? "zh-tw" : "en"}/posts/${post.slug}`}
+                className="py-2 px-2 my-2 bg-amber-400 transition-all hover:shadow-lg hover:bg-violet-400 text-zinc-900 rounded-lg w-max font-semibold"
+              >
+                前往Go To
+              </Link>
+            </Region>
+          </div>
           <PostBody>{children}</PostBody>
         </div>
 
