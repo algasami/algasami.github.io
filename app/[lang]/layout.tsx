@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { victor_mono, roboto } from "../fonts";
 import { Locale } from "i18n-config";
 import Footer from "app/components/footer";
-import Navbar from "app/components/navbar";
 import { getDictionary } from "get-dictionary";
+import Navbar from "app/components/navbar";
 
 const portlink = "https://algasami.github.io/";
 

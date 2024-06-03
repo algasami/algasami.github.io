@@ -16,7 +16,13 @@ const MdxHeading = ({ h, id, children }) => {
     return (
       <Link className="heading-link" href={`#${id}`}>
         <Header className={styles.mdx_heading}>
-          <a className="title-anchor" id={id}></a>
+          <a
+            className="title-anchor"
+            id={id}
+            onClick={() => {
+              return false;
+            }}
+          ></a>
           {children}
         </Header>
       </Link>
