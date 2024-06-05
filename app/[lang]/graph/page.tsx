@@ -191,9 +191,11 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
         pq.length == 0 ||
         start === undefined ||
         end === undefined ||
-        completeness
-      )
+        (algo === 0 && completeness)
+      ) {
+        set_front(end);
         return;
+      }
       const pqcopy = [...pq];
 
       const node_first = pqcopy.shift().node;
@@ -202,8 +204,9 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
 
       visited.set(firstkey, true);
       set_total_visited(total_visited + 1);
-      if (node_first.x === end.x && node_first.y === end.y) {
+      if (node_first.x === end.x && node_first.y === end.y && algo === 0) {
         set_pq([]);
+        set_front(end);
         return;
       }
       // get adjs
@@ -258,7 +261,7 @@ export default function Graph({ params }: { params: { lang: Locale } }) {
       pq_calc(right_adj);
       pqcopy.sort((a, b) => a.priority - b.priority);
       set_pq(pqcopy);
-    }, 10);
+    }, 5);
     return () => {
       clearTimeout(conn);
     };
