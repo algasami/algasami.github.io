@@ -69,9 +69,7 @@ export default async function RootPage({
   const dict = getDictionary(params.lang)["index"];
   return (
     <div className="max-w-max h-full flex flex-col hallway-size">
-      <h1 className="font-light text-center m-4 lg:tracking-widest">
-        ALGASAMI
-      </h1>
+      <h1 className="font-bold text-center m-4 lg:tracking-widest">ALGASAMI</h1>
 
       <footer className="text-center italic lg:tracking-widest">
         {age}
