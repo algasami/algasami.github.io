@@ -76,7 +76,7 @@ algorithm DFS(now, parent):
       children = children + 1
       DFS(next, now)
       lowpoint[now] = min(lowpoint[now], lowpoint[next])
-      if parent == -1 and lowpoint[next] >= discovery[now]:
+      if parent != -1 and lowpoint[next] >= discovery[now]:
         aps = aps or {now} -- 或集
     else: -- 之前就找過
       lowpoint[now] = min(lowpoint[now], discovery[next])
