@@ -14,7 +14,8 @@ export const en = {
       education: {
         title: "Education",
         content: `
-        I'm an aspired high school student in Taiwan currently creating a few computer science projects.
+        I'm an aspired computer science undergraduate in Taiwan currently creating a few projects. I consider myself
+        to be fluent in English as a bilingual individual.
         `,
       },
       interests: {
@@ -185,7 +186,7 @@ export const zh_tw: typeof en = {
       education: {
         title: "教育",
         content: `
-        我是一位台灣高中生，目前正在製作多個資工專案。
+        我是一位在台灣大學攻讀的資工大學生，目前正在製作多個專案。身為一位雙語人士，我自認自己的英文能力優良。
         `,
       },
       interests: {
