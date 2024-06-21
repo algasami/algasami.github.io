@@ -14,7 +14,7 @@ export const en = {
       education: {
         title: "Education",
         content: `
-        I'm an aspired computer science undergraduate in Taiwan currently creating a few projects. I consider myself
+        I'm an aspired computer science undergraduate in NCKU, Taiwan, currently creating a few projects. I consider myself
         to be fluent in English as a bilingual individual.
         `,
       },
@@ -186,7 +186,7 @@ export const zh_tw: typeof en = {
       education: {
         title: "教育",
         content: `
-        我是一位在台灣大學攻讀的資工大學生，目前正在製作多個專案。身為一位雙語人士，我自認自己的英文能力優良。
+        我是一位在位於台灣的成功大學攻讀的資工大學生，目前正在製作多個專案。身為一位雙語人士，我自認自己的英文能力優良。
         `,
       },
       interests: {
