@@ -1,0 +1,86 @@
+---
+title: Precalc Summary
+description: This is a collection of precalculus concepts.
+slug: 20240621-precalc
+lang: en
+date: 2024-06-21
+type: Post
+tags:
+  - math
+---
+
+_This isn't completely related to computer science so I didn't include the tag :P. Functions in this article only have
+single variables._
+
+## Limit
+
+```math
+\lim_{x \rightarrow a^{+}}{f(x)} = b
+```
+
+represents the fact that when $x$ approaches $a$ from right, $f$ approaches $b$, which is called a "right limit".
+
+```math
+\lim_{x \rightarrow a^{-}}{f(x)} = b
+```
+
+represents the fact that when $x$ approaches $a$ from left, $f$ approaches $b$, which is called a "left limit".
+When both of them are the same, that is
+
+```math
+\lim_{x \rightarrow a^{+}}{f(x)} = \lim_{x \rightarrow a^{-}}{f(x)} = b
+```
+
+, we say that when $x$ approaches $a$, $f$ approaches $b$, which is
+
+```math
+\lim_{x \rightarrow a}{f(x)} = b
+```
+
+, this also shows that $f$ has a limit at $x=a$.
+
+## Continuity
+
+For a function to be continuous in a certain interval, it must first have limit in that interval. If $f: R \rightarrow R, f(x)$ is
+continuous given $x \in [a,b]$, then it must satisfy the following facts:
+
+1. For all $c$ in $[a,b]$, $f$ at $x=c$ must have a limit that is defined.
+2. For all $c$ in $[a,b]$, $f(c) = \lim_{x \rightarrow c}{f(c)}$
+
+## Derivative
+
+A function's derivative with respect to a specific variable is the function's change regarding the change of the specified variable.
+For example, the derivative of $f: R \rightarrow R, f(x)$ regarding $x$ is $\frac{df}{dx}$.
+It can be defined like this:
+
+```math
+\frac{df(x)}{dx} = \lim_{h \rightarrow 0}{\frac{f(x+h) - f(x)}{h}}
+```
+
+## Differentiable
+
+When a function is differentiable in a certain interval, it must first be continuous in that interval. If $f: R \rightarrow R, f(x)$
+is differentiable, then its derivative must be continuous, so finally we can say that
+
+```math
+\text{Differentiable} \implies \text{Continuous} \implies \text{Limit Existing}
+```
+
+## IVT Intermediate Value Theorem
+
+For a continuous function $f$ in interval $[a,b]$, it must satisfy the following fact: $\forall c \in [\min(f(a), f(b)), \max(f(a), f(b)) ]$,
+there exists at least one $r$ that fulfills $f(r) = c \{r \in [a,b]\}$.
+
+## Boundedness Theorem
+
+For a function $f$ in interval $[a,b]$, $U$ denotes the set of upper bounds (scalar) and $L$ denotes the set of lower bounds (scalar).
+Define $v, \forall v \in [a, b]$,
+
+```math
+l \leq f(v) \leq u, l \in L, u \in U
+```
+
+## EVT Extreme Value Theorem
+
+When we limit the upper bound set and the lower bound set to only include values that exist as $f$'s output, we get EVT,
+where $L$ and $U$ are each reduced respectively to a single value, $f(c)$ and $f(d)$.

@@ -1,0 +1,81 @@
+---
+title: 基礎微積分統整
+description: 一個基礎微積分概念的統整。
+slug: 20240621-precalc
+lang: zh-tw
+date: 2024-06-21
+type: Post
+tags:
+  - math
+---
+
+_這不完全與電腦科學有關，所以我沒有貼那個標籤:P。此文中函數只有單參數。_
+
+## 極限
+
+```math
+\lim_{x \rightarrow a^{+}}{f(x)} = b
+```
+
+表示當$x$由右側趨近$a$時，$f$趨近$b$，這被稱為右極限。
+
+```math
+\lim_{x \rightarrow a^{-}}{f(x)} = b
+```
+
+表示當$x$由左側趨近$a$時，$f$趨近$b$，這被稱為左極限。當兩者相同時，即
+
+```math
+\lim_{x \rightarrow a^{+}}{f(x)} = \lim_{x \rightarrow a^{-}}{f(x)} = b
+```
+
+，表示當$x$趨近$a$，$f$趨近$b$，即
+
+```math
+\lim_{x \rightarrow a}{f(x)} = b
+```
+
+，這也代表$f$在$x=a$極限存在。
+
+## 連續性
+
+若函數在特定區間連續，則它必須先在其極限存在，若$f: R \rightarrow R, f(x)$是連續的，
+其中$x \in [a,b]$，則它必須滿足下列事實：
+
+1. 對所有$c \in [a,b]$，$f, x=c$必須極限存在。
+2. 對所有$c \in [a,b]$，$f(c) = \lim_{x \rightarrow c}{f(c)}$
+
+## 導數
+
+一個函數對於特定參數的導數是這函數基於特定參數變化的函數，舉例來說，$f: R \rightarrow R, f(x)$對$x$的導數是$\frac{df}{dx}$。
+它可以被定義為下
+
+```math
+\frac{df(x)}{dx} = \lim_{h \rightarrow 0}{\frac{f(x+h) - f(x)}{h}}
+```
+
+## 可微分
+
+如果函數在區間中可微分，則它必須在區間中連續，若$f: R \rightarrow R, f(x)$可微，則它的導數是連續的，於是我們可以總結
+
+```math
+\text{可微分} \implies \text{連續} \implies \text{極限存在}
+```
+
+## IVT 介質定理
+
+對於在區間$[a,b]$連續的函數$f$而言，它必須滿足下列事實$\forall c \in [\min(f(a), f(b)), \max(f(a), f(b)) ]$，
+存在$r$滿足$f(r) = c \{r \in [a,b]\}$。
+
+## 邊界定理
+
+對於在區間$[a,b]的函數$f$，$U$表示上限集合（純量），$L$代表下限集合（純量）。
+定義$v, \forall v \in [a, b]$，
+
+```math
+l \leq f(v) \leq u, l \in L, u \in U
+```
+
+## EVT 極值定理
+
+當我們將上下限集合限制只有對應在區間中$f$的值，我們會得到極值定理，其中$L$與$U$個別被縮減成單一值$f(c)$與$f(d)$。
