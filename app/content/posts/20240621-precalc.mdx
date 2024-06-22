@@ -84,3 +84,36 @@ l \leq f(v) \leq u, l \in L, u \in U
 
 When we limit the upper bound set and the lower bound set to only include values that exist as $f$'s output, we get EVT,
 where $L$ and $U$ are each reduced respectively to a single value, $f(c)$ and $f(d)$.
+
+## Exponential Differentiation
+
+Let $e$ be a number, $b$ be a constant scalar, that results in
+
+```math
+f(x) = e^{bx} \\
+\frac{df(x)}{dx} = be^{bx} = b \cdot f(x)
+```
+
+, we can say that for all $a \in R, a > 0$,
+
+```math
+f(x) = a^x = e^{\ln(a)x} \\
+\frac{df(x)}{dx} = \ln(a) \cdot e^{\ln(a)x} = \ln(a) \cdot f(x)
+```
+
+## Logarithmic Differentiation
+
+We know that
+
+```math
+\frac{d(\ln x)}{dx} = \frac{1}{x}
+```
+
+,
+so for function $f$,
+
+```math
+\frac{d(\ln f(x))}{dx} = \frac{d(\ln f(x))}{df} \cdot \frac{df(x)}{dx} = \frac{1}{f(x)} \cdot \frac{df(x)}{dx}
+```
+
+. The above technique is actually chain rule if you look closely!

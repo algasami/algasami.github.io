@@ -79,3 +79,35 @@ l \leq f(v) \leq u, l \in L, u \in U
 ## EVT 極值定理
 
 當我們將上下限集合限制只有對應在區間中$f$的值，我們會得到極值定理，其中$L$與$U$個別被縮減成單一值$f(c)$與$f(d)$。
+
+## 指數微分
+
+令$e$唯一數，$b$為常數，使
+
+```math
+f(x) = e^{bx} \\
+\frac{df(x)}{dx} = be^{bx} = b \cdot f(x)
+```
+
+，所以對於$\forall a \in R, a > 0$，
+
+```math
+f(x) = a^x = e^{\ln(a)x} \\
+\frac{df(x)}{dx} = \ln(a) \cdot e^{\ln(a)x} = \ln(a) \cdot f(x)
+```
+
+## 對數微分
+
+已知
+
+```math
+\frac{d(\ln x)}{dx} = \frac{1}{x}
+```
+
+，因此對於函數$f$而言，
+
+```math
+\frac{d(\ln f(x))}{dx} = \frac{d(\ln f(x))}{df} \cdot \frac{df(x)}{dx} = \frac{1}{f(x)} \cdot \frac{df(x)}{dx}
+```
+
+。上述技巧其實就是連鎖律喔！
