@@ -51,7 +51,7 @@ _這不完全與電腦科學有關，所以我沒有貼那個標籤:P。此文�
 它可以被定義為下
 
 ```math
-\frac{df(x)}{dx} = \lim_{h \rightarrow 0}{\frac{f(x+h) - f(x)}{h}}
+\frac{df}{dx} = \lim_{h \rightarrow 0}{\frac{f(x+h) - f(x)}{h}}
 ```
 
 ## 可微分
@@ -69,8 +69,8 @@ _這不完全與電腦科學有關，所以我沒有貼那個標籤:P。此文�
 
 ## 邊界定理
 
-對於在區間$[a,b]$的函數$f$，$U$表示上限集合（純量），$L$代表下限集合（純量）。
-定義 $v, \forall v \in [a, b]$ ，
+對於在區間$[a,b]的函數$f$，$U$表示上限集合（純量），$L$代表下限集合（純量）。
+定義$v, \forall v \in [a, b]$，
 
 ```math
 l \leq f(v) \leq u, l \in L, u \in U
@@ -86,14 +86,14 @@ l \leq f(v) \leq u, l \in L, u \in U
 
 ```math
 f(x) = e^{bx} \\
-\frac{df(x)}{dx} = be^{bx} = b \cdot f(x)
+\frac{df}{dx} = be^{bx} = b \cdot f(x)
 ```
 
 ，所以對於$\forall a \in R, a > 0$，
 
 ```math
 f(x) = a^x = e^{\ln(a)x} \\
-\frac{df(x)}{dx} = \ln(a) \cdot e^{\ln(a)x} = \ln(a) \cdot f(x)
+\frac{df}{dx} = \ln(a) \cdot e^{\ln(a)x} = \ln(a) \cdot f(x)
 ```
 
 ## 對數微分
@@ -107,7 +107,7 @@ f(x) = a^x = e^{\ln(a)x} \\
 ，因此對於函數$f$而言，
 
 ```math
-\frac{d(\ln f(x))}{dx} = \frac{d(\ln f(x))}{df} \cdot \frac{df(x)}{dx} = \frac{1}{f(x)} \cdot \frac{df(x)}{dx}
+\frac{d(\ln f(x))}{dx} = \frac{d(\ln f(x))}{df} \cdot \frac{df}{dx} = \frac{1}{f(x)} \cdot \frac{df}{dx}
 ```
 
 。上述技巧其實就是連鎖律喔！

@@ -54,7 +54,7 @@ For example, the derivative of $f: R \rightarrow R, f(x)$ regarding $x$ is $\fra
 It can be defined like this:
 
 ```math
-\frac{df(x)}{dx} = \lim_{h \rightarrow 0}{\frac{f(x+h) - f(x)}{h}}
+\frac{df}{dx} = \lim_{h \rightarrow 0}{\frac{f(x+h) - f(x)}{h}}
 ```
 
 ## Differentiable
@@ -91,14 +91,14 @@ Let $e$ be a number, $b$ be a constant scalar, that results in
 
 ```math
 f(x) = e^{bx} \\
-\frac{df(x)}{dx} = be^{bx} = b \cdot f(x)
+\frac{df}{dx} = be^{bx} = b \cdot f(x)
 ```
 
 , we can say that for all $a \in R, a > 0$,
 
 ```math
 f(x) = a^x = e^{\ln(a)x} \\
-\frac{df(x)}{dx} = \ln(a) \cdot e^{\ln(a)x} = \ln(a) \cdot f(x)
+\frac{df}{dx} = \ln(a) \cdot e^{\ln(a)x} = \ln(a) \cdot f(x)
 ```
 
 ## Logarithmic Differentiation
@@ -113,7 +113,7 @@ We know that
 so for function $f$,
 
 ```math
-\frac{d(\ln f(x))}{dx} = \frac{d(\ln f(x))}{df} \cdot \frac{df(x)}{dx} = \frac{1}{f(x)} \cdot \frac{df(x)}{dx}
+\frac{d(\ln f(x))}{dx} = \frac{d(\ln f(x))}{df} \cdot \frac{df}{dx} = \frac{1}{f(x)} \cdot \frac{df}{dx}
 ```
 
 . The above technique is actually chain rule if you look closely!
