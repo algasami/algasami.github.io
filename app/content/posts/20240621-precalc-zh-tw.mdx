@@ -111,3 +111,87 @@ f(x) = a^x = e^{\ln(a)x} \\
 ```
 
 。上述技巧其實就是連鎖律喔！
+
+## 線性估計
+
+給定函數$f, f(x)$，其在$(r, f(r))$的線性估計（直線）為$y = f'(r)(x-r)+f(r) = g(x)$。
+
+### 好用表
+
+```math
+(1+x)^r \approx 1 + rx \text{ where } x \rightarrow 0
+```
+
+```math
+\sin(x) \approx x \text{ where } x \rightarrow 0
+```
+
+```math
+\cos(x) \approx 1 \text{ where } x \rightarrow 0
+```
+
+```math
+e^x \approx 1 + x \text{ where } x \rightarrow 0
+```
+
+```math
+\ln(1+x) \approx x \text{ where } x \rightarrow 0
+```
+
+### 推導
+
+```math
+(1+x)^r \approx (1+0)^r + r(1+0)^{r-1}x=1+rx
+```
+
+```math
+\sin(x)\approx \sin(0) + \cos(0)x = x
+```
+
+```math
+\cos(x)\approx \cos(0) + -\sin(0)x = 1
+```
+
+```math
+e^x \approx e^0 + e^0 x = 1 + x
+```
+
+```math
+\ln(1+x) \approx \ln(1) + \frac{x}{1+0}=x
+```
+
+## 二次估計
+
+設定函數$f(x)=ax^2+bx+c$，查看其在$x=0$的導數，
+
+```math
+f(0)=c,
+f'(0)=b,
+f''(0)=2a
+```
+
+可以用來表示$f(x) = f(0) + f'(0)x + f''(0)x^2 \cdot (2!)^{-1}$。
+推廣這心得，我們得到對於函數在$x=r$的二次估計為
+
+```math
+f(x) \approx f(r) + \frac{f'(r)(x-r)^1}{1!} +
+\frac{f''(r)(x-r)^2}{2!}
+```
+
+$f$的二次估計為$Q(f)$。
+
+## 估計定理
+
+```math
+Q(f(x) \cdot g(x)) = Q(Q(f(x))\cdot Q(g(x)))
+```
+
+## 泰勒級數
+
+由上面的估計不難看出規則，對於函數$f$在$x=r$的估計而言，
+
+```math
+f(x) = f(r) + \sum^{\infty}_{n=1}{\frac{f^{(n)}(x) \cdot (x-r)^n}{n!}}
+```
+
+，稱為泰勒級數。

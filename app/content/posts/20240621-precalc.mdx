@@ -117,3 +117,90 @@ so for function $f$,
 ```
 
 . The above technique is actually chain rule if you look closely!
+
+## Linear Approximation
+
+Given function $f(x)$, the linear approximation (tangent lines) at
+$(r, f(r))$ is $y = f'(r)(x-r)+f(r) = g(x)$.
+($f'$ is the derivative of $f$)
+
+### Cheatsheet
+
+```math
+(1+x)^r \approx 1 + rx \text{ where } x \rightarrow 0
+```
+
+```math
+\sin(x) \approx x \text{ where } x \rightarrow 0
+```
+
+```math
+\cos(x) \approx 1 \text{ where } x \rightarrow 0
+```
+
+```math
+e^x \approx 1 + x \text{ where } x \rightarrow 0
+```
+
+```math
+\ln(1+x) \approx x \text{ where } x \rightarrow 0
+```
+
+### Deduction
+
+```math
+(1+x)^r \approx (1+0)^r + r(1+0)^{r-1}x=1+rx
+```
+
+```math
+\sin(x)\approx \sin(0) + \cos(0)x = x
+```
+
+```math
+\cos(x)\approx \cos(0) + -\sin(0)x = 1
+```
+
+```math
+e^x \approx e^0 + e^0 x = 1 + x
+```
+
+```math
+\ln(1+x) \approx \ln(1) + \frac{x}{1+0}=x
+```
+
+## Quadratic Approximation
+
+Think of a function $f(x)=ax^2+bx+c$, we want to see its derivatives at $x=0$:
+
+```math
+f(0)=c,
+f'(0)=b,
+f''(0)=2a
+```
+
+which can represent $f(x)$ as $f(0) + f'(0)x + f''(0)x^2 \cdot (2!)^{-1}$.
+Generalizing this observation, we can get that the quadratic approximation at $x=r$ is
+
+```math
+f(x) \approx f(r) + \frac{f'(r)(x-r)^1}{1!} +
+\frac{f''(r)(x-r)^2}{2!}
+```
+
+The notation for quadratic approximation of function $f$ is $Q(f)$.
+
+## Approximation Laws
+
+```math
+Q(f(x) \cdot g(x)) = Q(Q(f(x))\cdot Q(g(x)))
+```
+
+## Taylor Series
+
+It's not particularly difficult to see the pattern from above approximations. For function $f$, its
+approximation at $x=r$ would be
+
+```math
+f(x) = f(r) + \sum^{\infty }_{n=1}{\frac{f^{(n)}(x) \cdot (x-r)^n}{n!}}
+```
+
+, which is called Taylor series.
