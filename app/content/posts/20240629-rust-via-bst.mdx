@@ -1,0 +1,197 @@
+---
+title: Learning Rust via Binary Search Tree
+description: Let's learn Rust by implementing our own binary search tree!
+slug: 20240629-rust-via-bst
+lang: en
+date: 2024-06-29
+type: Post
+tags:
+  - dsa
+  - computer_science
+  - rust
+---
+
+It's been quite a while since my last post about Rust, which didn't really talk about its core philosophy and how it
+worked, so this was written as an introduction to Rust for people who have already dabbled with the C programming
+language family. Additionally, if you don't know what binary search trees are, I strongly recommend taking a look at
+them first.
+
+# Ownership
+
+We must first talk about ownership before implementing our BST. In Rust, an object must be owned by
+something and only that something. For example, take an uncopiable type `A`, the following code would result in
+compilation error.
+
+```rust
+let x: A = ...; // ownership of ... is x
+let y = x; // transfers ownership to y
+x...; // errors
+```
+
+So to reference `x` without `x` losing ownership requires "borrowing", which is split into two categories: shared
+references(&) and exclusive(mutable, &mut) references. The former is a pointer to a constant piece of memory that you can't
+edit via the pointer, the latter is a pointer to an editable piece of memory. There can only be at most one mutable
+reference to `x` per scope, and if there is a mutable reference to `x`, there must not be any shared references to `x` in
+that scope.
+
+# Node and Leave
+
+In C, we can define a BST node like this:
+
+```c
+struct node {
+  int key;
+  struct node *left, *right;
+};
+```
+
+A `node` has two pointers pointing to other `node`s. Note that their allocation is not concretely defined by our struct
+itself. If the left/right child is a leave, then the value of it is set to `nullptr`. This approach has some downsides,
+though, most notably the fact that you have to free the memory itself if you allocate heap memory. This would result in
+memory leaks should you forget to do so.
+
+In Rust, since a node can only be connected to its parent, and knowing the node's parent is optional, we can define a
+BST tree and a BST node like is:
+
+```rust
+struct BSTNode<T> {
+    left: BST<T>,
+    right: BST<T>,
+    pub key: i32,
+    pub val: T,
+}
+
+pub struct BST<T> {
+    node: Option<Box<BSTNode<T>>>,
+}
+```
+
+Evidently, we define an intermediate struct called `BST<T>`, which is a container for an optional `Box<node>` property.
+A `Box` is simply a unique pointer to an area of heap memory that would be dropped once the `Box` isn't owned. If the
+property is a `None`, then the BST is simply an empty tree. Some people might do this
+
+```rust
+pub struct BST<T> {
+    left: Option<Box<BST<T>>>,
+    right: Option<Box<BST<T>>>,
+    pub key: i32,
+    pub val: T,
+}
+```
+
+to make their code more succinct, and it does work, but you can't represent an empty tree without using `Option` on the
+top level, so we'll stick to the first implementation for the rest of this article.
+
+Let's implement some simple functions for our BST.
+
+```rust
+impl<T> BST<T> {
+  // an empty BST
+  pub fn new_empty() -> Self {
+    Self { node: None }
+  }
+  // a BST with one node
+  pub fn new(key: i32, val: T) -> Self {
+    Self {
+      node: Some(Box::new(BSTNode::new(key, val))),
+    }
+  }
+  pub fn is_empty(&self) -> bool {
+    self.node.is_none()
+  }
+  pub fn insert(&mut self, key: i32, val: T) {
+    if let Some(root) = &mut self.node {
+      // match is a way to split and pattern match results
+      match root.key.cmp(&key) {
+        Ordering::Equal => {
+          panic!("BST should not have same id!");
+          // bad practice ^
+        }
+        Ordering::Greater => { // root.key > key
+          root.left.insert(key, val);
+        }
+        Ordering::Less => {
+          root.right.insert(key, val);
+        }
+      }
+    } else {
+      self.node = Some(Box::new(BSTNode::new(key, val)));
+    }
+  }
+}
+```
+
+Here, `Box::new` is a way to allocate heap memory.
+
+# BST Deletion
+
+Next, we'll define deletion in BST. To deletion node `n` in a BST, we can discuss individual cases:
+
+1. `n` is a leave: Make `n` an empty tree.
+2. `n` has only one child: Make the child take its place.
+3. `n` has two children: Make `n`'s inorder successor its place without changing `n`'s children.
+
+Then, we write down the code.
+
+```rust
+impl<T: Clone> BST<T> {
+  fn extract_min(&mut self) -> Option<Box<BSTNode<T>>> {
+      let Some(root) = &mut self.node {
+        return None;
+      };
+
+      if !root.left.is_empty() {
+        return root.left.extract_min();
+      }
+
+      // find the inorder successor and take it in the process
+      return self.node.take();
+    }
+  }
+
+  pub fn remove(&mut self, key: i32) {
+    let Some(root) = &mut self.node else {
+      return;
+    };
+    match root.key.cmp(&key) {
+      Ordering::Equal => match (root.left.node.as_ref(), root.right.node.as_ref()) {
+        (None, None) => {
+          self.node.take();
+          // take itself, become an empty tree
+        }
+        (Some(_), None) => {
+          self.node = root.left.node.take();
+          // copy left node to self
+          // make left node an empty tree, without ownership, it would be dropped
+        }
+        (None, Some(_)) => {
+          self.node = root.right.node.take();
+          // copy right node to self
+          // make right node an empty tree, without ownership, it would be dropped
+        }
+        (Some(_), Some(_)) => {
+          if let Some(x) = root.right.extract_min() {
+            root.key = x.key;
+            root.val = x.val.clone();
+          }
+        }
+      },
+      Ordering::Greater => {
+        root.left.remove(key);
+      }
+      Ordering::Less => {
+        root.right.remove(key);
+      }
+    }
+  }
+}
+```
+
+`Option::take` is simply a way to replace the memory at `Some(x)` to `None`, and copy `Some(x)` to the output.
+If `Option<Box<T>>` is taken, the original `Box<T>` is dropped, with the new `Box` immediately instantiated. This
+may all be optimized away, though. The taken node then causes the BST owning it to become an empty tree.
+
+# A small step
+
+In this article, we gained some insight regarding how Rust's ownership system worked, but we haven't talked about
+another important concept in rust, which is lifetime! See you in the next post.
