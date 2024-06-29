@@ -1,4 +1,4 @@
-import { Roboto, Dosis, Roboto_Serif, Victor_Mono } from "next/font/google";
+import { Roboto, Dosis, Roboto_Serif, Ubuntu_Mono } from "next/font/google";
 
 export const dosis = Dosis({
   subsets: ["latin"],
@@ -16,7 +16,8 @@ export const roboto_serif = Roboto_Serif({
   variable: "--font-roboto-serif",
 });
 
-export const victor_mono = Victor_Mono({
+export const ubuntu_mono = Ubuntu_Mono({
   subsets: ["latin"],
-  variable: "--font-victor-mono",
+  weight: "400",
+  variable: "--font-ubuntu-mono",
 });

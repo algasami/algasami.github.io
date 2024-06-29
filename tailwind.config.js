@@ -8,7 +8,7 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-roboto)"],
         serif: ["var(--font-roboto-serif)"],
-        mono: ["var(--font-victor-mono)"],
+        mono: ["var(--font-ubuntu-mono)"],
       },
     },
   },
