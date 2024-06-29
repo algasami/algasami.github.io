@@ -46,7 +46,7 @@ struct node {
 ```
 
 A `node` has two pointers pointing to other `node`s. Note that their allocation is not concretely defined by our struct
-itself. If the left/right child is a leave, then the value of it is set to `nullptr`. This approach has some downsides,
+itself. If the left/right child is empty, then the value of it is set to `(struct node*)NULL`. This approach has some downsides,
 though, most notably the fact that you have to free the memory itself if you allocate heap memory. This would result in
 memory leaks should you forget to do so.
 
@@ -55,14 +55,14 @@ BST tree and a BST node like is:
 
 ```rust
 struct BSTNode<T> {
-    left: BST<T>,
-    right: BST<T>,
-    pub key: i32,
-    pub val: T,
+  left: BST<T>,
+  right: BST<T>,
+  pub key: i32,
+  pub val: T,
 }
 
 pub struct BST<T> {
-    node: Option<Box<BSTNode<T>>>,
+  node: Option<Box<BSTNode<T>>>,
 }
 ```
 
@@ -72,16 +72,15 @@ property is a `None`, then the BST is simply an empty tree. Some people might do
 
 ```rust
 pub struct BST<T> {
-    left: Option<Box<BST<T>>>,
-    right: Option<Box<BST<T>>>,
-    pub key: i32,
-    pub val: T,
+  left: Option<Box<BST<T>>>,
+  right: Option<Box<BST<T>>>,
+  pub key: i32,
+  pub val: T,
 }
 ```
 
 to make their code more succinct, and it does work, but you can't represent an empty tree without using `Option` on the
 top level, so we'll stick to the first implementation for the rest of this article.
-
 Let's implement some simple functions for our BST.
 
 ```rust
@@ -136,17 +135,16 @@ Then, we write down the code.
 ```rust
 impl<T: Clone> BST<T> {
   fn extract_min(&mut self) -> Option<Box<BSTNode<T>>> {
-      let Some(root) = &mut self.node {
-        return None;
-      };
+    let Some(root) = &mut self.node {
+      return None;
+    };
 
-      if !root.left.is_empty() {
-        return root.left.extract_min();
-      }
-
-      // find the inorder successor and take it in the process
-      return self.node.take();
+    if !root.left.is_empty() {
+      return root.left.extract_min();
     }
+
+    // find the inorder successor and take it in the process
+    return self.node.take();
   }
 
   pub fn remove(&mut self, key: i32) {

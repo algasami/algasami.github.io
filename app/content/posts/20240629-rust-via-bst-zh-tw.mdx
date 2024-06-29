@@ -11,4 +11,170 @@ tags:
   - rust
 ---
 
-Awaiting translation.
+自我上一篇關於 Rust 的文章已有一段時日了，而且它沒有談到 Rust 的理念與原理，因此這篇文章會是一個對於已有 C 系列語言經驗的工程師而言的 Rust 簡介，再者，
+如果你不知道二元搜尋樹（BST）的話，我強烈建議先去查查。
+
+# 所有權
+
+在實作 BST 前，我們必須解釋所有權，在 Rust 中，物件必須由某個東西擁有，而且只能是那個東西擁有，舉例來說，對於無法複製型別`A`，下列程式碼會產生錯誤。
+
+```rust
+let x: A = ...; // ...由x擁有
+let y = x; // 轉移到y
+x...; // 錯誤
+```
+
+因此要使用`x`而且不讓`x`失去擁有權會用到「借用」，分成兩類：分享參考（&）與獨有參考（可變參考、&mut），前者是一個指向常數不可變記憶的指標，
+後者指向可變記憶指標。對於`x`，在同個變數範圍，最多只能有一個獨有參考，而且如果有獨有參考就不能有分享參考。
+
+# 節點與葉子
+
+在 C，我們可以將節點定義為：
+
+```c
+struct node {
+  int key;
+  struct node *left, *right;
+};
+```
+
+一個`node`有兩個指標指向其他`node`，注意這些其他節點的記憶分配沒有被具體地定義出來，如果左或右節點是空的，那其值會被設為`(struct node*)NULL`，
+這方法有些缺點，最主要是你所分配的堆記憶（heap memory）需要手動清理，不然會造成記憶外洩。
+
+在 Rust，由於一個節點只能由父母存取，而且知道它的父母無關上下文，我們可以定義為此：
+
+```rust
+struct BSTNode<T> {
+  left: BST<T>,
+  right: BST<T>,
+  pub key: i32,
+  pub val: T,
+}
+
+pub struct BST<T> {
+  node: Option<Box<BSTNode<T>>>,
+}
+```
+
+我們顯然定義了一個間接架構`BST<T>`，用來裝在可有可無的`Box<node>`。一個`Box`是一個指向特定堆記憶的獨特指標，如果沒有人指向、擁有`Box`，
+則此記憶會被清理，如果`node`這個性質是`None`，那 BST 就是單純的空樹，除此之外，有些人會這樣寫：
+
+```rust
+pub struct BST<T> {
+  left: Option<Box<BST<T>>>,
+  right: Option<Box<BST<T>>>,
+  pub key: i32,
+  pub val: T,
+}
+```
+
+，精簡化程式碼，它是可行的，不過你需要在頂層使用`Option`來表示空樹，因此我們在此文章會使用第一個實作。接下來，我們來定義幾個簡單的功能。
+
+```rust
+impl<T> BST<T> {
+  // an empty BST
+  pub fn new_empty() -> Self {
+    Self { node: None }
+  }
+  // a BST with one node
+  pub fn new(key: i32, val: T) -> Self {
+    Self {
+      node: Some(Box::new(BSTNode::new(key, val))),
+    }
+  }
+  pub fn is_empty(&self) -> bool {
+    self.node.is_none()
+  }
+  pub fn insert(&mut self, key: i32, val: T) {
+    if let Some(root) = &mut self.node {
+      // match is a way to split and pattern match results
+      match root.key.cmp(&key) {
+        Ordering::Equal => {
+          panic!("BST should not have same id!");
+          // bad practice ^
+        }
+        Ordering::Greater => { // root.key > key
+          root.left.insert(key, val);
+        }
+        Ordering::Less => {
+          root.right.insert(key, val);
+        }
+      }
+    } else {
+      self.node = Some(Box::new(BSTNode::new(key, val)));
+    }
+  }
+}
+```
+
+此處，`Box::new`是分配堆記憶的方法。
+
+# 二元搜尋樹刪除
+
+接下來，我們來定義 BST 刪除節點的方法。要刪除節點`n`，我們會分開討論：
+
+1. `n`是葉子：使`n`成為空樹。
+2. `n`只有一個孩子：使孩子取代`n`。
+3. `n`有兩個孩子：使`n`的中敘式相鄰後者取代`n`，並不改變原先`n`與孩子的連結。
+
+接下來，把想法寫出來。
+
+```rust
+impl<T: Clone> BST<T> {
+  fn extract_min(&mut self) -> Option<Box<BSTNode<T>>> {
+    let Some(root) = &mut self.node {
+      return None;
+    };
+
+    if !root.left.is_empty() {
+      return root.left.extract_min();
+    }
+
+    // 找到中敘式相鄰後者，並轉移記憶
+    return self.node.take();
+  }
+
+  pub fn remove(&mut self, key: i32) {
+    let Some(root) = &mut self.node else {
+      return;
+    };
+    match root.key.cmp(&key) {
+      Ordering::Equal => match (root.left.node.as_ref(), root.right.node.as_ref()) {
+        (None, None) => {
+          self.node.take();
+          // 轉移自己記憶，丟掉自己
+        }
+        (Some(_), None) => {
+          self.node = root.left.node.take();
+          // 轉移左節點至自己
+          // 使左節點變為空樹，沒有擁有者，丟掉
+        }
+        (None, Some(_)) => {
+          self.node = root.right.node.take();
+          // 轉移右節點至自己
+          // 使右節點變為空樹，沒有擁有者，丟掉
+        }
+        (Some(_), Some(_)) => {
+          if let Some(x) = root.right.extract_min() {
+            root.key = x.key;
+            root.val = x.val.clone();
+          }
+        }
+      },
+      Ordering::Greater => {
+        root.left.remove(key);
+      }
+      Ordering::Less => {
+        root.right.remove(key);
+      }
+    }
+  }
+}
+```
+
+`Option::take`用來將`Some(x)`中的記憶換成`None`，並將`Some(x)`複製到輸出，如果`Option<Box<T>>`被`take`，原先的`Box<T>`會被丟掉，
+而全新的`Box`會產生，雖然這些最後通常會被優化掉。被拿走的節點造成 BST 成為空樹。
+
+# 一小步
+
+在這篇文章中，我們對於 Rust 的所有權系統有些見解，不過我們還沒看到 Rust 另一個重要的觀念——生命時長！下篇文章見。
