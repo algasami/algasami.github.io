@@ -9,7 +9,7 @@ export default function PostBody({ children }: Props) {
   return (
     <div
       className={clsx(
-        `prose lg:prose-lg max-w-none lg:max-w-[90vw] transition-colors dark:prose-invert prose-neutral ${roboto_serif.variable} ${ubuntu_mono.variable} font-serif`,
+        `lg:prose-lg prose dark:prose-invert max-w-none lg:max-w-[90vw] transition-colors ${roboto_serif.variable} ${ubuntu_mono.variable} font-serif`,
         styles.postBody
       )}
     >
